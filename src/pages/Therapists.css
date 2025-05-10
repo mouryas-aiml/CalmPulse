@@ -1,52 +1,65 @@
 .therapists {
-  padding: 2rem;
   min-height: 100vh;
-  background-color: #f8f9fa;
+  background-color: var(--light-bg);
+}
+
+.therapist-banner {
+  padding: 5rem 3rem;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.banner-content h1 {
+  color: var(--white);
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.banner-content p {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.2rem;
+  max-width: 700px;
+  margin: 0 auto;
 }
 
 .therapists-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
-}
-
-.therapists h1 {
-  color: #2c3e50;
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-  text-align: center;
-}
-
-.therapists-description {
-  text-align: center;
-  color: #555;
-  font-size: 1.1rem;
-  margin-bottom: 3rem;
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
+  padding: 0 2rem 4rem;
 }
 
 /* Search and filters */
 .search-filter-section {
-  background-color: white;
+  background-color: var(--white);
   padding: 1.5rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
   margin-bottom: 2rem;
+}
+
+.search-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .search-box {
   position: relative;
-  margin-bottom: 1.5rem;
+  flex: 1;
+  min-width: 250px;
 }
 
 .search-box input {
   width: 100%;
-  padding: 0.8rem 1rem 0.8rem 2.5rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  padding: 1rem 1rem 1rem 3rem;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
   font-size: 1rem;
+  background-color: var(--light-bg);
+  margin-bottom: 0;
 }
 
 .search-box i {
@@ -54,33 +67,88 @@
   left: 1rem;
   top: 50%;
   transform: translateY(-50%);
-  color: #aaa;
+  color: var(--text-light);
 }
 
-.filters {
+.filter-toggle {
   display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
+  align-items: center;
+  gap: 1rem;
+}
+
+.filter-toggle button {
+  background-color: transparent;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.filter-toggle button:hover {
+  background-color: rgba(72, 118, 246, 0.1);
+}
+
+.view-toggle {
+  display: flex;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.view-toggle button {
+  background-color: var(--white);
+  color: var(--text-light);
+  border: none;
+  padding: 0.8rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.view-toggle button.active {
+  background-color: var(--primary-color);
+  color: var(--white);
+}
+
+.filters-panel {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #E2E8F0;
+}
+
+.filters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .filter-group {
-  flex: 1;
-  min-width: 200px;
+  margin-bottom: 1rem;
 }
 
 .filter-group label {
   display: block;
   margin-bottom: 0.5rem;
-  font-weight: 500;
-  color: #2c3e50;
+  font-weight: 600;
+  color: var(--text-dark);
+  font-size: 0.9rem;
 }
 
 .filter-group select {
   width: 100%;
   padding: 0.8rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 1rem;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  background-color: var(--white);
+  color: var(--text-dark);
+  font-size: 0.95rem;
+}
+
+.availability-filter {
+  margin-bottom: 1.5rem;
 }
 
 .availability-options {
@@ -90,44 +158,102 @@
 }
 
 .day-btn {
-  padding: 0.4rem 0.8rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background-color: white;
+  padding: 0.5rem 0.8rem;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  background-color: var(--white);
+  color: var(--text-dark);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: var(--transition);
+  font-size: 0.9rem;
 }
 
 .day-btn.active {
-  background-color: #4fb3bf;
-  color: white;
-  border-color: #4fb3bf;
+  background-color: var(--primary-color);
+  color: var(--white);
+  border-color: var(--primary-color);
+}
+
+.filter-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #E2E8F0;
+}
+
+.reset-btn {
+  background-color: transparent;
+  color: var(--text-light);
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.reset-btn:hover {
+  color: var(--primary-color);
+}
+
+.results-count {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  font-weight: 600;
 }
 
 /* Therapist list */
 .therapists-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 2rem;
+  gap: 1.5rem;
+}
+
+.grid-view {
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+}
+
+.list-view {
+  grid-template-columns: 1fr;
 }
 
 .therapist-card {
-  background-color: white;
-  border-radius: 10px;
+  background-color: var(--white);
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow);
   cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+}
+
+.list-view .therapist-card {
+  flex-direction: row;
 }
 
 .therapist-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
 }
 
 .therapist-img {
-  height: 200px;
+  position: relative;
   overflow: hidden;
+}
+
+.grid-view .therapist-img {
+  height: 220px;
+}
+
+.list-view .therapist-img {
+  height: auto;
+  width: 200px;
+  flex-shrink: 0;
 }
 
 .therapist-img img {
@@ -136,72 +262,141 @@
   object-fit: cover;
 }
 
-.therapist-info {
-  padding: 1.5rem;
+.next-available {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(72, 118, 246, 0.9);
+  color: var(--white);
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  text-align: center;
+  font-weight: 500;
 }
 
-.therapist-info h3 {
+.next-available i {
+  margin-right: 0.3rem;
+}
+
+.therapist-info {
+  padding: 1.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
   margin-bottom: 0.5rem;
-  color: #2c3e50;
+}
+
+.info-header h3 {
+  margin: 0;
+  color: var(--text-dark);
+  font-size: 1.2rem;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.rating i {
+  margin-right: 0.3rem;
+  color: #FFD700;
 }
 
 .specialization {
-  color: #4fb3bf;
-  font-weight: 500;
-  margin-bottom: 1rem;
+  color: var(--primary-color);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
 }
 
-.experience-rating {
+.approach {
+  color: var(--text-light);
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.therapist-details {
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
   margin-bottom: 1rem;
-  color: #666;
 }
 
-.availability {
+.detail-item {
+  font-size: 0.9rem;
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.insurance-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
   margin-bottom: 1.5rem;
 }
 
-.available-day {
+.insurance-tag {
   font-size: 0.8rem;
   padding: 0.3rem 0.6rem;
-  background-color: #e8f4f5;
-  color: #4fb3bf;
+  background-color: var(--light-bg);
+  color: var(--text-dark);
   border-radius: 4px;
 }
 
 .connect-btn {
   width: 100%;
   padding: 0.8rem;
-  background-color: #4fb3bf;
-  color: white;
+  background-color: var(--primary-color);
+  color: var(--white);
   border: none;
-  border-radius: 5px;
-  font-weight: 500;
+  border-radius: 8px;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: var(--transition);
+  margin-top: auto;
 }
 
 .connect-btn:hover {
-  background-color: #3a8a93;
+  background-color: #3A65E0;
+  transform: translateY(-2px);
 }
 
 .no-results {
   grid-column: 1 / -1;
   text-align: center;
   padding: 3rem;
-  color: #777;
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: var(--text-light);
+  background-color: var(--white);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
 }
 
 .no-results i {
   margin-bottom: 1rem;
-  color: #4fb3bf;
+  color: var(--primary-color);
+}
+
+.no-results h3 {
+  color: var(--text-dark);
+  margin-bottom: 0.5rem;
+}
+
+.no-results .reset-btn {
+  margin: 1rem auto 0;
+  padding: 0.8rem 1.5rem;
+  background-color: var(--primary-color);
+  color: var(--white);
+  border-radius: 8px;
 }
 
 /* Modal styles */
@@ -220,10 +415,10 @@
 }
 
 .therapist-modal {
-  background-color: white;
-  border-radius: 10px;
+  background-color: var(--white);
+  border-radius: 16px;
   width: 100%;
-  max-width: 800px;
+  max-width: 900px;
   max-height: 90vh;
   overflow-y: auto;
   position: relative;
@@ -236,132 +431,313 @@
   background: none;
   border: none;
   font-size: 1.5rem;
-  color: #777;
+  color: var(--text-light);
   cursor: pointer;
   z-index: 10;
 }
 
 .modal-content {
-  padding: 2rem;
+  padding: 0;
 }
 
 .modal-header {
   display: flex;
   gap: 2rem;
-  margin-bottom: 2rem;
+  padding: 2rem;
+  border-bottom: 1px solid #E2E8F0;
 }
 
-.modal-header img {
+.therapist-profile-img {
   width: 120px;
   height: 120px;
-  border-radius: 50%;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.therapist-profile-img img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
 }
 
-.modal-header h2 {
-  margin-bottom: 0.5rem;
-  color: #2c3e50;
+.therapist-profile-info {
+  flex: 1;
 }
 
-.modal-body h3 {
-  color: #4fb3bf;
-  margin-top: 1.5rem;
-  margin-bottom: 1rem;
+.therapist-profile-info h2 {
+  margin: 0 0 0.5rem;
+  color: var(--text-dark);
 }
 
-.modal-body p {
-  color: #555;
+.therapist-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  background-color: var(--light-bg);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: var(--text-dark);
+}
+
+.therapist-profile-info .schedule-btn {
+  margin-top: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.5rem;
+  background-color: var(--primary-color);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.therapist-profile-info .schedule-btn:hover {
+  background-color: #3A65E0;
+  transform: translateY(-2px);
+}
+
+.modal-body {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 2rem;
+  padding: 0 2rem 2rem;
+}
+
+.tab-container {
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.tab-nav {
+  display: flex;
+  overflow-x: auto;
+  background-color: var(--light-bg);
+}
+
+.tab-btn {
+  padding: 1rem 1.5rem;
+  background: none;
+  border: none;
+  color: var(--text-dark);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.tab-btn.active {
+  background-color: var(--white);
+  color: var(--primary-color);
+  box-shadow: 0 2px 0 var(--primary-color);
+}
+
+.tab-content {
+  padding: 1.5rem;
+  background-color: var(--white);
+}
+
+.tab-pane {
+  display: none;
+}
+
+.tab-pane.active {
+  display: block;
+}
+
+.tab-pane h3 {
+  font-size: 1.1rem;
+  color: var(--text-dark);
+  margin: 1.5rem 0 0.5rem;
+}
+
+.tab-pane h3:first-child {
+  margin-top: 0;
+}
+
+.tab-pane p {
+  color: var(--text-light);
   line-height: 1.6;
-  margin-bottom: 1.5rem;
+}
+
+.availability-section {
+  background-color: var(--white);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.availability-section h3 {
+  font-size: 1.1rem;
+  color: var(--text-dark);
+  margin: 0 0 1rem;
 }
 
 .availability-calendar {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 0.5rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .calendar-day {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0.8rem;
-  border-radius: 5px;
+  padding: 0.5rem;
+  border-radius: 8px;
   text-align: center;
-}
-
-.calendar-day.available {
-  background-color: #e8f4f5;
-  color: #4fb3bf;
-}
-
-.calendar-day.unavailable {
-  background-color: #f1f1f1;
-  color: #aaa;
+  font-size: 0.9rem;
 }
 
 .calendar-day span {
   margin-bottom: 0.3rem;
-  font-weight: 500;
+  font-weight: 600;
 }
 
-.appointment-buttons {
+.calendar-day.available {
+  background-color: rgba(72, 118, 246, 0.1);
+  color: var(--primary-color);
+}
+
+.calendar-day.unavailable {
+  background-color: var(--light-bg);
+  color: var(--text-light);
+}
+
+.calendar-day i {
+  font-size: 1.1rem;
+}
+
+.calendar-day.available i {
+  color: var(--primary-color);
+}
+
+.calendar-day.unavailable i {
+  color: #CBD5E0;
+}
+
+.next-session {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: var(--light-bg);
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.next-label {
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.next-time {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.cta-buttons {
+  display: flex;
+  flex-direction: column;
   gap: 1rem;
-  margin-top: 1rem;
 }
 
 .primary-btn, .secondary-btn {
-  flex: 1;
-  padding: 0.8rem 1rem;
-  border-radius: 5px;
-  font-weight: 500;
+  width: 100%;
+  padding: 0.8rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  cursor: pointer;
 }
 
 .primary-btn {
-  background-color: #4fb3bf;
-  color: white;
+  background-color: var(--primary-color);
+  color: var(--white);
   border: none;
 }
 
 .secondary-btn {
-  background-color: white;
-  color: #4fb3bf;
-  border: 1px solid #4fb3bf;
+  background-color: transparent;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
 }
 
 .primary-btn:hover {
-  background-color: #3a8a93;
+  background-color: #3A65E0;
+  transform: translateY(-2px);
 }
 
 .secondary-btn:hover {
-  background-color: #f0f9fa;
+  background-color: rgba(72, 118, 246, 0.1);
 }
 
-@media screen and (max-width: 768px) {
-  .filters {
+/* Responsive design */
+@media (max-width: 992px) {
+  .modal-body {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .therapist-banner {
+    padding: 3rem 1.5rem;
+  }
+  
+  .banner-content h1 {
+    font-size: 2.2rem;
+  }
+  
+  .search-top {
     flex-direction: column;
-    gap: 1rem;
+    align-items: stretch;
+  }
+  
+  .search-box {
+    margin-bottom: 1rem;
+  }
+  
+  .filter-toggle {
+    justify-content: space-between;
+  }
+  
+  .grid-view {
+    grid-template-columns: 1fr;
+  }
+  
+  .list-view .therapist-card {
+    flex-direction: column;
+  }
+  
+  .list-view .therapist-img {
+    width: 100%;
+    height: 220px;
   }
   
   .modal-header {
     flex-direction: column;
+    gap: 1.5rem;
     align-items: center;
     text-align: center;
-    gap: 1rem;
   }
   
-  .appointment-buttons {
-    flex-direction: column;
-  }
-  
-  .availability-calendar {
-    grid-template-columns: repeat(4, 1fr);
+  .therapist-badges {
+    justify-content: center;
   }
 } 

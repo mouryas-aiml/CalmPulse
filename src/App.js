@@ -4,44 +4,108 @@ import './App.css';
 
 // Components
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 
 // Pages
 import Home from './pages/Home';
 import MindScan from './pages/MindScan';
 import Therapists from './pages/Therapists';
 import CopingTools from './pages/CopingTools';
-import Journal from './pages/Journal';
+import Insights from './pages/Insights';
 import Profile from './pages/Profile';
 import GetStarted from './pages/GetStarted';
+import Mindmitra from './pages/Mindmitra';
 
-function App() {
-  // Use localStorage to check authentication status (for demo purposes)
-  const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+// Auth Context
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+
+// Protected Route Component
+const ProtectedRoute = ({ children }) => {
+  // First check the context
+  const { isAuthenticated } = useAuth();
+  // Fallback to localStorage (for refresh handling)
+  const isAuthenticatedLocal = localStorage.getItem('isAuthenticated') === 'true';
+  
+  if (!isAuthenticated && !isAuthenticatedLocal) {
+    return <Navigate to="/get-started" />;
+  }
+  
+  return children;
+};
+
+function AppContent() {
+  const { isAuthenticated } = useAuth();
+  // Fallback to localStorage (for refresh handling)
+  const isAuthenticatedLocal = localStorage.getItem('isAuthenticated') === 'true';
+  const userIsAuthenticated = isAuthenticated || isAuthenticatedLocal;
 
   return (
-    <Router>
-      <div className="App">
-        {/* Only show Navbar when not on GetStarted page */}
+    <div className="App">
+      {/* Only show Navbar when not on GetStarted page and authenticated */}
+      <Routes>
+        <Route path="/get-started" element={null} />
+        <Route path="*" element={userIsAuthenticated ? <Navbar /> : null} />
+      </Routes>
+      
+      <div className="page-container">
         <Routes>
-          <Route path="/get-started" element={null} />
-          <Route path="*" element={<Navbar />} />
+          {/* Public routes */}
+          <Route path="/get-started" element={userIsAuthenticated ? <Navigate to="/" /> : <GetStarted />} />
+          
+          {/* Protected routes - redirect to GetStarted if not authenticated */}
+          <Route path="/" element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          } />
+          <Route path="/mindscan" element={
+            <ProtectedRoute>
+              <MindScan />
+            </ProtectedRoute>
+          } />
+          <Route path="/therapists" element={
+            <ProtectedRoute>
+              <Therapists />
+            </ProtectedRoute>
+          } />
+          <Route path="/coping-tools" element={
+            <ProtectedRoute>
+              <CopingTools />
+            </ProtectedRoute>
+          } />
+          <Route path="/mindmitra" element={
+            <ProtectedRoute>
+              <Mindmitra />
+            </ProtectedRoute>
+          } />
+          <Route path="/insights" element={
+            <ProtectedRoute>
+              <Insights />
+            </ProtectedRoute>
+          } />
+          <Route path="/profile" element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          } />
         </Routes>
-        
-        <div className="page-container">
-          <Routes>
-            {/* Public routes */}
-            <Route path="/get-started" element={<GetStarted />} />
-            
-            {/* Protected routes - redirect to GetStarted if not authenticated */}
-            <Route path="/" element={isAuthenticated ? <Home /> : <Navigate to="/get-started" />} />
-            <Route path="/mindscan" element={isAuthenticated ? <MindScan /> : <Navigate to="/get-started" />} />
-            <Route path="/therapists" element={isAuthenticated ? <Therapists /> : <Navigate to="/get-started" />} />
-            <Route path="/coping-tools" element={isAuthenticated ? <CopingTools /> : <Navigate to="/get-started" />} />
-            <Route path="/journal" element={isAuthenticated ? <Journal /> : <Navigate to="/get-started" />} />
-            <Route path="/profile" element={isAuthenticated ? <Profile /> : <Navigate to="/get-started" />} />
-          </Routes>
-        </div>
       </div>
+      
+      {/* Only show Footer when not on GetStarted page and authenticated */}
+      <Routes>
+        <Route path="/get-started" element={null} />
+        <Route path="*" element={userIsAuthenticated ? <Footer /> : null} />
+      </Routes>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
     </Router>
   );
 }

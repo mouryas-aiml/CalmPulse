@@ -1,20 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.css';
+import { useAuth } from '../contexts/AuthContext';
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [userName, setUserName] = useState('');
   const navigate = useNavigate();
+  const { currentUser, logout } = useAuth();
+
+  useEffect(() => {
+    // Get user info from either context or localStorage
+    if (currentUser && currentUser.displayName) {
+      setUserName(currentUser.displayName);
+    } else {
+      const userInfo = JSON.parse(localStorage.getItem('user'));
+      if (userInfo && userInfo.name) {
+        setUserName(userInfo.name);
+      }
+    }
+  }, [currentUser]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
   
-  const handleLogout = () => {
-    // Clear authentication status
-    localStorage.removeItem('isAuthenticated');
-    // Navigate to the get-started page
-    navigate('/get-started');
+  const handleLogout = async () => {
+    try {
+      await logout();
+      // Navigate to the get-started page
+      navigate('/get-started');
+    } catch (error) {
+      console.error("Failed to log out", error);
+    }
   };
 
   return (
@@ -36,7 +54,7 @@ function Navbar() {
           </li>
           <li className="nav-item">
             <Link to="/mindscan" className="nav-link" onClick={() => setIsMenuOpen(false)}>
-              MindScan
+              AI Health Analysis
             </Link>
           </li>
           <li className="nav-item">
@@ -50,13 +68,18 @@ function Navbar() {
             </Link>
           </li>
           <li className="nav-item">
-            <Link to="/journal" className="nav-link" onClick={() => setIsMenuOpen(false)}>
-              Journal
+            <Link to="/mindmitra" className="nav-link" onClick={() => setIsMenuOpen(false)}>
+              Mindmitra
             </Link>
           </li>
           <li className="nav-item">
-            <Link to="/profile" className="nav-link" onClick={() => setIsMenuOpen(false)}>
-              Profile
+            <Link to="/insights" className="nav-link" onClick={() => setIsMenuOpen(false)}>
+              Insights
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link to="/profile" className="nav-link user-profile" onClick={() => setIsMenuOpen(false)}>
+              <i className="fas fa-user-circle"></i> {userName || 'Profile'}
             </Link>
           </li>
           <li className="nav-item">

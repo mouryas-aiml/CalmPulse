@@ -1,67 +1,87 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import './Home.css';
 
 function Home() {
-  const [userName, setUserName] = useState('');
-
-  useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem('user'));
-    if (storedUser && storedUser.name) {
-      setUserName(storedUser.name);
-    }
-  }, []);
-
   return (
-    <div className="home">
-      <div className="hero-container">
-        <h1>{userName ? `Welcome, ${userName}!` : 'Welcome to CalmPulse'}</h1>
-        <p>Your AI-powered mental health companion</p>
-        <div className="hero-btns">
-          <button className="btn primary-btn">Start Assessment</button>
-          <button className="btn secondary-btn">Explore Features</button>
+    <div className="home-container">
+      <section className="hero-section gradient-bg">
+        <div className="hero-content">
+          <h1>Personalized Mental Wellness Journey</h1>
+          <p>CalmPulse helps you understand your mental health patterns and connect with professional support when you need it.</p>
+          <div className="hero-buttons">
+            <Link to="/mindscan" className="primary-btn">Start AI Analysis</Link>
+            <Link to="/therapists" className="secondary-btn">Find Therapists</Link>
+          </div>
         </div>
-      </div>
+        <div className="hero-image">
+          <img src="https://images.unsplash.com/photo-1551024709-8f23befc6f87?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1957&q=80" alt="Mental wellness illustration" />
+        </div>
+      </section>
 
-      <div className="features-section">
-        <h2>How CalmPulse Can Help You</h2>
-        <div className="features-container">
+      <section className="features-section">
+        <h2>Discover Your Path to Wellness</h2>
+        <div className="features-grid">
           <div className="feature-card">
-            <div className="feature-icon"><i className="fas fa-brain"></i></div>
-            <h3>AI Analysis</h3>
-            <p>Analyze your speech or text inputs to understand emotional patterns</p>
+            <div className="feature-icon">
+              <i className="fas fa-brain"></i>
+            </div>
+            <h3>AI Health Analysis</h3>
+            <p>Get insights into your mental health patterns through advanced AI analysis of text and voice inputs.</p>
+            <Link to="/mindscan" className="feature-link">Explore <i className="fas fa-arrow-right"></i></Link>
           </div>
+          
           <div className="feature-card">
-            <div className="feature-icon"><i className="fas fa-user-md"></i></div>
-            <h3>Therapist Connect</h3>
-            <p>Find and connect with mental health professionals</p>
+            <div className="feature-icon">
+              <i className="fas fa-comments"></i>
+            </div>
+            <h3>Mindmitra Chatbot</h3>
+            <p>Chat with our AI assistant for immediate support, coping strategies, and wellness guidance.</p>
+            <Link to="/mindmitra" className="feature-link">Chat Now <i className="fas fa-arrow-right"></i></Link>
           </div>
+          
           <div className="feature-card">
-            <div className="feature-icon"><i className="fas fa-hammer"></i></div>
-            <h3>Coping Strategies</h3>
-            <p>Learn personalized coping tools and techniques</p>
+            <div className="feature-icon">
+              <i className="fas fa-user-md"></i>
+            </div>
+            <h3>Therapist Matching</h3>
+            <p>Find the right therapist based on your needs, preferences, and goals.</p>
+            <Link to="/therapists" className="feature-link">Find Match <i className="fas fa-arrow-right"></i></Link>
           </div>
+          
           <div className="feature-card">
-            <div className="feature-icon"><i className="fas fa-book"></i></div>
-            <h3>Self-Awareness</h3>
-            <p>Track your progress and gain insights into your mental health journey</p>
+            <div className="feature-icon">
+              <i className="fas fa-hand-holding-heart"></i>
+            </div>
+            <h3>Coping Tools</h3>
+            <p>Access evidence-based techniques for managing stress, anxiety, and other challenges.</p>
+            <Link to="/coping-tools" className="feature-link">View Tools <i className="fas fa-arrow-right"></i></Link>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div className="chat-preview">
-        <h2>Start a Conversation</h2>
-        <div className="chat-container">
-          <div className="chat-box">
-            <div className="message bot">
-              <p>{userName ? `Hi ${userName}! How are you feeling today?` : 'Hi there! How are you feeling today?'}</p>
-            </div>
-            <div className="input-area">
-              <input type="text" placeholder="Type your message here..." />
-              <button><i className="fas fa-paper-plane"></i></button>
-            </div>
+      <section className="testimonials-section">
+        <h2>Success Stories</h2>
+        <div className="testimonials-container">
+          <div className="testimonial-card">
+            <div className="quote-icon"><i className="fas fa-quote-left"></i></div>
+            <p className="testimonial-text">"CalmPulse helped me recognize patterns in my anxiety and gave me tools to manage it effectively. The AI analysis was surprisingly accurate."</p>
+            <div className="testimonial-author">- Sarah M.</div>
+          </div>
+          
+          <div className="testimonial-card">
+            <div className="quote-icon"><i className="fas fa-quote-left"></i></div>
+            <p className="testimonial-text">"The therapist matching service connected me with a professional who perfectly understood my needs. I've made significant progress in just a few months."</p>
+            <div className="testimonial-author">- Michael T.</div>
           </div>
         </div>
-      </div>
+      </section>
+
+      <section className="cta-section gradient-bg">
+        <h2>Begin Your Wellness Journey Today</h2>
+        <p>Take the first step towards better mental health with personalized support.</p>
+        <Link to="/mindscan" className="cta-button">Get Started</Link>
+      </section>
     </div>
   );
 }

@@ -4,207 +4,317 @@
   width: 100%;
 }
 
-.hero-container {
-  background: linear-gradient(135deg, #4fb3bf 0%, #3a8a93 100%);
-  background-size: cover;
-  background-position: center;
-  height: 100vh;
+.home-container {
   width: 100%;
+}
+
+/* Hero Section */
+.hero-section {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: #fff;
-  text-align: center;
-  padding: 0 1rem;
+  padding: 5rem 3rem;
+  border-radius: 20px;
+  margin-bottom: 3rem;
+  position: relative;
+  overflow: hidden;
 }
 
-.hero-container h1 {
-  font-size: 4rem;
-  margin-bottom: 1rem;
+.hero-content {
+  flex: 1;
+  z-index: 1;
 }
 
-.hero-container p {
-  font-size: 1.5rem;
+.hero-content h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  color: var(--white);
+  line-height: 1.2;
+}
+
+.hero-content p {
+  font-size: 1.2rem;
   margin-bottom: 2rem;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 600px;
 }
 
-.hero-btns {
+.hero-buttons {
   display: flex;
   gap: 1rem;
 }
 
-.btn {
-  padding: 12px 24px;
-  border: none;
-  border-radius: 4px;
+.primary-btn, .secondary-btn, .cta-button {
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  font-weight: 600;
   font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  transition: var(--transition);
+  display: inline-block;
+  text-align: center;
 }
 
 .primary-btn {
-  background-color: #4fb3bf;
-  color: white;
+  background-color: var(--white);
+  color: var(--primary-color);
+  border: none;
+}
+
+.primary-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
 .secondary-btn {
   background-color: transparent;
-  color: white;
-  border: 1px solid white;
-}
-
-.primary-btn:hover {
-  background-color: #3a8a93;
+  border: 2px solid var(--white);
+  color: var(--white);
 }
 
 .secondary-btn:hover {
   background-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-3px);
 }
 
-/* Features section styles */
+.hero-image {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.hero-image img {
+  max-width: 100%;
+  max-height: 400px;
+  border-radius: 20px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+  object-fit: cover;
+}
+
+/* Features Section */
 .features-section {
-  padding: 5rem 2rem;
+  padding: 3rem 0;
   text-align: center;
-  background-color: #f8f9fa;
 }
 
 .features-section h2 {
-  font-size: 2.5rem;
+  font-size: 2.2rem;
   margin-bottom: 3rem;
-  color: #333;
+  position: relative;
+  display: inline-block;
 }
 
-.features-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+.features-section h2:after {
+  content: '';
+  position: absolute;
+  width: 80px;
+  height: 4px;
+  background: var(--primary-color);
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 2rem;
-  max-width: 1200px;
   margin: 0 auto;
 }
 
 .feature-card {
-  background: white;
-  border-radius: 8px;
+  background-color: var(--white);
+  border-radius: 16px;
   padding: 2rem;
-  width: 250px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .feature-card:hover {
   transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
 }
 
 .feature-icon {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-  color: #4fb3bf;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.feature-icon i {
+  font-size: 1.8rem;
+  color: var(--white);
 }
 
 .feature-card h3 {
   font-size: 1.5rem;
   margin-bottom: 1rem;
-  color: #333;
+  color: var(--secondary-color);
 }
 
 .feature-card p {
-  color: #666;
-  line-height: 1.6;
+  color: var(--text-light);
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
 }
 
-/* Chat preview styles */
-.chat-preview {
-  padding: 5rem 2rem;
-  text-align: center;
-  background-color: #fff;
-}
-
-.chat-preview h2 {
-  font-size: 2.5rem;
-  margin-bottom: 3rem;
-  color: #333;
-}
-
-.chat-container {
-  display: flex;
-  justify-content: center;
-}
-
-.chat-box {
-  background-color: #f8f9fa;
-  border-radius: 12px;
-  width: 100%;
-  max-width: 500px;
-  height: 300px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 1.5rem;
-}
-
-.message {
-  max-width: 80%;
-  padding: 1rem;
-  border-radius: 10px;
-  margin-bottom: 1rem;
-}
-
-.message.bot {
-  background-color: #4fb3bf;
-  color: white;
-  align-self: flex-start;
-  border-bottom-left-radius: 0;
-}
-
-.input-area {
-  display: flex;
+.feature-link {
+  color: var(--primary-color);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
   margin-top: auto;
 }
 
-.input-area input {
-  flex: 1;
-  padding: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 25px;
-  margin-right: 0.5rem;
+.feature-link i {
+  margin-left: 0.5rem;
+  transition: var(--transition);
 }
 
-.input-area button {
-  background-color: #4fb3bf;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
+.feature-link:hover i {
+  transform: translateX(5px);
+}
+
+/* Testimonials Section */
+.testimonials-section {
+  padding: 4rem 0;
+  background-color: var(--light-bg);
+  text-align: center;
+  border-radius: 20px;
+  margin: 3rem 0;
+}
+
+.testimonials-section h2 {
+  font-size: 2.2rem;
+  margin-bottom: 3rem;
+  position: relative;
+  display: inline-block;
+}
+
+.testimonials-section h2:after {
+  content: '';
+  position: absolute;
+  width: 80px;
+  height: 4px;
+  background: var(--primary-color);
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
+.testimonials-container {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
-  cursor: pointer;
+  gap: 2rem;
+  margin: 0 auto;
+  max-width: 1200px;
 }
 
-.input-area button:hover {
-  background-color: #3a8a93;
+.testimonial-card {
+  background-color: var(--white);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: var(--shadow);
+  max-width: 500px;
+  text-align: left;
+  position: relative;
 }
 
-@media screen and (max-width: 768px) {
-  .hero-container h1 {
+.quote-icon {
+  color: var(--primary-color);
+  font-size: 2rem;
+  opacity: 0.2;
+  margin-bottom: 1rem;
+}
+
+.testimonial-text {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  color: var(--text-dark);
+}
+
+.testimonial-author {
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+/* CTA Section */
+.cta-section {
+  text-align: center;
+  padding: 4rem 3rem;
+  border-radius: 20px;
+  margin-bottom: 3rem;
+}
+
+.cta-section h2 {
+  font-size: 2.5rem;
+  color: var(--white);
+  margin-bottom: 1.5rem;
+}
+
+.cta-section p {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 2rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cta-button {
+  background-color: var(--white);
+  color: var(--primary-color);
+  padding: 1.2rem 3rem;
+  font-size: 1.1rem;
+}
+
+.cta-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .hero-section {
+    flex-direction: column;
+    padding: 3rem 2rem;
+  }
+  
+  .hero-content {
+    margin-bottom: 2rem;
+  }
+  
+  .hero-content h1 {
     font-size: 2.5rem;
   }
-
-  .hero-container p {
-    font-size: 1.2rem;
+  
+  .hero-image {
+    justify-content: center;
   }
+}
 
-  .features-container {
-    flex-direction: column;
-    align-items: center;
+@media (max-width: 768px) {
+  .hero-content h1 {
+    font-size: 2rem;
   }
-
-  .feature-card {
-    width: 100%;
-    max-width: 350px;
+  
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .cta-section h2 {
+    font-size: 2rem;
   }
 } 

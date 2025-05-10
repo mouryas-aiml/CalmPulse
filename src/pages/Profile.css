@@ -208,6 +208,88 @@
   color: #555;
 }
 
+/* Preferences Section */
+.preferences-section {
+  margin-top: 1.5rem;
+}
+
+.preferences-section h3 {
+  font-size: 1.3rem;
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+.preference-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.preference-group label {
+  margin-bottom: 0;
+  font-weight: 500;
+}
+
+.preference-toggle {
+  min-width: 150px;
+}
+
+.preference-toggle select {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.preference-value {
+  text-align: right;
+  padding: 0.6rem 1rem;
+  min-width: 150px;
+  background-color: #f9f9f9;
+}
+
+.translation-section {
+  flex-direction: column;
+  align-items: flex-start;
+  padding-bottom: 1rem;
+}
+
+.translation-settings {
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.api-key-input {
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.api-key-input label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.api-key-input input {
+  width: 100%;
+  padding: 0.7rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.key-note {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: #777;
+  font-style: italic;
+}
+
 .form-divider {
   height: 1px;
   background-color: #eee;
@@ -709,4 +791,186 @@ input:checked + .slider:before {
   .profile-nav li {
     flex: 1 0 100%;
   }
+}
+
+/* Message styling */
+.message {
+  padding: 0.8rem 1rem;
+  border-radius: 5px;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.message.success {
+  background-color: rgba(40, 167, 69, 0.1);
+  color: #28a745;
+  border: 1px solid rgba(40, 167, 69, 0.2);
+}
+
+.message.error {
+  background-color: rgba(220, 53, 69, 0.1);
+  color: #dc3545;
+  border: 1px solid rgba(220, 53, 69, 0.2);
+}
+
+/* Password form styling */
+.password-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.change-password-btn {
+  background-color: transparent;
+  color: #4fb3bf;
+  border: none;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: color 0.2s ease;
+}
+
+.change-password-btn:hover {
+  color: #3a8a93;
+  text-decoration: underline;
+}
+
+.password-form {
+  width: 100%;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+  margin-top: 0.5rem;
+}
+
+.form-row {
+  margin-bottom: 1rem;
+}
+
+.form-row label {
+  display: block;
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 0.4rem;
+}
+
+.form-row input {
+  width: 100%;
+  padding: 0.7rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+
+.password-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.success-message {
+  color: #28a745;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  background-color: rgba(40, 167, 69, 0.1);
+  border-radius: 4px;
+}
+
+.error-message {
+  color: #dc3545;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  background-color: rgba(220, 53, 69, 0.1);
+  border-radius: 4px;
+}
+
+/* User profile link styling */
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* New Preferences Container Styling */
+.preferences-container {
+  margin-bottom: 2rem;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.preferences-title {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 1.5rem;
+  display: none; /* Hide the title as per screenshot */
+}
+
+.preference-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.preference-item:last-child {
+  border-bottom: none;
+}
+
+.preference-label {
+  font-size: 0.9rem;
+  color: #4b5563;
+  font-weight: 500;
+}
+
+.preference-status {
+  min-width: 120px;
+}
+
+.preference-status select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  background-color: #f9fafb;
+  font-size: 0.9rem;
+}
+
+.status-value {
+  background-color: #f2f4f6;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  text-align: center;
+  color: #4b5563;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.translation-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.translation-api-key {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.translation-api-key label {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.translation-api-key input {
+  padding: 0.6rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
 } 
