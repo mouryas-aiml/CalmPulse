@@ -266,4 +266,34 @@ button:disabled {
     position: static;
     margin-top: 10px;
   }
+}
+
+.api-key-warning {
+  background-color: #fff3cd;
+  color: #856404;
+  padding: 1rem;
+  margin: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  border: 1px solid #ffeeba;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.message.error {
+  background-color: #fff3cd;
+  border-color: #ffeeba;
+}
+
+.message.error .message-content {
+  color: #856404;
+}
+
+.cooldown-timer {
+  text-align: center;
+  color: #856404;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  background-color: #fff3cd;
+  border-radius: 4px;
+  margin: 0.5rem 1rem;
 } 

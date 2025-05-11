@@ -1,17 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './Mindmitra.css';
-// Remove OpenAI import and use fetch for Perplexity API
-// import OpenAI from 'openai';
+import TranslatedText from '../components/TranslatedText';
+import { useAuth } from '../contexts/AuthContext';
 
 function Mindmitra() {
+  const { currentUser } = useAuth();
+  
   const initialMessage = { 
-    text: "Hello! I'm Mindmitra, your mental wellness companion. How are you feeling today?", 
+    text: "Hello! I'm Mindmitra, your mental wellness companion powered by Google Assistant. How are you feeling today?",
     sender: 'bot' 
   };
   
   // Load messages from localStorage on component mount
   const loadMessages = () => {
-    const savedMessages = localStorage.getItem('mindmitraMessages');
+    const savedMessages = localStorage.getItem(`mindmitraMessages_${currentUser?.uid || 'guest'}`);
     return savedMessages ? JSON.parse(savedMessages) : [initialMessage];
   };
   
@@ -31,14 +33,49 @@ function Mindmitra() {
   const MIN_REQUEST_INTERVAL = 5000; // Minimum 5 seconds between requests
   const MAX_RETRY_DELAY = 60000; // Maximum 1 minute retry delay
   const MAX_RETRIES = 3; // Maximum number of retries
+  const GOOGLE_ASSISTANT_API_ENDPOINT = 'https://dialogflow.googleapis.com/v2/projects/calmpulse/agent/sessions/session-123';
+  const GOOGLE_ASSISTANT_API_KEY = 'AIzaSyAanTnsSU_RdOq6yAvMaIuY6bKzUfElgvI';
   
-  // Perplexity API key
-  const PERPLEXITY_API_KEY = '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';
-
+  // Use local response generation initially while API is being set up
+  const useLocalFallback = false;
+  
   // Save messages to localStorage when they change
   useEffect(() => {
-    localStorage.setItem('mindmitraMessages', JSON.stringify(messages));
-  }, [messages]);
+    localStorage.setItem(`mindmitraMessages_${currentUser?.uid || 'guest'}`, JSON.stringify(messages));
+  }, [messages, currentUser]);
+
+  // Check API key on component mount
+  useEffect(() => {
+    if (!GOOGLE_ASSISTANT_API_KEY || GOOGLE_ASSISTANT_API_KEY.trim() === '') {
+      console.error('Google Assistant API key is not configured');
+      setIsError(true);
+      setMessages(prev => [...prev, { 
+        text: "⚠️ API key is not configured properly. Some features may not work correctly.",
+        sender: 'bot',
+        isError: true
+      }]);
+    } else {
+      console.log('Google Assistant API key is configured:', 
+        GOOGLE_ASSISTANT_API_KEY ? 'Key is set (length: ' + GOOGLE_ASSISTANT_API_KEY.length + ')' : 'No key');
+      
+      // Make a test API call to verify the key works
+      fetch(`https://dialogflow.googleapis.com/v2/projects/calmpulse?key=${GOOGLE_ASSISTANT_API_KEY}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${GOOGLE_ASSISTANT_API_KEY}`,
+        }
+      }).then(response => {
+        if (response.ok) {
+          console.log('Google Assistant API key is valid');
+        } else {
+          console.warn('Google Assistant API key may not be valid. Status:', response.status);
+        }
+      }).catch(error => {
+        console.error('Error testing Google Assistant API key:', error);
+      });
+    }
+  }, []);
 
   // Clear any existing timeouts when component unmounts
   useEffect(() => {
@@ -86,11 +123,10 @@ function Mindmitra() {
   const shouldThrottleRequest = () => {
     const now = Date.now();
     const timeSinceLastRequest = now - lastRequestTime;
-    
     return timeSinceLastRequest < MIN_REQUEST_INTERVAL;
   };
 
-  const handleSendMessage = (e) => {
+  const handleSendMessage = async (e) => {
     e.preventDefault();
     if (input.trim() === '' || isRateLimited || isTyping) return;
     
@@ -101,8 +137,8 @@ function Mindmitra() {
       setCooldownTime(waitTime);
       
       // Show temporary message about throttling
-      setMessages([...messages, { 
-        text: `Please wait ${Math.ceil(waitTime/1000)} seconds between messages to avoid rate limits.`, 
+      setMessages(prev => [...prev, { 
+        text: `Please wait ${Math.ceil(waitTime/1000)} seconds between messages to avoid rate limits.`,
         sender: 'bot', 
         isError: true,
         isTemporary: true
@@ -126,7 +162,7 @@ function Mindmitra() {
         // Update last request time
         setLastRequestTime(Date.now());
         
-        // Call OpenAI API for response
+        // Call API for response
         generateBotResponse(newMessages);
       }, waitTime);
       
@@ -146,152 +182,348 @@ function Mindmitra() {
     // Update last request time
     setLastRequestTime(Date.now());
     
-    // Call OpenAI API for response
-    generateBotResponse(newMessages);
+    // Call API for response
+    await generateBotResponse(newMessages);
   };
 
   const generateBotResponse = async (messageHistory) => {
     try {
-      // Format messages for Perplexity API - limit to last 6 messages to avoid token limits
-      const recentMessages = messageHistory.slice(-6);
-      const formattedMessages = recentMessages.map(msg => ({
-        role: msg.sender === 'user' ? 'user' : 'assistant',
-        content: msg.text
-      }));
+      // Get the latest user message
+      const latestUserMessage = messageHistory.filter(msg => msg.sender === 'user').pop();
       
-      // Add system message to provide context to the AI
-      formattedMessages.unshift({
-        role: 'system',
-        content: `You are Mindmitra, a compassionate AI companion for mental wellness support. 
-                  Provide helpful, empathetic responses to users seeking emotional support or mental health guidance.
-                  Always prioritize user safety. Never give medical advice, diagnose conditions, or suggest medication.
-                  If someone appears to be in crisis, gently suggest they contact mental health professionals.
-                  Keep responses concise (max 3-4 sentences) and supportive.`
-      });
-
-      console.log('Sending request to Perplexity API with messages:', formattedMessages);
-
-      // Make API call to Perplexity
-      const response = await fetch('https://api.perplexity.ai/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${PERPLEXITY_API_KEY}`
-        },
-        body: JSON.stringify({
-          model: 'r1-1776',  // Using a verified supported model
-          messages: formattedMessages,
-          max_tokens: 150,
-          temperature: 0.7,
-        })
-      });
-
-      console.log('Perplexity API response status:', response.status);
-      
-      // Get full response text for debugging
-      const responseText = await response.text();
-      console.log('Raw response:', responseText);
-      
-      if (!response.ok) {
-        throw {
-          status: response.status,
-          message: `Perplexity API error: ${response.statusText}`,
-          responseText
-        };
+      if (!latestUserMessage) {
+        throw new Error('No user message found');
       }
-
-      // Make sure we can parse the response
-      let data;
+      
+      console.log('Processing user message:', latestUserMessage.text);
+      setIsTyping(true); // Set typing indicator
+      
+      if (useLocalFallback) {
+        // Simulate API delay for a more natural experience
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        
+        // Use rule-based response generation
+        let botResponse = generateLocalResponse(latestUserMessage.text, messageHistory);
+        
+        // Add bot's response to messages
+        setMessages(prev => [...prev, { text: botResponse, sender: 'bot' }]);
+        return;
+      }
+      
+      // Otherwise, try to use the Google Assistant API
       try {
-        data = JSON.parse(responseText);
-        if (!data.choices || !data.choices[0] || !data.choices[0].message) {
-          throw new Error('Invalid response structure');
-        }
-      } catch (parseError) {
-        console.error('Error parsing API response:', parseError);
-        throw {
-          status: 'PARSE_ERROR',
-          message: 'Failed to parse API response',
-          responseText
+        // Format the request for Google Assistant API
+        const requestBody = {
+          queryInput: {
+            text: {
+              text: latestUserMessage.text,
+              languageCode: 'en-US'
+            }
+          },
+          queryParams: {
+            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'America/New_York', // Use browser timezone if available
+            sentimentAnalysisRequestConfig: {
+              analyzeQueryTextSentiment: true
+            }
+          }
         };
+        
+        console.log('Sending request to Google Assistant API with key:', 
+          GOOGLE_ASSISTANT_API_KEY ? 'Key is set (length: ' + GOOGLE_ASSISTANT_API_KEY.length + ')' : 'No key');
+        
+        const headers = {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${GOOGLE_ASSISTANT_API_KEY}`,
+          'X-Goog-Api-Key': GOOGLE_ASSISTANT_API_KEY
+        };
+        
+        const apiUrl = `${GOOGLE_ASSISTANT_API_ENDPOINT}:detectIntent?key=${GOOGLE_ASSISTANT_API_KEY}`;
+        console.log('API URL:', apiUrl);
+        
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: headers,
+          body: JSON.stringify(requestBody)
+        });
+        
+        const responseText = await response.text();
+        console.log('Raw API response status:', response.status, response.statusText);
+        
+        if (!response.ok) {
+          console.error('Google Assistant API error:', {
+            status: response.status,
+            statusText: response.statusText,
+            response: responseText
+          });
+          
+          // Try to extract specific error message
+          let errorMessage = `API error: ${response.status} ${response.statusText}`;
+          try {
+            const errorData = JSON.parse(responseText);
+            if (errorData.error && errorData.error.message) {
+              errorMessage = `API error: ${errorData.error.message}`;
+            }
+          } catch (parseError) {
+            console.log('Could not parse error response as JSON');
+          }
+          
+          throw new Error(errorMessage);
+        }
+        
+        let data;
+        try {
+          data = JSON.parse(responseText);
+          console.log('Google Assistant API response:', data);
+        } catch (parseError) {
+          console.error('Error parsing API response:', parseError);
+          throw new Error('Failed to parse API response. The service may be experiencing issues.');
+        }
+        
+        // Extract response from the API
+        const botResponse = data.queryResult?.fulfillmentText || "I'm sorry, I didn't understand that. Could you rephrase?";
+        
+        // Add bot's response to messages
+        setMessages(prev => [...prev, { text: botResponse, sender: 'bot' }]);
+      } catch (apiError) {
+        console.error('Error calling Google Assistant API:', apiError);
+        console.log('Falling back to local response generation');
+        
+        // Show error to user
+        setMessages(prev => [...prev, { 
+          text: `I'm having trouble connecting to my knowledge base (${apiError.message}). Falling back to local responses.`,
+          sender: 'bot',
+          isError: true
+        }]);
+        
+        // Small delay before showing the fallback response
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // Fallback to local response generation
+        const botResponse = generateLocalResponse(latestUserMessage.text, messageHistory);
+        
+        // Add bot's response to messages
+        setMessages(prev => [...prev, { text: botResponse, sender: 'bot' }]);
       }
-      
-      // Get the response text
-      const botResponse = data.choices[0].message.content.trim();
-      
-      // Reset retry count on successful API call
-      setRetryCount(0);
-      setIsRateLimited(false);
-      
-      // Update messages with bot response
-      setMessages([...messageHistory, { text: botResponse, sender: 'bot' }]);
     } catch (error) {
-      console.error('Error calling Perplexity API:', error);
+      console.error('Error generating response:', error);
       setIsError(true);
-      
-      // Handle different error types
-      let errorMsg = 'Sorry, I encountered an issue connecting to my brain. Please try again in a moment.';
-      let isRateLimit = false;
-      let retryDelay = Math.min(MAX_RETRY_DELAY, 5000 * Math.pow(2, retryCount)); // Exponential backoff with max
-      
-      if (error.status === 429 || (error.message && error.message.includes('rate limit'))) {
-        errorMsg = 'I\'m receiving too many messages right now. Please wait a moment before trying again.';
-        isRateLimit = true;
-      } else if (error.status === 401 || error.status === 403) {
-        errorMsg = 'I\'m having trouble with my authorization. Please try again later.';
-      } else if (error.responseText && error.responseText.includes('model')) {
-        errorMsg = 'I\'m currently experiencing issues with my AI model. Our team is working on it.';
-      }
-      
+      const errorMsg = 'I apologize, but I encountered an error processing your message. Please try again.';
       setErrorMessage(errorMsg);
       
-      // Increment retry count and handle repeated errors
-      const newRetryCount = retryCount + 1;
-      setRetryCount(newRetryCount);
-      
-      if (newRetryCount >= MAX_RETRIES) {
-        errorMsg = 'I\'m having persistent trouble connecting. Please try clearing the chat or coming back later.';
-        isRateLimit = false; // Stop auto-retrying after max retries
-      }
-      
-      // Set rate limited state
-      setIsRateLimited(isRateLimit);
-      setCooldownTime(isRateLimit ? retryDelay : 0);
-      
-      // Auto-retry for rate limit errors with exponential backoff
-      if (isRateLimit && newRetryCount <= MAX_RETRIES) {
-        const timeout = setTimeout(() => {
-          setIsRateLimited(false);
-          setCooldownTime(0);
-          setErrorMessage('');
-          
-          // Only attempt auto-retry if we haven't reached max retries
-          if (newRetryCount < MAX_RETRIES) {
-            // Update last request time before retry
-            setLastRequestTime(Date.now());
-            generateBotResponse(messageHistory);
-          }
-        }, retryDelay);
-        
-        setRetryTimeout(timeout);
-        
-        // Update error message to include retry countdown
-        errorMsg = `${errorMsg} Retrying in ${Math.ceil(retryDelay/1000)} seconds...`;
-      }
-      
       // Add error message to chat
-      setMessages(prev => {
-        // Remove any previous error messages that are temporary
-        const filteredMessages = prev.filter(msg => !msg.isTemporary);
-        return [...filteredMessages, { 
-          text: errorMsg, 
-          sender: 'bot', 
-          isError: true 
-        }];
-      });
+      setMessages(prev => [...prev, { 
+        text: errorMsg,
+        sender: 'bot',
+        isError: true
+      }]);
     } finally {
       setIsTyping(false);
     }
+  };
+
+  // Function to generate local responses without API
+  const generateLocalResponse = (userMessage, messageHistory) => {
+    const lowercaseMessage = userMessage.toLowerCase();
+    
+    // Mental health emergency keywords that require immediate attention
+    if (lowercaseMessage.match(/.*(suicide|kill myself|end my life|want to die|don't want to live|harm myself|hurting myself).*/i)) {
+      return "I'm concerned about what you're sharing. If you're having thoughts of harming yourself, please reach out to a crisis helpline immediately. In the US, you can call or text 988 to reach the Suicide & Crisis Lifeline, or text HOME to 741741 to reach the Crisis Text Line. These services are free, confidential, and available 24/7. Your wellbeing matters, and trained professionals are ready to help.";
+    }
+    
+    // Greeting patterns
+    if (lowercaseMessage.match(/^(hi|hello|hey|greetings|good morning|good afternoon|good evening).*/i)) {
+      return "Hello! It's nice to connect with you. How are you feeling today?";
+    }
+    
+    // Ask about feelings or wellness
+    if (lowercaseMessage.match(/.*(how are you|how's it going|how are things).*/i)) {
+      return "I'm here and ready to support you. What's on your mind today?";
+    }
+    
+    // Expressing negative emotions or challenges
+    if (lowercaseMessage.match(/.*(sad|depressed|anxious|worried|stressed|unhappy|tired|exhausted|overwhelmed|lonely|alone|hopeless|helpless|scared|afraid|fearful).*/i)) {
+      const negativeResponses = [
+        "I'm sorry to hear you're feeling that way. It's important to acknowledge these feelings. Would you like to talk more about what might be causing these emotions, or perhaps discuss some coping strategies?",
+        "That sounds really difficult. Would it help to talk about what specifically is causing you to feel this way?",
+        "I appreciate you sharing your feelings with me. Sometimes naming our emotions is the first step toward managing them. What do you think might help you feel a bit better right now?",
+        "I hear that you're struggling. Remember that emotions are temporary, even though they can feel very intense in the moment. Would you like to explore some grounding techniques that might help?",
+        "Thank you for being open about how you're feeling. Many people experience similar emotions. Would you like to discuss some strategies that others have found helpful?"
+      ];
+      return negativeResponses[Math.floor(Math.random() * negativeResponses.length)];
+    }
+    
+    // Expressing positive emotions
+    if (lowercaseMessage.match(/.*(happy|good|great|excellent|wonderful|amazing|joy|excited|positive|better|hopeful|grateful|thankful|blessed|fortunate|content|peaceful|calm).*/i)) {
+      const positiveResponses = [
+        "I'm glad to hear you're feeling positive! What's contributing to those good feelings today?",
+        "That's wonderful to hear! It's important to recognize and celebrate these positive moments. What specifically is making you feel this way?",
+        "I'm happy that you're doing well! These positive feelings are worth savoring. How might you extend or build on this good energy?",
+        "It's great that you're feeling this way! Would you like to reflect on what factors or practices might be supporting your positive state?",
+        "I'm glad you're experiencing these positive emotions. This is a good opportunity to notice what's going well in your life right now."
+      ];
+      return positiveResponses[Math.floor(Math.random() * positiveResponses.length)];
+    }
+    
+    // Asking for help or advice
+    if (lowercaseMessage.match(/.*(help|advice|suggestion|recommend|what should I do|need guidance|lost|confused|uncertain|don't know what to do).*/i)) {
+      const helpResponses = [
+        "I'd be happy to help. While I can't provide medical advice, we can explore some general wellness strategies together. Could you tell me more about the specific situation you're seeking help with?",
+        "I understand you're looking for guidance. Let's break this down - what specific area are you most concerned about right now?",
+        "I'm here to support you. Sometimes talking through a challenge can help clarify your own thoughts. Would you like to share more details about what you're facing?",
+        "It takes courage to ask for help. To offer the most relevant support, it would help me to know more about the particular situation you're dealing with.",
+        "I appreciate you reaching out. Everyone needs support sometimes. Could you share a bit more about what's happening so I can offer more tailored suggestions?"
+      ];
+      return helpResponses[Math.floor(Math.random() * helpResponses.length)];
+    }
+    
+    // Talking about sleep issues
+    if (lowercaseMessage.match(/.*(sleep|insomnia|tired|can't sleep|difficult to sleep|nightmares|wake up|bad dreams|restless|stay awake|early morning|tossing|turning).*/i)) {
+      const sleepResponses = [
+        "Sleep is so important for mental wellness. Some helpful practices include maintaining a regular sleep schedule, creating a restful environment, limiting screen time before bed, and practicing relaxation techniques. Would you like to explore any of these further?",
+        "Sleep difficulties can really affect our mental health. Have you noticed any patterns with your sleep issues? For example, do they happen more on certain days or after particular activities?",
+        "Getting quality sleep can be challenging. One approach is to create a wind-down routine about an hour before bed. This might include dimming lights, avoiding screens, and doing something relaxing like reading or gentle stretching.",
+        "Sleep problems are very common. For many people, managing stress during the day and creating a consistent bedtime routine can help. Would you like to discuss specific strategies that might work for your situation?",
+        "I understand sleep issues can be frustrating. Sometimes tracking your sleep patterns and the factors that might be affecting them can provide useful insights. Have you noticed any connections between your daily habits and your sleep quality?"
+      ];
+      return sleepResponses[Math.floor(Math.random() * sleepResponses.length)];
+    }
+    
+    // Talking about meditation or mindfulness
+    if (lowercaseMessage.match(/.*(meditation|mindfulness|relax|calm|breathing|breath|present|awareness|focus|concentrate|attention|zen|yoga|stillness).*/i)) {
+      const mindfulnessResponses = [
+        "Mindfulness and meditation can be powerful tools for mental wellness. Even a few minutes of deep breathing or present-moment awareness can help reduce stress. Would you like to try a simple mindfulness exercise together?",
+        "Mindfulness practices can help us connect with the present moment rather than worrying about the past or future. A simple way to start is with a brief breathing exercise - would you like me to guide you through one?",
+        "Building a meditation practice can support mental wellbeing in many ways. If you're new to meditation, starting with just 2-3 minutes of focused breathing can be a great way to begin. How does that sound?",
+        "Mindfulness helps us observe our thoughts and feelings without judgment. One accessible practice is to take a few moments to notice five things you can see, four things you can touch, three things you can hear, two things you can smell, and one thing you can taste.",
+        "Bringing mindful awareness to daily activities can be as effective as formal meditation. For instance, you might try eating a meal without distractions, fully focusing on the flavors, textures, and experience of nourishing your body."
+      ];
+      return mindfulnessResponses[Math.floor(Math.random() * mindfulnessResponses.length)];
+    }
+    
+    // Expressing gratitude or thanks
+    if (lowercaseMessage.match(/.*(thank|thanks|appreciate|grateful|gratitude).*/i)) {
+      const gratitudeResponses = [
+        "You're very welcome! I'm here to support you whenever you need someone to talk to.",
+        "I'm glad I could be helpful! Remember that I'm here anytime you want to chat.",
+        "It's my pleasure to be here for you. Feel free to reach out whenever you'd like to talk.",
+        "I appreciate your kind words. I'm always here when you need support or just want to talk things through.",
+        "You're welcome! Taking care of our mental health is important, and I'm glad to be part of your journey."
+      ];
+      return gratitudeResponses[Math.floor(Math.random() * gratitudeResponses.length)];
+    }
+    
+    // Talking about exercise or physical activity
+    if (lowercaseMessage.match(/.*(exercise|workout|run|jog|walk|physical activity|gym|fitness|sport|active|move|movement|yoga|stretch|dance).*/i)) {
+      const exerciseResponses = [
+        "Physical activity is great for mental wellness! Even a short walk can boost your mood through the release of endorphins. What types of movement do you enjoy most?",
+        "Exercise can be a powerful tool for managing stress and improving mood. The best type of activity is one that you enjoy and will continue doing. Have you found forms of movement that feel good to you?",
+        "Moving our bodies can have significant benefits for our mental health. This doesn't have to mean intense workouts - gentle activities like walking, stretching, or dancing count too. What kinds of physical activity feel accessible to you right now?",
+        "Regular physical activity can help reduce anxiety, improve sleep, and boost overall mood. It's most sustainable when it fits naturally into your life. How might you incorporate more movement into your daily routine?",
+        "The mind-body connection is powerful - taking care of our physical health often supports our mental wellbeing too. Even small amounts of movement can make a difference. What's one active thing you might enjoy doing this week?"
+      ];
+      return exerciseResponses[Math.floor(Math.random() * exerciseResponses.length)];
+    }
+    
+    // Asking about the bot
+    if (lowercaseMessage.match(/.*(who are you|what are you|tell me about yourself|are you real|are you human|are you a bot|are you ai|artificial intelligence).*/i)) {
+      const botResponses = [
+        "I'm Mindmitra, a digital wellness companion designed to provide mental health support and a listening ear. While I'm not human or a licensed therapist, I'm here to offer a supportive conversation and helpful resources.",
+        "I'm Mindmitra, an AI assistant focused on mental wellness conversations. I'm not a human therapist, but I'm designed to provide supportive listening, reflection, and general mental health information.",
+        "I'm a digital mental wellness companion called Mindmitra. I use AI to have supportive conversations about emotional wellbeing. While I can't replace human connection or professional help, I aim to be a helpful resource in your mental health journey.",
+        "Hello! I'm Mindmitra, an AI chat companion focused on mental wellness support. I'm here to listen, provide a space for reflection, and share general information about mental health topics.",
+        "I'm Mindmitra, a conversational AI designed to support mental wellbeing. I can discuss various aspects of emotional and mental health, though I'm not a substitute for professional care when that's needed."
+      ];
+      return botResponses[Math.floor(Math.random() * botResponses.length)];
+    }
+    
+    // Talking about relationships or social connections
+    if (lowercaseMessage.match(/.*(relationship|friend|family|partner|spouse|husband|wife|boyfriend|girlfriend|colleague|coworker|social|connection|community|belong|lonely|alone).*/i)) {
+      const relationshipResponses = [
+        "Relationships play such an important role in our mental health. Both supportive connections and challenging relationships can significantly impact how we feel. Would you like to talk more about the specific relationship you're referring to?",
+        "Human connection is fundamental to wellbeing. Sometimes our relationships can be sources of both joy and stress. Could you share more about what's happening in this relationship?",
+        "Our social connections can deeply influence our emotional state. Whether you're building new relationships or navigating existing ones, it can help to reflect on how these interactions affect your mental health. Would you like to explore this further?",
+        "Feeling connected to others is a basic human need. If you're experiencing challenges with relationships, it might help to consider both your needs and boundaries. Would you like to discuss specific relationship concerns?",
+        "Relationships require care and attention, much like our mental health. Finding balance between connecting with others and honoring our own needs can be an ongoing process. What aspects of your relationships feel most relevant to your wellbeing right now?"
+      ];
+      return relationshipResponses[Math.floor(Math.random() * relationshipResponses.length)];
+    }
+    
+    // Talking about work or career stress
+    if (lowercaseMessage.match(/.*(work|job|career|boss|workplace|colleague|coworker|employment|unemployed|fired|laid off|promotion|workload|burnout).*/i)) {
+      const workResponses = [
+        "Work-related stress can significantly impact our mental health. Finding ways to create boundaries and practice self-care can be helpful. Would you like to discuss specific strategies for managing work stress?",
+        "The workplace can bring various challenges that affect our wellbeing. Understanding what aspects of work are most stressful for you could help in developing targeted coping strategies. Would you like to explore this further?",
+        "Career concerns and workplace dynamics can be major sources of stress. Sometimes small changes in how we approach our work can make a difference. What specific aspects of your work situation feel most challenging?",
+        "Balancing work demands with personal wellbeing is an ongoing challenge for many people. Setting boundaries, practicing stress management techniques, and seeking support can all help. Which of these areas would be most helpful to discuss?",
+        "Work-related stress is very common. Some find it helpful to identify what aspects are within their control to change, and develop acceptance strategies for elements that aren't. Would it help to talk through your specific work situation?"
+      ];
+      return workResponses[Math.floor(Math.random() * workResponses.length)];
+    }
+    
+    // Talking about financial stress or concerns
+    if (lowercaseMessage.match(/.*(money|financial|finances|debt|bills|afford|expensive|cost|budget|saving|income|salary|poor|rich|wealth).*/i)) {
+      const financialResponses = [
+        "Financial stress can significantly impact mental health. Many people experience worry or anxiety related to money matters. While I can't provide financial advice, we can discuss coping strategies for the emotional aspect of financial concerns.",
+        "Money worries are a common source of stress. The uncertainty and pressure of financial challenges can affect our mental wellbeing in many ways. Would it help to talk about how financial concerns are impacting you emotionally?",
+        "Financial stress affects many people and can create feelings of worry, shame, or helplessness. These emotions are normal responses to financial pressure. Would you like to discuss ways to cope with the psychological impact of financial concerns?",
+        "I understand that financial issues can create significant stress. While I can't offer financial advice, I can provide a space to discuss the emotional burden of money worries and explore potential resources or coping strategies.",
+        "The connection between financial wellbeing and mental health is strong. Financial stress can affect sleep, relationships, and overall mental state. Would it help to talk about strategies for managing the emotional impact of financial concerns?"
+      ];
+      return financialResponses[Math.floor(Math.random() * financialResponses.length)];
+    }
+    
+    // Talking about self-care or personal growth
+    if (lowercaseMessage.match(/.*(self-care|growth|development|improve|better|goal|change|habit|routine|practice|hobby|interest|passion).*/i)) {
+      const selfCareResponses = [
+        "Self-care is essential for mental wellbeing. It's about intentionally taking care of your physical, emotional, and mental health. What kinds of self-care activities resonate with you?",
+        "Personal growth often happens when we practice self-awareness and intentional action. Small, consistent steps can lead to meaningful change over time. What area of growth feels most important to you right now?",
+        "Building supportive habits and routines can create a foundation for wellbeing. It's often helpful to start small and build gradually. Would you like to discuss specific habits you're interested in developing?",
+        "Exploring interests and passions can bring joy and meaning to life. These activities can also provide a sense of accomplishment and positive distraction during difficult times. What activities tend to engage you fully?",
+        "Self-care looks different for everyone. What nourishes one person might not work for another. The key is finding what genuinely helps you feel restored and supported. Would you like to explore what effective self-care might look like for you?"
+      ];
+      return selfCareResponses[Math.floor(Math.random() * selfCareResponses.length)];
+    }
+    
+    // Talking about physical health concerns
+    if (lowercaseMessage.match(/.*(pain|sick|ill|headache|migraine|chronic|condition|diagnosis|symptom|doctor|medical|medication|treatment|disease|disorder).*/i)) {
+      const healthResponses = [
+        "Physical health and mental health are closely connected. Living with health challenges can affect our emotional wellbeing, and stress can impact physical symptoms. While I can't provide medical advice, I can certainly listen and offer support for the emotional aspects of health concerns.",
+        "I understand that physical health issues can create significant stress and emotional challenges. While I'm not qualified to give medical advice, I'm here to provide a supportive space to discuss how these health concerns are affecting you emotionally.",
+        "Dealing with physical health concerns can be really difficult. The uncertainty, discomfort, or limitations that come with health issues can affect our mental wellbeing. Would it help to talk about how these health challenges are impacting you emotionally?",
+        "I appreciate you sharing about your health concerns. While I can't offer medical guidance, I can certainly listen and acknowledge how challenging health issues can be. Many people find it helpful to discuss both the practical and emotional aspects of managing health conditions.",
+        "Physical health challenges can bring up many emotions - frustration, worry, sadness, or even grief. These feelings are valid parts of the health journey. Would it help to explore some approaches for managing the emotional aspects of physical health concerns?"
+      ];
+      return healthResponses[Math.floor(Math.random() * healthResponses.length)];
+    }
+    
+    // Talking about food, nutrition, or eating habits
+    if (lowercaseMessage.match(/.*(food|eat|eating|diet|nutrition|meal|hungry|appetite|weight|calories|healthy eating).*/i)) {
+      const foodResponses = [
+        "Our relationship with food can be connected to our emotional wellbeing. Finding an approach to eating that supports both physical and mental health is important. What aspects of food or eating would you like to discuss?",
+        "Nutrition can influence mood and energy levels, which affects our overall mental state. At the same time, our emotions can impact our eating patterns. Would it help to explore how food and mood might be connected for you?",
+        "Food is more than just fuel - it can be connected to comfort, culture, pleasure, and self-care. Finding a balanced, flexible approach to eating often supports mental wellbeing. What's your experience with the connection between food and your mental state?",
+        "Our eating patterns and our emotional state often influence each other. Stress can change how we eat, and what we eat can affect our mood and energy. Would you like to discuss strategies for supporting wellbeing through nutrition?",
+        "The relationship between food and mental health is complex and individual. Some people find that certain dietary approaches help support their mental wellness. What patterns have you noticed about how eating affects your mood or vice versa?"
+      ];
+      return foodResponses[Math.floor(Math.random() * foodResponses.length)];
+    }
+    
+    // Default responses for when no pattern matches
+    const defaultResponses = [
+      "Thank you for sharing that with me. Could you tell me more about how that's affecting you?",
+      "I appreciate you opening up. How long have you been feeling this way?",
+      "That's interesting to hear. How does that impact your daily life?",
+      "I'm here to listen and support you. What would be most helpful for you right now?",
+      "Thank you for expressing that. What do you think might be a good next step for you?",
+      "I understand. Sometimes just talking things through can help provide clarity. Is there anything specific you'd like to explore further?",
+      "I'm hearing what you're saying. Would it help to discuss some strategies that others have found useful in similar situations?",
+      "Thank you for trusting me with that. Many people experience similar feelings or situations. What kind of support would feel most helpful right now?",
+      "I appreciate your willingness to share. Sometimes naming our experiences helps us process them. Would you like to tell me more about this?",
+      "I'm here to support you through this. Would it be helpful to explore some resources or strategies related to what you're experiencing?"
+    ];
+    
+    // Select a random default response
+    return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
   };
 
   // Handle key press for Enter to send
@@ -304,62 +536,55 @@ function Mindmitra() {
     }
   };
 
-  // Format time for countdown display
-  const formatCountdown = (ms) => {
-    if (ms <= 0) return '';
-    const seconds = Math.ceil(ms / 1000);
-    return `(${seconds}s)`;
-  };
-
   return (
     <div className="mindmitra-container">
       <div className="chat-header">
-        <h1>Mindmitra</h1>
-        <p>Your AI companion for mental wellness support</p>
-        <button className="clear-chat" onClick={clearChat} title="Clear chat history">
-          <i className="fas fa-trash"></i> New Chat
+        <h1><TranslatedText text="Chat with Mindmitra" /></h1>
+        <button onClick={clearChat} className="clear-chat">
+          <i className="fas fa-trash"></i>
+          <TranslatedText text="Clear Chat" />
         </button>
       </div>
-      
+
       <div className="chat-messages">
         {messages.map((message, index) => (
-          <div key={index} className={`message ${message.sender} ${message.isError ? 'error' : ''} ${message.isTemporary ? 'temporary' : ''}`}>
-            {message.text}
+          <div key={index} className={`message ${message.sender} ${message.isError ? 'error' : ''}`}>
+            <div className="message-content">
+              <TranslatedText text={message.text} />
+            </div>
           </div>
         ))}
         {isTyping && (
           <div className="message bot typing">
-            <span className="dot"></span>
-            <span className="dot"></span>
-            <span className="dot"></span>
-          </div>
-        )}
-        {isRateLimited && !isTyping && (
-          <div className="rate-limit-indicator">
-            <i className="fas fa-clock"></i> Waiting for rate limit to reset... {formatCountdown(cooldownTime)}
+            <div className="typing-indicator">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
           </div>
         )}
         <div ref={messagesEndRef} />
       </div>
-      
-      <form className="chat-input" onSubmit={handleSendMessage}>
+
+      <form onSubmit={handleSendMessage} className="chat-input">
         <input
           type="text"
           value={input}
           onChange={handleInputChange}
           onKeyPress={handleKeyPress}
-          placeholder={isRateLimited ? `Please wait ${formatCountdown(cooldownTime)}` : "Type your message here..."}
-          disabled={isTyping || isRateLimited}
+          placeholder="Type your message..."
+          disabled={isRateLimited}
         />
-        <button type="submit" disabled={isTyping || input.trim() === '' || isRateLimited}>
+        <button type="submit" disabled={isRateLimited || !input.trim()}>
           <i className="fas fa-paper-plane"></i>
         </button>
       </form>
-      
-      <div className="chat-disclaimer">
-        <p>Note: Mindmitra is an AI assistant and not a replacement for professional mental health care. 
-        If you're experiencing a crisis, please contact emergency services or a mental health professional.</p>
-      </div>
+
+      {isRateLimited && (
+        <div className="cooldown-timer">
+          <TranslatedText text={`Please wait ${Math.ceil(cooldownTime/1000)} seconds...`} />
+        </div>
+      )}
     </div>
   );
 }

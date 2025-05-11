@@ -116,7 +116,7 @@ function GetStarted() {
     }
     
     try {
-      if (isLogin) {
+    if (isLogin) {
         // Firebase login
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
@@ -180,7 +180,7 @@ function GetStarted() {
           break;
         case 'auth/user-not-found':
         case 'auth/wrong-password':
-          setErrorMessage('Invalid email or password');
+        setErrorMessage('Invalid email or password');
           break;
         case 'auth/network-request-failed':
           setErrorMessage('Network error. Please check your connection');

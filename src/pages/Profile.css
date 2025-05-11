@@ -506,6 +506,13 @@
   text-align: center;
 }
 
+.no-activity {
+  text-align: center;
+  padding: 2rem;
+  color: #777;
+  font-style: italic;
+}
+
 .activity-content {
   flex: 1;
 }
@@ -973,4 +980,68 @@ input:checked + .slider:before {
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 0.9rem;
+}
+
+.profile-logout {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 5px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: auto;
+  margin-top: 1rem;
+  transition: background-color 0.2s;
+}
+
+.profile-logout:hover {
+  background-color: #c0392b;
+}
+
+.profile-logout i {
+  font-size: 1rem;
+}
+
+.api-key-field {
+  width: 100%;
+  padding: 0.7rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.translation-section {
+  margin-top: 1rem;
+}
+
+.save-api-key {
+  background-color: #4fb3bf;
+  color: white;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 4px;
+  margin-top: 0.8rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.2s;
+}
+
+.save-api-key:hover {
+  background-color: #3a8a93;
+}
+
+.key-note {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: #666;
+  font-style: italic;
 } 

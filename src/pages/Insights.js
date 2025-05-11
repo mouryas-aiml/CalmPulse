@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Insights.css';
+import TranslatedText from '../components/TranslatedText';
 
 // Sample insights data for demonstration
 const insightsData = [
@@ -150,9 +151,9 @@ function Insights() {
   return (
     <div className="journal">
       <div className="journal-container">
-        <h1>Mental Wellness Insights</h1>
+        <h1><TranslatedText text="Mental Wellness Insights" /></h1>
         <p className="journal-description">
-          Stay informed about the latest trends, research, and breakthroughs in mental health and wellness.
+          <TranslatedText text="Stay informed about the latest trends, research, and breakthroughs in mental health and wellness." />
         </p>
 
         {!selectedInsight ? (
@@ -161,7 +162,7 @@ function Insights() {
               <div className="search-bar">
                 <input
                   type="text"
-                  placeholder="Search insights..."
+                  placeholder={<TranslatedText text="Search insights..." />}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
@@ -175,7 +176,7 @@ function Insights() {
                     className={`category-btn ${selectedCategory === category ? 'active' : ''}`}
                     onClick={() => setSelectedCategory(category)}
                   >
-                    {category}
+                    <TranslatedText text={category} />
                   </button>
                 ))}
               </div>
@@ -185,22 +186,24 @@ function Insights() {
               {filteredInsights.length > 0 ? (
                 filteredInsights.map(insight => (
                   <div className="insight-card" key={insight.id} onClick={() => viewInsight(insight)}>
-                    <h3 className="insight-title">{insight.title}</h3>
+                    <h3 className="insight-title"><TranslatedText text={insight.title} /></h3>
                     <div className="insight-meta">
-                      <span className="insight-category">{insight.category}</span>
+                      <span className="insight-category"><TranslatedText text={insight.category} /></span>
                       <span className="insight-date">{insight.publishDate}</span>
                     </div>
                     <p className="insight-preview">
-                      {insight.content.length > 150 
-                        ? `${insight.content.substring(0, 150)}...` 
-                        : insight.content}
+                      <TranslatedText text={
+                        insight.content.length > 150 
+                          ? `${insight.content.substring(0, 150)}...` 
+                          : insight.content
+                      } />
                     </p>
                   </div>
                 ))
               ) : (
                 <div className="no-insights">
                   <i className="fas fa-lightbulb fa-3x"></i>
-                  <p>No insights found matching your criteria. Try adjusting your search or filters.</p>
+                  <p><TranslatedText text="No insights found matching your criteria. Try adjusting your search or filters." /></p>
                 </div>
               )}
             </div>
@@ -208,21 +211,21 @@ function Insights() {
         ) : (
           <div className="insight-detail">
             <button className="back-btn" onClick={backToList}>
-              <i className="fas fa-arrow-left"></i> Back to Insights
+              <i className="fas fa-arrow-left"></i> <TranslatedText text="Back to Insights" />
             </button>
             
             <div className="insight-detail-header">
-              <h2>{selectedInsight.title}</h2>
+              <h2><TranslatedText text={selectedInsight.title} /></h2>
               <div className="insight-meta">
-                <span className="insight-category">{selectedInsight.category}</span>
-                <span className="insight-source">{selectedInsight.source}</span>
+                <span className="insight-category"><TranslatedText text={selectedInsight.category} /></span>
+                <span className="insight-source"><TranslatedText text={selectedInsight.source} /></span>
                 <span className="insight-date">{selectedInsight.publishDate}</span>
               </div>
             </div>
             
             <div className="insight-content">
               {selectedInsight.detailedContent.split('\n\n').map((paragraph, index) => (
-                <p key={index}>{paragraph}</p>
+                <p key={index}><TranslatedText text={paragraph} /></p>
               ))}
             </div>
           </div>

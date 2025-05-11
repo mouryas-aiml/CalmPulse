@@ -18,6 +18,16 @@ import Mindmitra from './pages/Mindmitra';
 
 // Auth Context
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+// Language Context
+import { LanguageProvider } from './contexts/LanguageContext';
+// Video Analysis Context
+import { VideoAnalysisProvider } from './contexts/VideoAnalysisContext';
+// Audio Analysis Context
+import { AudioAnalysisProvider } from './contexts/AudioAnalysisContext';
+// Text Analysis Context
+import { TextAnalysisProvider } from './contexts/TextAnalysisContext';
+// Mindmitra Context
+import { MindmitraProvider } from './contexts/MindmitraContext';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -40,19 +50,19 @@ function AppContent() {
   const userIsAuthenticated = isAuthenticated || isAuthenticatedLocal;
 
   return (
-    <div className="App">
+      <div className="App">
       {/* Only show Navbar when not on GetStarted page and authenticated */}
-      <Routes>
-        <Route path="/get-started" element={null} />
-        <Route path="*" element={userIsAuthenticated ? <Navbar /> : null} />
-      </Routes>
-      
-      <div className="page-container">
         <Routes>
-          {/* Public routes */}
+          <Route path="/get-started" element={null} />
+        <Route path="*" element={userIsAuthenticated ? <Navbar /> : null} />
+        </Routes>
+        
+        <div className="page-container">
+          <Routes>
+            {/* Public routes */}
           <Route path="/get-started" element={userIsAuthenticated ? <Navigate to="/" /> : <GetStarted />} />
-          
-          {/* Protected routes - redirect to GetStarted if not authenticated */}
+            
+            {/* Protected routes - redirect to GetStarted if not authenticated */}
           <Route path="/" element={
             <ProtectedRoute>
               <Home />
@@ -88,7 +98,7 @@ function AppContent() {
               <Profile />
             </ProtectedRoute>
           } />
-        </Routes>
+          </Routes>
       </div>
       
       {/* Only show Footer when not on GetStarted page and authenticated */}
@@ -104,7 +114,17 @@ function App() {
   return (
     <Router>
       <AuthProvider>
-        <AppContent />
+        <LanguageProvider>
+          <MindmitraProvider>
+            <VideoAnalysisProvider>
+              <AudioAnalysisProvider>
+                <TextAnalysisProvider>
+                  <AppContent />
+                </TextAnalysisProvider>
+              </AudioAnalysisProvider>
+            </VideoAnalysisProvider>
+          </MindmitraProvider>
+        </LanguageProvider>
       </AuthProvider>
     </Router>
   );

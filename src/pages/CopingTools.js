@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './CopingTools.css';
+import TranslatedText from '../components/TranslatedText';
 
 const copingTools = [
   {
@@ -8,7 +9,7 @@ const copingTools = [
     category: "Stress Relief",
     duration: "5 min",
     difficulty: "Easy",
-    image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+    image: "https://images.unsplash.com/photo-1545205597-3d9d02c29597?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
     description: "Guided breathing exercises to help reduce stress and anxiety.",
     steps: [
       "Find a comfortable seated position",
@@ -24,7 +25,7 @@ const copingTools = [
     category: "Stress Relief",
     duration: "15 min",
     difficulty: "Medium",
-    image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+    image: "https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
     description: "Systematically tense and relax muscle groups to reduce physical tension.",
     steps: [
       "Lie down in a comfortable position",
@@ -40,7 +41,7 @@ const copingTools = [
     category: "Mindfulness",
     duration: "10 min",
     difficulty: "Easy",
-    image: "https://images.unsplash.com/photo-1517842645767-c639042777db?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+    image: "https://images.unsplash.com/photo-1517842264405-72bb906a1936?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
     description: "Write down your thoughts and feelings to gain clarity and emotional release.",
     steps: [
       "Find a quiet space with minimal distractions",
@@ -56,7 +57,7 @@ const copingTools = [
     category: "Relaxation",
     duration: "10 min",
     difficulty: "Easy",
-    image: "https://images.unsplash.com/photo-1519452575417-564c1401ecc0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+    image: "https://images.unsplash.com/photo-1528716321680-815a8cdb8cbe?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
     description: "Use your imagination to visualize a peaceful scene and relax your mind.",
     steps: [
       "Find a comfortable position and close your eyes",
@@ -72,7 +73,7 @@ const copingTools = [
     category: "Positive Psychology",
     duration: "5 min",
     difficulty: "Easy",
-    image: "https://images.unsplash.com/photo-1490131784822-b4626a8ec96a?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+    image: "https://images.unsplash.com/photo-1602525962574-3bc829fbed3c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
     description: "Cultivate appreciation for the positive aspects of your life.",
     steps: [
       "Take a few moments to reflect on your day",
@@ -88,7 +89,7 @@ const copingTools = [
     category: "Anxiety Management",
     duration: "3 min",
     difficulty: "Easy",
-    image: "https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+    image: "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
     description: "Use your senses to ground yourself in the present moment during anxiety or panic.",
     steps: [
       "Acknowledge 5 things you can see",
@@ -104,7 +105,7 @@ const copingTools = [
     category: "Games",
     duration: "5-10 min",
     difficulty: "Easy",
-    image: "https://images.unsplash.com/photo-1493957988430-a5f2e15f39a3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+    image: "https://images.unsplash.com/photo-1596464716127-f2a82984de30?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
     description: "Improve focus and reduce anxiety with this memory matching game that engages your brain's executive functions.",
     steps: [
       "Start with a 4x4 grid of face-down cards",
@@ -121,7 +122,7 @@ const copingTools = [
     category: "Games",
     duration: "10-15 min",
     difficulty: "Medium",
-    image: "https://images.unsplash.com/photo-1559825481-12a05cc00344?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+    image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
     description: "Engage in puzzle solving as a form of focused meditation to reduce rumination and promote flow state.",
     steps: [
       "Choose a puzzle that interests you (sudoku, crossword, jigsaw)",
@@ -138,7 +139,7 @@ const copingTools = [
     category: "Games",
     duration: "8 min",
     difficulty: "Easy",
-    image: "https://images.unsplash.com/photo-1540479859555-17af45c78602?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+    image: "https://images.unsplash.com/photo-1576328077645-2dd68934d2b7?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
     description: "Sort different emotions into categories to build emotional intelligence and recognition skills.",
     steps: [
       "Cards with different emotions will appear on screen",
@@ -155,7 +156,7 @@ const copingTools = [
     category: "Games",
     duration: "5 min",
     difficulty: "Easy",
-    image: "https://images.unsplash.com/photo-1597685204565-1a07e8f0a8e2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+    image: "https://images.unsplash.com/photo-1517021897933-0e0319cfbc28?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
     description: "A visual breathing exercise where you inflate and deflate virtual balloons in time with your breath.",
     steps: [
       "Follow the animated balloon on screen",
@@ -172,7 +173,7 @@ const copingTools = [
     category: "Games",
     duration: "7 min",
     difficulty: "Medium",
-    image: "https://images.unsplash.com/photo-1495121864268-11244629c6b1?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+    image: "https://images.unsplash.com/photo-1515023115689-589c33041d3c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
     description: "Pop negative thought bubbles and strengthen positive thinking patterns with this interactive game.",
     steps: [
       "Negative and positive thoughts appear as bubbles",
@@ -189,7 +190,7 @@ const copingTools = [
     category: "Games",
     duration: "15-20 min",
     difficulty: "Easy",
-    image: "https://images.unsplash.com/photo-1617503752587-97d2103a96ea?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+    image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
     description: "Digital coloring book with intricate patterns to promote mindfulness and creative expression.",
     steps: [
       "Choose from various templates (mandalas, nature scenes, etc.)",
@@ -206,32 +207,36 @@ function CopingTools() {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTool, setSelectedTool] = useState(null);
-  const [activeTab, setActiveTab] = useState('all');
+  const [activeTab, setActiveTab] = useState('tools');
   
-  // New state variables for routine creation
+  // Exercise state
+  const [isExerciseActive, setIsExerciseActive] = useState(false);
+  const [currentStep, setCurrentStep] = useState(0);
+  const [timer, setTimer] = useState(0);
+  const [isTimerActive, setIsTimerActive] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const timerRef = useRef(null);
+  
+  // Feedback and completion state
+  const [showCompletionModal, setShowCompletionModal] = useState(false);
+  const [mood, setMood] = useState(null);
+  const [effectiveness, setEffectiveness] = useState(null);
+  const [notes, setNotes] = useState('');
+  const [exerciseHistory, setExerciseHistory] = useState([]);
+  
+  // Routine state
   const [showRoutineModal, setShowRoutineModal] = useState(false);
   const [routineName, setRoutineName] = useState('');
   const [routineDescription, setRoutineDescription] = useState('');
   const [selectedRoutineTools, setSelectedRoutineTools] = useState([]);
   const [savedRoutines, setSavedRoutines] = useState([]);
   
-  // New state variables for routine player
-  const [activeRoutine, setActiveRoutine] = useState(null);
+  // Routine exercise state
+  const [currentRoutine, setCurrentRoutine] = useState(null);
+  const [currentRoutineTools, setCurrentRoutineTools] = useState([]);
   const [currentRoutineToolIndex, setCurrentRoutineToolIndex] = useState(0);
-  const [routineProgress, setRoutineProgress] = useState(0);
   const [isRoutineActive, setIsRoutineActive] = useState(false);
-  const [routineComplete, setRoutineComplete] = useState(false);
-  
-  // New state variables for exercise functionality
-  const [isExerciseActive, setIsExerciseActive] = useState(false);
-  const [currentStep, setCurrentStep] = useState(0);
-  const [timer, setTimer] = useState(0);
-  const [isTimerActive, setIsTimerActive] = useState(false);
-  const timerRef = useRef(null);
-  const [progress, setProgress] = useState(0);
-  const [exerciseComplete, setExerciseComplete] = useState(false);
-  const [exerciseHistory, setExerciseHistory] = useState([]);
-  const [feedback, setFeedback] = useState('');
+  const [showRoutineCompletionModal, setShowRoutineCompletionModal] = useState(false);
 
   const categories = ['All', 'Stress Relief', 'Mindfulness', 'Relaxation', 'Positive Psychology', 'Anxiety Management', 'Games'];
 
@@ -284,7 +289,6 @@ function CopingTools() {
     setIsExerciseActive(true);
     setCurrentStep(0);
     setProgress(0);
-    setExerciseComplete(false);
     
     // For timed exercises, set up the timer
     if (selectedTool.duration.includes('min')) {
@@ -341,57 +345,82 @@ function CopingTools() {
   };
 
   const completeExercise = () => {
-    setExerciseComplete(true);
-    pauseTimer();
-    
-    // Add to exercise history
-    const today = new Date().toISOString().split('T')[0];
-    setExerciseHistory(prev => [
-      ...prev,
-      {
-        date: today,
-        name: selectedTool.title,
-        category: selectedTool.category,
-        duration: selectedTool.duration
+    if (isRoutineActive) {
+      // For routines, handle next tool navigation
+      if (currentRoutineToolIndex < currentRoutineTools.length - 1) {
+        nextRoutineTool();
+      } else {
+        // Routine is complete
+        completeRoutine();
       }
-    ]);
-    
-    // Save to localStorage
-    const existingHistory = JSON.parse(localStorage.getItem('exerciseHistory') || '[]');
-    localStorage.setItem('exerciseHistory', JSON.stringify([
-      ...existingHistory,
-      {
-        date: today,
-        name: selectedTool.title,
-        category: selectedTool.category,
-        duration: selectedTool.duration
-      }
-    ]));
+    } else {
+      // For single exercises, show completion modal
+      setShowCompletionModal(true);
+      pauseTimer();
+      
+      // Add to exercise history
+      const today = new Date().toISOString().split('T')[0];
+      setExerciseHistory(prev => [
+        ...prev,
+        {
+          date: today,
+          name: selectedTool.title,
+          category: selectedTool.category,
+          duration: selectedTool.duration
+        }
+      ]);
+      
+      // Save to localStorage
+      const existingHistory = JSON.parse(localStorage.getItem('exerciseHistory') || '[]');
+      localStorage.setItem('exerciseHistory', JSON.stringify([
+        ...existingHistory,
+        {
+          date: today,
+          name: selectedTool.title,
+          category: selectedTool.category,
+          duration: selectedTool.duration
+        }
+      ]));
+    }
   };
 
   const exitExercise = () => {
     setIsExerciseActive(false);
     pauseTimer();
-    setFeedback('');
+    setNotes('');
   };
 
   const saveFeedback = () => {
-    if (feedback.trim() !== '') {
-      // Save feedback to localStorage
-      const existingFeedback = JSON.parse(localStorage.getItem('exerciseFeedback') || '{}');
-      existingFeedback[selectedTool.id] = [
-        ...(existingFeedback[selectedTool.id] || []),
-        {
-          date: new Date().toISOString(),
-          text: feedback
-        }
-      ];
-      localStorage.setItem('exerciseFeedback', JSON.stringify(existingFeedback));
-      
-      // Reset feedback field
-      setFeedback('');
-      // Show confirmation message
-      alert('Your feedback has been saved. This will help personalize your experience in the future.');
+    // Save the feedback data (mood, effectiveness, notes)
+    const feedbackData = {
+      mood,
+      effectiveness,
+      notes,
+      date: new Date().toISOString(),
+      toolId: selectedTool.id
+    };
+    
+    // Save to localStorage
+    const existingFeedback = JSON.parse(localStorage.getItem('exerciseFeedback') || '{}');
+    existingFeedback[selectedTool.id] = [
+      ...(existingFeedback[selectedTool.id] || []),
+      feedbackData
+    ];
+    localStorage.setItem('exerciseFeedback', JSON.stringify(existingFeedback));
+    
+    // Reset feedback state
+    setMood(null);
+    setEffectiveness(null);
+    setNotes('');
+    
+    // Close the appropriate modal
+    if (showCompletionModal) {
+      setShowCompletionModal(false);
+      setIsExerciseActive(false);
+    } else if (showRoutineCompletionModal) {
+      setShowRoutineCompletionModal(false);
+      setIsRoutineActive(false);
+      setCurrentRoutine(null);
     }
   };
 
@@ -509,11 +538,10 @@ function CopingTools() {
 
   // Start a routine session
   const startRoutine = (routine) => {
-    setActiveRoutine(routine);
+    setCurrentRoutine(routine);
+    setCurrentRoutineTools(routine.tools);
     setCurrentRoutineToolIndex(0);
-    setRoutineProgress(0);
     setIsRoutineActive(true);
-    setRoutineComplete(false);
     setSelectedTool(routine.tools[0]);
     setCurrentStep(0);
     setProgress(0);
@@ -524,14 +552,12 @@ function CopingTools() {
     // Save current exercise as completed
     completeExercise();
     
-    if (currentRoutineToolIndex < activeRoutine.tools.length - 1) {
+    if (currentRoutineToolIndex < currentRoutineTools.length - 1) {
       const nextIndex = currentRoutineToolIndex + 1;
       setCurrentRoutineToolIndex(nextIndex);
-      setSelectedTool(activeRoutine.tools[nextIndex]);
+      setSelectedTool(currentRoutineTools[nextIndex]);
       setCurrentStep(0);
       setProgress(0);
-      setExerciseComplete(false);
-      setRoutineProgress((nextIndex / activeRoutine.tools.length) * 100);
     } else {
       // Routine is complete
       completeRoutine();
@@ -543,17 +569,15 @@ function CopingTools() {
     if (currentRoutineToolIndex > 0) {
       const prevIndex = currentRoutineToolIndex - 1;
       setCurrentRoutineToolIndex(prevIndex);
-      setSelectedTool(activeRoutine.tools[prevIndex]);
+      setSelectedTool(currentRoutineTools[prevIndex]);
       setCurrentStep(0);
       setProgress(0);
-      setExerciseComplete(false);
-      setRoutineProgress((prevIndex / activeRoutine.tools.length) * 100);
     }
   };
 
   // Complete the entire routine
   const completeRoutine = () => {
-    setRoutineComplete(true);
+    setShowRoutineCompletionModal(true);
     pauseTimer();
     
     // Add the entire routine to history
@@ -561,9 +585,9 @@ function CopingTools() {
     const historyEntry = {
       date: today,
       type: 'routine',
-      name: activeRoutine.name,
-      toolCount: activeRoutine.tools.length,
-      duration: activeRoutine.totalDuration
+      name: currentRoutine.name,
+      toolCount: currentRoutine.tools.length,
+      duration: currentRoutine.totalDuration
     };
     
     // Save to localStorage
@@ -579,598 +603,637 @@ function CopingTools() {
   // Exit the routine player
   const exitRoutine = () => {
     setIsRoutineActive(false);
-    setActiveRoutine(null);
+    setCurrentRoutine(null);
     setSelectedTool(null);
     setIsExerciseActive(false);
     pauseTimer();
   };
 
   return (
-    <div className="coping-tools">
       <div className="coping-tools-container">
-        <h1>Coping Tools & Wellness Routines</h1>
-        <p className="coping-tools-description">
-          Explore evidence-based techniques, exercises, and interactive games to manage stress, anxiety, 
-          and improve your overall mental well-being.
-        </p>
+      <div className="coping-tools-header">
+        <h1><TranslatedText text="Coping Tools" as="span" /></h1>
+        <p><TranslatedText text="Discover evidence-based techniques to help manage stress, anxiety, and improve your well-being." /></p>
+      </div>
+
+      <div className="tools-controls">
+        <div className="categories-filter">
+          <span className="filter-label"><TranslatedText text="Filter by:" /></span>
+          <button 
+            className={selectedCategory === 'All' ? 'active-category' : ''} 
+            onClick={() => handleCategoryChange('All')}
+          >
+            <TranslatedText text="All" />
+          </button>
+          <button 
+            className={selectedCategory === 'Stress Relief' ? 'active-category' : ''} 
+            onClick={() => handleCategoryChange('Stress Relief')}
+          >
+            <TranslatedText text="Stress Relief" />
+          </button>
+          <button 
+            className={selectedCategory === 'Mindfulness' ? 'active-category' : ''} 
+            onClick={() => handleCategoryChange('Mindfulness')}
+          >
+            <TranslatedText text="Mindfulness" />
+          </button>
+          <button 
+            className={selectedCategory === 'Anxiety Management' ? 'active-category' : ''} 
+            onClick={() => handleCategoryChange('Anxiety Management')}
+          >
+            <TranslatedText text="Anxiety Management" />
+          </button>
+          <button 
+            className={selectedCategory === 'Positive Psychology' ? 'active-category' : ''} 
+            onClick={() => handleCategoryChange('Positive Psychology')}
+          >
+            <TranslatedText text="Positive Psychology" />
+          </button>
+          <button 
+            className={selectedCategory === 'Games' ? 'active-category' : ''} 
+            onClick={() => handleCategoryChange('Games')}
+          >
+            <TranslatedText text="Games" />
+          </button>
+        </div>
 
         <div className="tools-tabs">
           <button 
-            className={`tab-button ${activeTab === 'all' ? 'active' : ''}`}
-            onClick={() => handleTabChange('all')}
+            className={activeTab === 'tools' ? 'active-tab' : ''} 
+            onClick={() => handleTabChange('tools')}
           >
-            All Tools
+            <i className="fas fa-tools"></i>
+            <TranslatedText text="Coping Tools" />
           </button>
           <button 
-            className={`tab-button ${activeTab === 'traditional' ? 'active' : ''}`}
-            onClick={() => handleTabChange('traditional')}
+            className={activeTab === 'routines' ? 'active-tab' : ''} 
+            onClick={() => handleTabChange('routines')}
           >
-            Traditional Techniques
-          </button>
-          <button 
-            className={`tab-button ${activeTab === 'games' ? 'active' : ''}`}
-            onClick={() => handleTabChange('games')}
-          >
-            Interactive Games
+            <i className="fas fa-calendar-alt"></i>
+            <TranslatedText text="My Routines" />
           </button>
         </div>
 
-        <div className="tools-filter-section">
-          <div className="search-box">
+        {activeTab === 'tools' && (
+          <div className="search-bar">
+            <i className="fas fa-search"></i>
             <input
               type="text"
-              placeholder="Search for tools..."
+              placeholder="Search tools..." 
               value={searchTerm}
               onChange={handleSearchChange}
             />
-            <i className="fas fa-search"></i>
           </div>
-
-          <div className="categories">
-            {categories
-              .filter(category => 
-                activeTab === 'all' || 
-                (activeTab === 'games' && (category === 'All' || category === 'Games')) ||
-                (activeTab === 'traditional' && category !== 'Games')
-              )
-              .map(category => (
-                <button
-                  key={category}
-                  className={`category-btn ${selectedCategory === category ? 'active' : ''}`}
-                  onClick={() => handleCategoryChange(category)}
-                >
-                  {category}
-                </button>
-              ))
-            }
-          </div>
+        )}
         </div>
 
+      {activeTab === 'tools' ? (
         <div className="tools-grid">
           {filteredTools.length > 0 ? (
             filteredTools.map(tool => (
-              <div className="tool-card" key={tool.id} onClick={() => openToolDetails(tool)}>
+              <div key={tool.id} className="tool-card" onClick={() => openToolDetails(tool)}>
                 <div className="tool-image">
                   <img src={tool.image} alt={tool.title} />
-                  <div className="tool-category">{tool.category}</div>
-                  {tool.gameType && <div className="game-type">{tool.gameType}</div>}
+                  <span className="tool-duration">{tool.duration}</span>
                 </div>
                 <div className="tool-info">
-                  <h3>{tool.title}</h3>
-                  <p className="tool-description">{tool.description}</p>
+                  <h3><TranslatedText text={tool.title} /></h3>
                   <div className="tool-meta">
-                    <span><i className="fas fa-clock"></i> {tool.duration}</span>
-                    <span><i className="fas fa-star"></i> {tool.difficulty}</span>
+                    <span className="tool-category"><TranslatedText text={tool.category} /></span>
+                    <span className="tool-difficulty"><TranslatedText text={tool.difficulty} /></span>
                   </div>
-                  <button className="start-btn">
-                    {tool.category === 'Games' ? 'Play Now' : 'Start Exercise'}
-                  </button>
+                  <p><TranslatedText text={tool.description} /></p>
                 </div>
               </div>
             ))
           ) : (
-            <div className="no-tools">
-              <i className="fas fa-search fa-3x"></i>
-              <p>No tools match your current search. Try a different search term or category.</p>
+            <div className="no-tools-message">
+              <i className="fas fa-search"></i>
+              <p><TranslatedText text="No tools found matching your search." /></p>
             </div>
           )}
         </div>
-
-        {selectedTool && !isExerciseActive && (
-          <div className="tool-modal-overlay" onClick={closeToolDetails}>
-            <div className="tool-modal" onClick={e => e.stopPropagation()}>
-              <button className="close-modal" onClick={closeToolDetails}>
-                <i className="fas fa-times"></i>
+      ) : (
+        <div className="routines-section">
+          <div className="routines-header">
+            <h2><TranslatedText text="My Wellness Routines" as="span" /></h2>
+            <button className="create-routine-btn" onClick={openRoutineModal}>
+              <i className="fas fa-plus"></i>
+              <TranslatedText text="Create New Routine" />
               </button>
-              
-              <div className="tool-modal-content">
-                <div className="tool-modal-header">
-                  <img src={selectedTool.image} alt={selectedTool.title} />
-                  <div className="tool-header-info">
-                    <div className="tool-category-badge">{selectedTool.category}</div>
-                    {selectedTool.gameType && <div className="game-type-badge">{selectedTool.gameType}</div>}
-                    <h2>{selectedTool.title}</h2>
-                    <p>{selectedTool.description}</p>
-                    <div className="tool-meta">
-                      <span><i className="fas fa-clock"></i> {selectedTool.duration}</span>
-                      <span><i className="fas fa-star"></i> {selectedTool.difficulty}</span>
+          </div>
+
+          {savedRoutines.length > 0 ? (
+            <div className="routines-grid">
+              {savedRoutines.map(routine => (
+                <div key={routine.id} className="routine-card">
+                  <div className="routine-header">
+                    <h3><TranslatedText text={routine.name} /></h3>
+                    <div className="routine-actions">
+                      <button 
+                        className="start-routine-btn" 
+                        onClick={() => startRoutine(routine)}
+                      >
+                        <i className="fas fa-play"></i>
+                        <TranslatedText text="Start" />
+                      </button>
+                      <button 
+                        className="delete-routine-btn" 
+                        onClick={() => deleteRoutine(routine.id)}
+                      >
+                        <i className="fas fa-trash"></i>
+                      </button>
                     </div>
                   </div>
+                  <div className="routine-meta">
+                    <span className="routine-tools-count">
+                      <i className="fas fa-clipboard-list"></i>
+                      <TranslatedText text={`${routine.tools.length} tools`} />
+                    </span>
+                    <span className="routine-duration">
+                      <i className="fas fa-clock"></i>
+                      <TranslatedText text={calculateTotalDuration(routine.tools)} />
+                    </span>
+                  </div>
+                  <div className="routine-tools-preview">
+                    {routine.tools.slice(0, 3).map((tool, index) => (
+                      <div key={index} className="routine-tool-item">
+                        <span className="tool-number">{index + 1}</span>
+                        <span className="tool-name"><TranslatedText text={tool.title} /></span>
+                        <span className="tool-time">{tool.duration}</span>
+                      </div>
+                    ))}
+                    {routine.tools.length > 3 && (
+                      <div className="more-tools">
+                        <TranslatedText text={`+${routine.tools.length - 3} more`} />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="no-routines-message">
+              <i className="fas fa-calendar-plus"></i>
+              <p><TranslatedText text="You haven't created any routines yet. Create a routine by combining multiple coping tools to practice regularly." /></p>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Tool Details Modal */}
+      {selectedTool && (
+        <div className="tool-details-modal">
+          <div className="modal-content">
+            <button className="close-modal-btn" onClick={closeToolDetails}>
+              <i className="fas fa-times"></i>
+            </button>
+            
+            <div className="tool-details-header">
+              <h2><TranslatedText text={selectedTool.title} /></h2>
+              <div className="tool-details-meta">
+                <span className="tool-category"><TranslatedText text={selectedTool.category} /></span>
+                <span className="tool-duration">{selectedTool.duration}</span>
+                <span className="tool-difficulty"><TranslatedText text={selectedTool.difficulty} /></span>
+              </div>
+            </div>
+            
+            <div className="tool-details-image">
+              <img src={selectedTool.image} alt={selectedTool.title} />
+            </div>
+            
+            <div className="tool-details-description">
+              <p><TranslatedText text={selectedTool.description} /></p>
                 </div>
                 
                 <div className="tool-steps">
-                  <h3>{selectedTool.category === 'Games' ? 'How to Play' : 'How to Practice'}</h3>
+              <h3><TranslatedText text="How to Practice" as="span" /></h3>
                   <ol>
                     {selectedTool.steps.map((step, index) => (
-                      <li key={index}>{step}</li>
+                  <li key={index}><TranslatedText text={step} /></li>
                     ))}
                   </ol>
                 </div>
                 
                 <div className="tool-actions">
-                  <button 
-                    className="begin-practice-btn"
-                    onClick={startExercise}
-                  >
-                    <i className={selectedTool.category === 'Games' ? "fas fa-gamepad" : "fas fa-play-circle"}></i> 
-                    {selectedTool.category === 'Games' ? 'Start Game' : 'Begin Practice'}
-                  </button>
-                  <button className="save-favorites-btn">
-                    <i className="fas fa-heart"></i> Add to Favorites
-                  </button>
-                </div>
-              </div>
+              <button className="start-tool-btn" onClick={startExercise}>
+                <i className="fas fa-play"></i>
+                <TranslatedText text="Start Now" />
+              </button>
+              <button className="add-to-routine-btn" onClick={openRoutineModal}>
+                <i className="fas fa-plus"></i>
+                <TranslatedText text="Add to Routine" />
+              </button>
             </div>
           </div>
-        )}
+        </div>
+      )}
 
-        {/* New Exercise Player Modal */}
-        {selectedTool && isExerciseActive && (
-          <div className="exercise-overlay">
-            <div className="exercise-modal">
-              <div className="exercise-header">
-                <h2>{selectedTool.title}</h2>
-                <button className="exit-exercise" onClick={exitExercise}>
-                  <i className="fas fa-times"></i>
+      {/* Exercise Practice Modal */}
+      {isExerciseActive && (
+        <div className="exercise-modal">
+          <div className="modal-content">
+            <div className="exercise-header">
+              <h2><TranslatedText text={selectedTool.title} /></h2>
+              {isTimerActive ? (
+                <button className="pause-timer-btn" onClick={pauseTimer}>
+                  <i className="fas fa-pause"></i>
                 </button>
-              </div>
-
-              {!exerciseComplete ? (
-                <>
-                  <div className="exercise-progress">
-                    <div className="progress-bar">
-                      <div 
-                        className="progress-fill" 
-                        style={{ width: `${progress}%` }}
-                      ></div>
-                    </div>
-                    <div className="step-indicator">
-                      Step {currentStep + 1} of {selectedTool.steps.length}
-                    </div>
-                  </div>
-
-                  <div className="exercise-content">
-                    {selectedTool.category === "Stress Relief" && selectedTool.title === "Breathing Exercises" ? (
-                      <div className="breathing-exercise">
-                        <div className="breathing-animation" style={{ 
-                          animation: isTimerActive ? 'breathe 10s infinite' : 'none'
-                        }}>
-                          <div className="circle"></div>
-                          <div className="instruction">
-                            {currentStep === 0 && "Get comfortable"}
-                            {currentStep === 1 && "Inhale..."}
-                            {currentStep === 2 && "Hold..."}
-                            {currentStep === 3 && "Exhale..."}
-                            {currentStep === 4 && "Continue breathing"}
-                          </div>
-                        </div>
-                      </div>
-                    ) : selectedTool.category === "Stress Relief" && selectedTool.title === "Progressive Muscle Relaxation" ? (
-                      <div className="pmr-exercise">
-                        <div className="body-diagram">
-                          <img 
-                            src="https://images.unsplash.com/photo-1559038465-ec9253ec89aa?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" 
-                            alt="Body diagram" 
-                          />
-                          <div className={`highlight ${
-                            currentStep === 0 ? "none" :
-                            currentStep === 1 ? "breathing" :
-                            currentStep === 2 ? "feet" :
-                            currentStep === 3 ? "body" :
-                            currentStep === 4 ? "full-body" : ""
-                          }`}></div>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="standard-exercise">
-                        <p className="step-instruction">{selectedTool.steps[currentStep]}</p>
-                      </div>
-                    )}
-
-                    {isTimerActive && (
-                      <div className="exercise-timer">
-                        <div className="timer-display">{formatTime(timer)}</div>
-                        <button 
-                          className="timer-control"
-                          onClick={isTimerActive ? pauseTimer : resumeTimer}
-                        >
-                          <i className={`fas ${isTimerActive ? 'fa-pause' : 'fa-play'}`}></i>
-                        </button>
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="exercise-navigation">
-                    <button 
-                      className="prev-step"
-                      disabled={currentStep === 0}
-                      onClick={prevStep}
-                    >
-                      <i className="fas fa-chevron-left"></i> Previous
-                    </button>
-                    <button 
-                      className="next-step"
-                      onClick={nextStep}
-                    >
-                      {currentStep < selectedTool.steps.length - 1 ? 'Next' : 'Complete'} <i className="fas fa-chevron-right"></i>
-                    </button>
-                  </div>
-                </>
               ) : (
-                <div className="exercise-complete">
-                  <div className="complete-icon">
-                    <i className="fas fa-check-circle"></i>
-                  </div>
-                  <h3>Practice Complete!</h3>
-                  <p>Great job completing your {selectedTool.title} practice. How do you feel now?</p>
-                  
-                  <div className="mood-rating">
-                    <button className="mood-btn"><i className="far fa-frown"></i></button>
-                    <button className="mood-btn"><i className="far fa-meh"></i></button>
-                    <button className="mood-btn"><i className="far fa-smile"></i></button>
-                    <button className="mood-btn"><i className="far fa-grin-stars"></i></button>
-                  </div>
-                  
-                  <div className="feedback-section">
-                    <textarea
-                      placeholder="Share any thoughts or reflections about your practice (optional)"
-                      value={feedback}
-                      onChange={(e) => setFeedback(e.target.value)}
-                    ></textarea>
-                    <button className="save-feedback" onClick={saveFeedback}>
-                      Save Reflection
-                    </button>
-                  </div>
-                  
-                  <div className="complete-actions">
-                    <button className="restart-btn" onClick={startExercise}>
-                      <i className="fas fa-redo"></i> Practice Again
-                    </button>
-                    <button className="finish-btn" onClick={exitExercise}>
-                      <i className="fas fa-check"></i> Finish
-                    </button>
-                  </div>
-                </div>
+                <button className="resume-timer-btn" onClick={resumeTimer}>
+                  <i className="fas fa-play"></i>
+                </button>
               )}
             </div>
+            
+            <div className="exercise-timer">
+              <div className="timer-circle">
+                <div className="timer-display">{formatTime(timer)}</div>
+              </div>
+            </div>
+            
+            <div className="exercise-step">
+              <h3><TranslatedText text={`Step ${currentStep + 1} of ${selectedTool.steps.length}`} /></h3>
+              <p className="current-instruction"><TranslatedText text={selectedTool.steps[currentStep]} /></p>
+              
+              <div className="step-navigation">
+                <button 
+                  className="prev-step-btn" 
+                  onClick={prevStep} 
+                  disabled={currentStep === 0}
+                >
+                  <i className="fas fa-chevron-left"></i>
+                  <TranslatedText text="Previous" />
+                </button>
+                
+                {currentStep < selectedTool.steps.length - 1 ? (
+                  <button className="next-step-btn" onClick={nextStep}>
+                    <TranslatedText text="Next" />
+                    <i className="fas fa-chevron-right"></i>
+                  </button>
+                ) : (
+                  <button className="complete-btn" onClick={completeExercise}>
+                    <TranslatedText text="Complete" />
+                    <i className="fas fa-check"></i>
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
-        )}
-
-        {/* Personal Routine Section */}
-        <div className="personal-routine">
-          <h2>Create Your Personal Wellness Routine</h2>
-          <p>Combine different tools and games into a daily or weekly routine tailored to your needs.</p>
-          <button className="create-routine-btn" onClick={openRoutineModal}>
-            <i className="fas fa-plus-circle"></i> Create Routine
+          
+          <button className="exit-exercise-btn" onClick={exitExercise}>
+            <i className="fas fa-times"></i>
+            <TranslatedText text="Exit" />
           </button>
         </div>
+      )}
 
-        {/* Saved Routines Section */}
-        {savedRoutines.length > 0 && (
-          <div className="saved-routines">
-            <h2>Your Saved Routines</h2>
-            <div className="routines-grid">
-              {savedRoutines.map(routine => (
-                <div className="routine-card" key={routine.id}>
-                  <div className="routine-header">
-                    <h3>{routine.name}</h3>
-                    <button 
-                      className="delete-routine" 
-                      onClick={() => deleteRoutine(routine.id)}
-                    >
-                      <i className="fas fa-trash"></i>
-                    </button>
-                  </div>
-                  <p className="routine-description">{routine.description}</p>
-                  <div className="routine-meta">
-                    <span><i className="fas fa-clock"></i> {routine.totalDuration}</span>
-                    <span><i className="fas fa-list"></i> {routine.tools.length} activities</span>
-                  </div>
-                  <div className="routine-tools">
-                    {routine.tools.slice(0, 3).map(tool => (
-                      <div className="routine-tool-item" key={tool.id}>
-                        <div className="tool-icon"><i className="fas fa-check-circle"></i></div>
-                        <span>{tool.title}</span>
-                      </div>
-                    ))}
-                    {routine.tools.length > 3 && (
-                      <div className="more-tools">+{routine.tools.length - 3} more</div>
-                    )}
-                  </div>
-                  <button className="start-routine-btn" onClick={() => startRoutine(routine)}>
-                    <i className="fas fa-play"></i> Start Routine
+      {/* Completion Modal */}
+      {showCompletionModal && (
+        <div className="completion-modal">
+          <div className="modal-content">
+            <div className="completion-header">
+              <h2><TranslatedText text="Exercise Complete!" as="span" /></h2>
+              <div className="completion-icon">
+                <i className="fas fa-check-circle"></i>
+              </div>
+            </div>
+            
+            <div className="completion-message">
+              <p><TranslatedText text="Great job completing this exercise! How do you feel now?" /></p>
+            </div>
+            
+            <div className="feedback-section">
+              <div className="mood-feedback">
+                <h3><TranslatedText text="How are you feeling?" as="span" /></h3>
+                <div className="mood-options">
+                  <button 
+                    className={`mood-btn ${mood === 'better' ? 'selected' : ''}`}
+                    onClick={() => setMood('better')}
+                  >
+                    <i className="fas fa-smile"></i>
+                    <TranslatedText text="Better" />
+                  </button>
+                  <button 
+                    className={`mood-btn ${mood === 'same' ? 'selected' : ''}`}
+                    onClick={() => setMood('same')}
+                  >
+                    <i className="fas fa-meh"></i>
+                    <TranslatedText text="The Same" />
+                  </button>
+                  <button 
+                    className={`mood-btn ${mood === 'worse' ? 'selected' : ''}`}
+                    onClick={() => setMood('worse')}
+                  >
+                    <i className="fas fa-frown"></i>
+                    <TranslatedText text="Worse" />
                   </button>
                 </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Recent Activity Section */}
-        {exerciseHistory.length > 0 && (
-          <div className="recent-activity">
-            <h2>Your Recent Activity</h2>
-            <div className="activity-list">
-              {exerciseHistory.slice(Math.max(exerciseHistory.length - 5, 0)).reverse().map((activity, index) => (
-                <div className="activity-item" key={index}>
-                  <div className="activity-icon">
-                    <i className={`fas ${
-                      activity.category === 'Stress Relief' ? 'fa-wind' :
-                      activity.category === 'Mindfulness' ? 'fa-brain' :
-                      activity.category === 'Relaxation' ? 'fa-couch' :
-                      activity.category === 'Positive Psychology' ? 'fa-smile' :
-                      activity.category === 'Anxiety Management' ? 'fa-shield-alt' :
-                      'fa-gamepad'
-                    }`}></i>
-                  </div>
-                  <div className="activity-details">
-                    <h4>{activity.name}</h4>
-                    <div className="activity-meta">
-                      <span>{activity.date}</span>
-                      <span>{activity.duration}</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Routine Player Modal */}
-        {isRoutineActive && activeRoutine && (
-          <div className="exercise-overlay">
-            <div className="exercise-modal routine-player">
-              <div className="exercise-header">
-                <h2>
-                  {activeRoutine.name} - {currentRoutineToolIndex + 1}/{activeRoutine.tools.length}: {selectedTool?.title}
-                </h2>
-                <button className="exit-exercise" onClick={exitRoutine}>
-                  <i className="fas fa-times"></i>
-                </button>
               </div>
-
-              <div className="routine-progress">
-                <div className="progress-bar">
-                  <div 
-                    className="progress-fill" 
-                    style={{ width: `${routineProgress}%` }}
-                  ></div>
-                </div>
-                <div className="step-indicator">
-                  Tool {currentRoutineToolIndex + 1} of {activeRoutine.tools.length}
+              
+              <div className="effectiveness-feedback">
+                <h3><TranslatedText text="Was this helpful?" as="span" /></h3>
+                <div className="rating-scale">
+                  {[1, 2, 3, 4, 5].map(value => (
+                    <button 
+                      key={value}
+                      className={`rating-btn ${effectiveness === value ? 'selected' : ''}`}
+                      onClick={() => setEffectiveness(value)}
+                    >
+                      {value}
+                    </button>
+                  ))}
                 </div>
               </div>
+              
+              <div className="notes-feedback">
+                <label htmlFor="feedback-notes">
+                  <TranslatedText text="Any notes for next time? (optional)" />
+                </label>
+                <textarea 
+                  id="feedback-notes"
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  placeholder="What worked well? What could be improved?"
+                ></textarea>
+              </div>
+            </div>
+            
+            <div className="feedback-actions">
+              <button className="save-feedback-btn" onClick={saveFeedback}>
+                <TranslatedText text="Save & Continue" />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
-              {routineComplete ? (
-                <div className="exercise-complete">
-                  <div className="complete-icon">
-                    <i className="fas fa-trophy"></i>
-                  </div>
-                  <h3>Routine Complete!</h3>
-                  <p>Congratulations on completing your {activeRoutine.name} routine!</p>
-                  
-                  <div className="mood-rating">
-                    <button className="mood-btn"><i className="far fa-frown"></i></button>
-                    <button className="mood-btn"><i className="far fa-meh"></i></button>
-                    <button className="mood-btn"><i className="far fa-smile"></i></button>
-                    <button className="mood-btn"><i className="far fa-grin-stars"></i></button>
-                  </div>
-                  
-                  <div className="feedback-section">
-                    <textarea
-                      placeholder="Share any thoughts or reflections about your routine (optional)"
-                      value={feedback}
-                      onChange={(e) => setFeedback(e.target.value)}
-                    ></textarea>
-                    <button className="save-feedback" onClick={saveFeedback}>
-                      Save Reflection
-                    </button>
-                  </div>
-                  
-                  <div className="complete-actions">
-                    <button className="restart-btn" onClick={() => startRoutine(activeRoutine)}>
-                      <i className="fas fa-redo"></i> Restart Routine
-                    </button>
-                    <button className="finish-btn" onClick={exitRoutine}>
-                      <i className="fas fa-check"></i> Finish
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <>
-                  {/* Tool information */}
-                  <div className="routine-tool-info">
-                    <div className="tool-card-preview">
-                      <img src={selectedTool?.image} alt={selectedTool?.title} />
-                      <div className="tool-description">{selectedTool?.description}</div>
-                    </div>
-                  </div>
-
-                  {/* Exercise player components */}
-                  {!exerciseComplete ? (
-                    <>
-                      <div className="exercise-progress">
-                        <div className="progress-bar">
-                          <div 
-                            className="progress-fill" 
-                            style={{ width: `${progress}%` }}
-                          ></div>
-                        </div>
-                        <div className="step-indicator">
-                          Step {currentStep + 1} of {selectedTool?.steps.length}
+      {/* Create/Edit Routine Modal */}
+      {showRoutineModal && (
+        <div className="routine-modal">
+          <div className="modal-content">
+            <button className="close-modal-btn" onClick={closeRoutineModal}>
+              <i className="fas fa-times"></i>
+            </button>
+            
+            <div className="routine-modal-header">
+              <h2><TranslatedText text="Create Wellness Routine" as="span" /></h2>
+            </div>
+            
+            <div className="routine-form">
+              <div className="routine-name-input">
+                <label htmlFor="routine-name">
+                  <TranslatedText text="Routine Name:" />
+                </label>
+                <input 
+                  type="text" 
+                  id="routine-name" 
+                  value={routineName}
+                  onChange={(e) => setRoutineName(e.target.value)}
+                  placeholder="My Morning Routine"
+                />
+              </div>
+              
+              <div className="routine-tools-selection">
+                <h3><TranslatedText text="Select Tools for Your Routine:" as="span" /></h3>
+                <div className="tools-selection-list">
+                  {copingTools.map(tool => (
+                    <div 
+                      key={tool.id} 
+                      className={`tool-selection-item ${selectedRoutineTools.some(t => t.id === tool.id) ? 'selected' : ''}`}
+                      onClick={() => toggleToolInRoutine(tool)}
+                    >
+                      <div className="tool-selection-info">
+                        <h4><TranslatedText text={tool.title} /></h4>
+                        <div className="tool-meta">
+                          <span className="tool-duration">{tool.duration}</span>
+                          <span className="tool-category"><TranslatedText text={tool.category} /></span>
                         </div>
                       </div>
-
-                      <div className="exercise-content">
-                        {/* Existing exercise content components */}
-                        <div className="standard-exercise">
-                          <p className="step-instruction">{selectedTool?.steps[currentStep]}</p>
-                        </div>
-
-                        {isTimerActive && (
-                          <div className="exercise-timer">
-                            <div className="timer-display">{formatTime(timer)}</div>
-                            <button 
-                              className="timer-control"
-                              onClick={isTimerActive ? pauseTimer : resumeTimer}
-                            >
-                              <i className={`fas ${isTimerActive ? 'fa-pause' : 'fa-play'}`}></i>
-                            </button>
-                          </div>
+                      <div className="tool-selection-checkbox">
+                        {selectedRoutineTools.some(t => t.id === tool.id) && (
+                          <i className="fas fa-check"></i>
                         )}
                       </div>
-
-                      <div className="exercise-navigation">
-                        <button 
-                          className="prev-step"
-                          disabled={currentStep === 0}
-                          onClick={prevStep}
-                        >
-                          <i className="fas fa-chevron-left"></i> Previous
-                        </button>
-                        <button 
-                          className="next-step"
-                          onClick={nextStep}
-                        >
-                          {currentStep < selectedTool?.steps.length - 1 ? 'Next' : 'Complete'} <i className="fas fa-chevron-right"></i>
-                        </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              <div className="routine-summary">
+                <h3><TranslatedText text="Routine Summary:" as="span" /></h3>
+                <div className="routine-selected-tools">
+                  {selectedRoutineTools.length > 0 ? (
+                    <>
+                      <div className="selected-tools-list">
+                        {selectedRoutineTools.map((tool, index) => (
+                          <div key={index} className="selected-tool-item">
+                            <span className="tool-number">{index + 1}</span>
+                            <span className="tool-name"><TranslatedText text={tool.title} /></span>
+                            <span className="tool-duration">{tool.duration}</span>
+                            <button 
+                              className="remove-tool-btn"
+                              onClick={() => toggleToolInRoutine(tool)}
+                            >
+                              <i className="fas fa-times"></i>
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="routine-total-duration">
+                        <TranslatedText text="Total Duration:" /> 
+                        <span>{calculateTotalDuration(selectedRoutineTools)}</span>
                       </div>
                     </>
                   ) : (
-                    <>
-                      {/* Tool complete screen */}
-                      <div className="tool-complete">
-                        <div className="complete-icon">
-                          <i className="fas fa-check-circle"></i>
-                        </div>
-                        <h3>{selectedTool?.title} Completed!</h3>
-                        <p>Great job! Ready to move to the next activity?</p>
-                        
-                        <div className="routine-navigation">
-                          <button 
-                            className="prev-routine-btn"
-                            disabled={currentRoutineToolIndex === 0}
-                            onClick={prevRoutineTool}
-                          >
-                            <i className="fas fa-arrow-left"></i> Previous Tool
-                          </button>
-                          <button 
-                            className="next-routine-btn"
-                            onClick={nextRoutineTool}
-                          >
-                            {currentRoutineToolIndex < activeRoutine.tools.length - 1 ? 'Next Tool' : 'Complete Routine'} <i className="fas fa-arrow-right"></i>
-                          </button>
-                        </div>
-                      </div>
-                    </>
+                    <div className="no-tools-selected">
+                      <p><TranslatedText text="No tools selected yet. Choose at least one tool from the list above." /></p>
+                    </div>
                   )}
-                </>
-              )}
+                </div>
+              </div>
+            </div>
+            
+            <div className="routine-actions">
+              <button 
+                className="save-routine-btn" 
+                onClick={saveRoutine}
+                disabled={routineName.trim() === '' || selectedRoutineTools.length === 0}
+              >
+                <i className="fas fa-save"></i>
+                <TranslatedText text="Save Routine" />
+              </button>
+              </div>
             </div>
           </div>
         )}
 
-        {/* Routine Creation Modal */}
-        {showRoutineModal && (
-          <div className="modal-overlay" onClick={closeRoutineModal}>
-            <div className="routine-modal" onClick={e => e.stopPropagation()}>
-              <div className="modal-header">
-                <h2>Create Your Wellness Routine</h2>
-                <button className="close-modal" onClick={closeRoutineModal}>
-                  <i className="fas fa-times"></i>
+      {/* Routine Exercise Modal */}
+      {isRoutineActive && (
+        <div className="routine-exercise-modal">
+          <div className="modal-content">
+            <div className="routine-exercise-header">
+              <h2><TranslatedText text={`${currentRoutine.name}: ${currentRoutineTools[currentRoutineToolIndex].title}`} /></h2>
+              {isTimerActive ? (
+                <button className="pause-timer-btn" onClick={pauseTimer}>
+                  <i className="fas fa-pause"></i>
                 </button>
+              ) : (
+                <button className="resume-timer-btn" onClick={resumeTimer}>
+                  <i className="fas fa-play"></i>
+                </button>
+              )}
+            </div>
+            
+            <div className="routine-progress">
+              <div className="progress-indicator">
+                <TranslatedText text={`Tool ${currentRoutineToolIndex + 1} of ${currentRoutineTools.length}`} />
               </div>
+              <div className="progress-bar">
+                <div 
+                  className="progress-fill"
+                  style={{width: `${((currentRoutineToolIndex) / currentRoutineTools.length) * 100}%`}}
+                ></div>
+              </div>
+            </div>
+            
+            <div className="exercise-timer">
+              <div className="timer-circle">
+                <div className="timer-display">{formatTime(timer)}</div>
+              </div>
+            </div>
+            
+            <div className="exercise-step">
+              <h3><TranslatedText text={`Step ${currentStep + 1} of ${currentRoutineTools[currentRoutineToolIndex].steps.length}`} /></h3>
+              <p className="current-instruction">
+                <TranslatedText text={currentRoutineTools[currentRoutineToolIndex].steps[currentStep]} />
+              </p>
               
-              <div className="routine-form">
-                <div className="form-group">
-                  <label>Routine Name</label>
-                  <input 
-                    type="text" 
-                    placeholder="E.g., Morning Calm, Anxiety Relief..."
-                    value={routineName}
-                    onChange={(e) => setRoutineName(e.target.value)}
-                  />
-                </div>
+              <div className="step-navigation">
+                <button 
+                  className="prev-step-btn" 
+                  onClick={prevStep} 
+                  disabled={currentStep === 0}
+                >
+                  <i className="fas fa-chevron-left"></i>
+                  <TranslatedText text="Previous" />
+                </button>
                 
-                <div className="form-group">
-                  <label>Description (Optional)</label>
-                  <textarea 
-                    placeholder="What's the purpose of this routine? When will you use it?"
-                    value={routineDescription}
-                    onChange={(e) => setRoutineDescription(e.target.value)}
-                  ></textarea>
-                </div>
-                
-                <div className="form-group">
-                  <label>Select Activities</label>
-                  <p className="selection-hint">Choose tools and exercises to include in your routine:</p>
-                  
-                  <div className="tools-selection">
-                    {copingTools.map(tool => (
-                      <div 
-                        key={tool.id} 
-                        className={`tool-selection-item ${selectedRoutineTools.some(t => t.id === tool.id) ? 'selected' : ''}`}
-                        onClick={() => toggleToolInRoutine(tool)}
-                      >
-                        <div className="selection-checkbox">
-                          {selectedRoutineTools.some(t => t.id === tool.id) && <i className="fas fa-check"></i>}
-                        </div>
-                        <div className="selection-details">
-                          <h4>{tool.title}</h4>
-                          <div className="selection-meta">
-                            <span>{tool.category}</span>
-                            <span>{tool.duration}</span>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                
-                {selectedRoutineTools.length > 0 && (
-                  <div className="selected-summary">
-                    <p>
-                      <strong>Total activities:</strong> {selectedRoutineTools.length} | 
-                      <strong> Estimated time:</strong> {calculateTotalDuration(selectedRoutineTools)}
-                    </p>
-                  </div>
-                )}
-                
-                <div className="form-actions">
-                  <button className="cancel-btn" onClick={closeRoutineModal}>Cancel</button>
-                  <button 
-                    className="save-routine-btn" 
-                    onClick={saveRoutine}
-                    disabled={!routineName.trim() || selectedRoutineTools.length === 0}
-                  >
-                    <i className="fas fa-save"></i> Save Routine
+                {currentStep < currentRoutineTools[currentRoutineToolIndex].steps.length - 1 ? (
+                  <button className="next-step-btn" onClick={nextStep}>
+                    <TranslatedText text="Next" />
+                    <i className="fas fa-chevron-right"></i>
                   </button>
-                </div>
+                ) : (
+                  <>
+                    {currentRoutineToolIndex < currentRoutineTools.length - 1 ? (
+                      <button className="next-tool-btn" onClick={nextRoutineTool}>
+                        <TranslatedText text="Next Tool" />
+                        <i className="fas fa-chevron-right"></i>
+                      </button>
+                    ) : (
+                      <button className="complete-btn" onClick={completeRoutine}>
+                        <TranslatedText text="Complete Routine" />
+                        <i className="fas fa-check"></i>
+                      </button>
+                    )}
+                  </>
+                )}
               </div>
             </div>
           </div>
-        )}
+          
+          <button className="exit-routine-btn" onClick={exitRoutine}>
+            <i className="fas fa-times"></i>
+            <TranslatedText text="Exit Routine" />
+          </button>
+        </div>
+      )}
+
+      {/* Routine Completion Modal */}
+      {showRoutineCompletionModal && (
+        <div className="completion-modal">
+          <div className="modal-content">
+            <div className="completion-header">
+              <h2><TranslatedText text="Routine Complete!" as="span" /></h2>
+              <div className="completion-icon">
+                <i className="fas fa-trophy"></i>
+              </div>
+            </div>
+            
+            <div className="completion-message">
+              <p>
+                <TranslatedText text={`Great job completing your "${currentRoutine.name}" routine!`} />
+              </p>
+              <p>
+                <TranslatedText text="You've completed all the tools in this routine. How do you feel now?" />
+              </p>
+            </div>
+            
+            <div className="feedback-section">
+              <div className="mood-feedback">
+                <h3><TranslatedText text="How are you feeling?" as="span" /></h3>
+                <div className="mood-options">
+                  <button 
+                    className={`mood-btn ${mood === 'better' ? 'selected' : ''}`}
+                    onClick={() => setMood('better')}
+                  >
+                    <i className="fas fa-smile"></i>
+                    <TranslatedText text="Better" />
+                  </button>
+                  <button 
+                    className={`mood-btn ${mood === 'same' ? 'selected' : ''}`}
+                    onClick={() => setMood('same')}
+                  >
+                    <i className="fas fa-meh"></i>
+                    <TranslatedText text="The Same" />
+                  </button>
+                  <button 
+                    className={`mood-btn ${mood === 'worse' ? 'selected' : ''}`}
+                    onClick={() => setMood('worse')}
+                  >
+                    <i className="fas fa-frown"></i>
+                    <TranslatedText text="Worse" />
+                  </button>
+                </div>
+              </div>
+              
+              <div className="effectiveness-feedback">
+                <h3><TranslatedText text="Was this routine helpful?" as="span" /></h3>
+                <div className="rating-scale">
+                  {[1, 2, 3, 4, 5].map(value => (
+                    <button 
+                      key={value}
+                      className={`rating-btn ${effectiveness === value ? 'selected' : ''}`}
+                      onClick={() => setEffectiveness(value)}
+                    >
+                      {value}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              
+              <div className="notes-feedback">
+                <label htmlFor="routine-feedback-notes">
+                  <TranslatedText text="Any notes for next time? (optional)" />
+                </label>
+                <textarea 
+                  id="routine-feedback-notes"
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  placeholder="What worked well? What could be improved?"
+                ></textarea>
+              </div>
+            </div>
+            
+            <div className="feedback-actions">
+              <button className="save-feedback-btn" onClick={saveFeedback}>
+                <TranslatedText text="Save & Continue" />
+              </button>
+            </div>
+        </div>
       </div>
+      )}
     </div>
   );
 }
