@@ -7,6 +7,7 @@ import { performWebSearch, getFallbackMentalHealthResources } from '../services/
 import SearchResults from '../components/SearchResults';
 import { useAuth } from '../contexts/AuthContext';
 import AudioTranscriber from '../components/AudioTranscriber';
+import StressCalculator from '../components/StressCalculator';
 
 function MindScan() {
   const [isRecording, setIsRecording] = useState(false);
@@ -1233,6 +1234,9 @@ function MindScan() {
         <h1><TranslatedText text="AI Health Analysis" as="span" /></h1>
         <p><TranslatedText text="Share your thoughts, voice, or expressions for personalized mental health insights." /></p>
       </div>
+      
+      {/* Real-time Stress Calculator */}
+      <StressCalculator />
       
       <div className="mindscan-content">
         <div className="tabs">
