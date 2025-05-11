@@ -101,8 +101,8 @@ function Home() {
       <section className="cta-section gradient-bg">
         <h2><TranslatedText text="Begin Your Wellness Journey Today" as="span" /></h2>
         <p><TranslatedText text="Take the first step towards better mental health with personalized support." /></p>
-        <Link to="/mindscan" className="cta-button">
-          <TranslatedText text="Get Started" />
+        <Link to="/community" className="cta-button">
+          <TranslatedText text="Build Your Community" />
         </Link>
       </section>
     </div>

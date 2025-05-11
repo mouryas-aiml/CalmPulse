@@ -37,7 +37,7 @@ function Mindmitra() {
   const GOOGLE_ASSISTANT_API_KEY = 'AIzaSyAanTnsSU_RdOq6yAvMaIuY6bKzUfElgvI';
   
   // Use local response generation initially while API is being set up
-  const useLocalFallback = false;
+  const useLocalFallback = true;
   
   // Save messages to localStorage when they change
   useEffect(() => {
@@ -126,6 +126,64 @@ function Mindmitra() {
     return timeSinceLastRequest < MIN_REQUEST_INTERVAL;
   };
 
+  // Function to get preprocessed answers for suggested questions
+  const getPreprocessedAnswer = (questionText) => {
+    // Normalize the question text by converting to lowercase and removing punctuation
+    const normalizedQuestion = questionText.toLowerCase().replace(/[.,?!]/g, '');
+    
+    // Map of preprocessed answers for each question
+    const preprocessedAnswers = {
+      // Mental Wellness category
+      "what are some ways to manage anxiety": 
+        "Here are effective strategies to manage anxiety:\n\n1. Practice deep breathing: Inhale for 4 counts, hold for 2, exhale for 6 counts\n2. Challenge negative thoughts by asking for evidence\n3. Use progressive muscle relaxation by tensing and releasing muscle groups\n4. Schedule dedicated 'worry time' to contain anxious thoughts\n5. Reduce caffeine and alcohol which can trigger anxiety\n6. Regular physical activity helps reduce anxiety sensitivity\n7. Practice mindfulness to stay present rather than worrying about the future\n\nWhich of these strategies would you like to know more about?",
+      
+      "im feeling stressed what should i do": 
+        "I'm sorry you're feeling stressed. Here are immediate actions that can help:\n\n1. Take slow, deep breaths for 2-3 minutes\n2. Step outside for fresh air and a change of environment\n3. Move your body - even a 5-minute walk can reduce stress hormones\n4. Practice the 5-4-3-2-1 grounding technique: name 5 things you see, 4 things you feel, 3 things you hear, 2 things you smell, and 1 thing you taste\n5. Listen to calming music\n6. Write down what's bothering you to externalize your worries\n\nFor longer-term stress management, regular exercise, adequate sleep, and connecting with supportive people are very effective.",
+      
+      "how can i tell if im depressed": 
+        "Depression involves several persistent symptoms that last for at least two weeks. Key signs include:\n\n• Persistent sad or empty mood\n• Loss of interest or pleasure in activities you used to enjoy\n• Significant changes in appetite or weight\n• Sleeping too much or too little\n• Fatigue or loss of energy\n• Feelings of worthlessness or excessive guilt\n• Difficulty thinking, concentrating, or making decisions\n• Thoughts of death or suicide\n\nIf you've experienced several of these symptoms for more than two weeks, please consider speaking with a healthcare provider. Remember that depression is a medical condition that responds well to proper treatment - it's not a weakness or character flaw.",
+      
+      // Self-Care category
+      "can you suggest some breathing exercises": 
+        "Here are effective breathing exercises you can try:\n\n1. Box Breathing: Inhale for 4 counts, hold for 4, exhale for 4, hold for 4. Repeat for 5 minutes.\n\n2. 4-7-8 Breathing: Inhale for 4 counts, hold for 7, exhale for 8. Works well for sleep and anxiety.\n\n3. Diaphragmatic Breathing: Place one hand on chest, one on stomach. Breathe so only your stomach moves.\n\n4. Alternate Nostril Breathing: Close right nostril, inhale through left, close left, exhale through right. Alternate.\n\n5. Extended Exhale: Make your exhale longer than your inhale (e.g., inhale for 4, exhale for 6).\n\nWith any breathing practice, find a comfortable position and practice in a quiet space when first learning.",
+      
+      "what are some simple mindfulness practices": 
+        "Here are simple mindfulness practices you can incorporate into daily life:\n\n1. One-Minute Breathing: Focus solely on your breath for just 60 seconds.\n\n2. Mindful Observation: Choose any natural object and observe it closely for 5 minutes, noticing details you'd normally miss.\n\n3. Body Scan: Progressively focus attention from head to toe, noticing sensations without judgment.\n\n4. Mindful Eating: Eat one item slowly, noticing texture, taste, smell and the experience of nourishment.\n\n5. The 5-4-3-2-1 Practice: Notice 5 things you see, 4 things you feel, 3 things you hear, 2 things you smell, and 1 thing you taste.\n\n6. Mindful Walking: Walk slowly, focusing on the sensation of each step touching the ground.\n\nThese can be practiced in just a few minutes throughout your day.",
+      
+      "how can i improve my sleep": 
+        "Here are evidence-based strategies to improve your sleep quality:\n\n1. Keep a consistent sleep schedule, even on weekends\n2. Create a relaxing bedtime routine (reading, gentle stretching)\n3. Make your bedroom cool, dark, and quiet\n4. Avoid screens 1-2 hours before bed (the blue light disrupts sleep hormones)\n5. Limit caffeine after noon and alcohol before bed\n6. Exercise regularly, but not right before bedtime\n7. Use your bed only for sleep and intimacy, not work or watching TV\n8. If you can't sleep after 20 minutes, get up and do something relaxing until you feel sleepy\n9. Consider relaxation techniques like deep breathing or progressive muscle relaxation\n\nWhich of these would you like more specific guidance on?",
+      
+      // Relationships category
+      "how can i set better boundaries with others": 
+        "Setting healthy boundaries is essential for relationships and personal wellbeing. Here's how to improve your boundaries:\n\n1. Self-awareness: Identify your limits - what behaviors are acceptable and unacceptable to you\n\n2. Clear communication: Use direct, simple statements like \"I need...\" or \"I'm not comfortable with...\"\n\n3. Start small: Begin with less challenging situations to build confidence\n\n4. Use \"I\" statements: Say \"I feel overwhelmed when...\" rather than \"You always...\"\n\n5. Be consistent: Maintaining boundaries is as important as setting them\n\n6. Expect resistance: Some people may push back when you set new boundaries\n\n7. Practice self-care: Reinforcing boundaries is easier when you're taking care of yourself\n\nRemember, setting boundaries isn't selfish - it's necessary for healthy relationships.",
+      
+      "ways to build meaningful connections": 
+        "Building meaningful connections takes intention and effort. Here are effective approaches:\n\n1. Practice active listening - focus fully on understanding others rather than preparing your response\n\n2. Show vulnerability by sharing your authentic thoughts and feelings\n\n3. Express appreciation specifically - \"I value how you always make time to listen\"\n\n4. Create shared experiences through activities you both enjoy\n\n5. Be consistent and reliable in your communication and follow-through\n\n6. Ask open-ended questions that invite deeper conversation\n\n7. Practice empathy by trying to understand others' perspectives and feelings\n\n8. Make time for regular check-ins with important people in your life\n\n9. Remember important details about others' lives and follow up on them\n\nWhich of these would you like to explore further?",
+      
+      // Getting Help category
+      "how do i know if i need therapy": 
+        "Here are signs that might indicate therapy could be beneficial:\n\n• Your emotions are interfering with daily functioning (work, relationships, self-care)\n• You're relying on unhealthy coping mechanisms (substances, excessive behaviors)\n• You've experienced trauma that impacts your wellbeing\n• You feel persistently sad, anxious, or emotionally numb\n• Your relationships are consistently difficult or unsatisfying\n• You've made efforts to address concerns but aren't seeing improvement\n• You want to understand yourself better or develop healthier patterns\n\nTherapy isn't only for crisis - it can help with personal growth, life transitions, and building skills. Many people find therapy valuable even without severe mental health concerns. Would you like to discuss what type of therapy might be most helpful for your situation?",
+      
+      "what types of therapy are available": 
+        "There are many effective types of therapy available:\n\n• Cognitive-Behavioral Therapy (CBT): Focuses on changing unhelpful thought patterns and behaviors\n\n• Psychodynamic Therapy: Explores unconscious patterns and past experiences\n\n• Acceptance and Commitment Therapy (ACT): Emphasizes psychological flexibility and values-based action\n\n• Dialectical Behavior Therapy (DBT): Teaches skills for emotion regulation and interpersonal effectiveness\n\n• Mindfulness-Based Therapies: Incorporate present-moment awareness\n\n• EMDR: Specifically for processing traumatic memories\n\n• Interpersonal Therapy: Addresses relationship patterns and communication\n\n• Solution-Focused Brief Therapy: Concentrates on solutions rather than problems\n\nTherapy can be individual, couples, family, or group-based. Would you like to know which might be most helpful for specific concerns?"
+    };
+    
+    // Look for an exact match first
+    if (preprocessedAnswers[normalizedQuestion]) {
+      return preprocessedAnswers[normalizedQuestion];
+    }
+    
+    // If no exact match, look for partial matches
+    for (const [key, answer] of Object.entries(preprocessedAnswers)) {
+      if (normalizedQuestion.includes(key) || key.includes(normalizedQuestion)) {
+        return answer;
+      }
+    }
+    
+    // If no match is found, return null to fall back to the regular response generation
+    return null;
+  };
+
   const handleSendMessage = async (e) => {
     e.preventDefault();
     if (input.trim() === '' || isRateLimited || isTyping) return;
@@ -197,6 +255,17 @@ function Mindmitra() {
       
       console.log('Processing user message:', latestUserMessage.text);
       setIsTyping(true); // Set typing indicator
+      
+      // Check for preprocessed answers first
+      const preprocessedAnswer = getPreprocessedAnswer(latestUserMessage.text);
+      if (preprocessedAnswer) {
+        console.log('Using preprocessed answer');
+        // Add a delay to simulate thinking (feels more natural)
+        await new Promise(resolve => setTimeout(resolve, 1200));
+        // Add bot's preprocessed response to messages
+        setMessages(prev => [...prev, { text: preprocessedAnswer, sender: 'bot' }]);
+        return;
+      }
       
       if (useLocalFallback) {
         // Simulate API delay for a more natural experience
@@ -274,6 +343,13 @@ function Mindmitra() {
         try {
           data = JSON.parse(responseText);
           console.log('Google Assistant API response:', data);
+          
+          // Check for authentication issues in the response
+          if (data.error && (data.error.status === 'UNAUTHENTICATED' || 
+              data.error.message && data.error.message.includes('authentication'))) {
+            throw new Error('Authentication issue detected');
+          }
+          
         } catch (parseError) {
           console.error('Error parsing API response:', parseError);
           throw new Error('Failed to parse API response. The service may be experiencing issues.');
@@ -288,11 +364,10 @@ function Mindmitra() {
         console.error('Error calling Google Assistant API:', apiError);
         console.log('Falling back to local response generation');
         
-        // Show error to user
+        // Show fallback message to user without exposing API error details
         setMessages(prev => [...prev, { 
-          text: `I'm having trouble connecting to my knowledge base (${apiError.message}). Falling back to local responses.`,
-          sender: 'bot',
-          isError: true
+          text: `I'm using my internal knowledge to respond to you today.`,
+          sender: 'bot'
         }]);
         
         // Small delay before showing the fallback response
@@ -328,6 +403,11 @@ function Mindmitra() {
     // Mental health emergency keywords that require immediate attention
     if (lowercaseMessage.match(/.*(suicide|kill myself|end my life|want to die|don't want to live|harm myself|hurting myself).*/i)) {
       return "I'm concerned about what you're sharing. If you're having thoughts of harming yourself, please reach out to a crisis helpline immediately. In the US, you can call or text 988 to reach the Suicide & Crisis Lifeline, or text HOME to 741741 to reach the Crisis Text Line. These services are free, confidential, and available 24/7. Your wellbeing matters, and trained professionals are ready to help.";
+    }
+    
+    // Authentication and identity verification questions
+    if (lowercaseMessage.match(/.*(log in|login|sign in|signin|authenticate|password|credentials|verify identity|verification|authentication|security|token|oauth|api key).*/i)) {
+      return "I'm here to provide mental health support rather than handle authentication tasks. If you're having issues accessing features in the app, please try refreshing the page or check your internet connection. For persistent login issues, you might want to contact our support team through the Help section.";
     }
     
     // Greeting patterns
@@ -508,6 +588,30 @@ function Mindmitra() {
       return foodResponses[Math.floor(Math.random() * foodResponses.length)];
     }
     
+    // Talking about therapy, counseling or professional help
+    if (lowercaseMessage.match(/.*(therapy|therapist|counseling|counselor|psychologist|psychiatrist|mental health professional|professional help|treatment).*/i)) {
+      const therapyResponses = [
+        "Seeking professional support like therapy or counseling can be incredibly valuable for mental health. A trained professional can provide personalized guidance and evidence-based strategies. Have you considered or tried professional mental health support before?",
+        "Therapy comes in many forms - cognitive-behavioral, psychodynamic, humanistic, and more. Different approaches work better for different people and concerns. Would it be helpful to discuss what types of therapy might align with your needs?",
+        "Working with a mental health professional can provide support, tools, and insights that might be difficult to access on your own. If you're considering therapy, many communities have options at various price points, including sliding scale services. Would you like to discuss ways to find a therapist?",
+        "Professional mental health support can be valuable at any stage of life, not just during crisis. Many people find therapy helpful for personal growth, relationship skills, and developing resilience. What has you thinking about professional support right now?",
+        "The relationship between you and a therapist is a key factor in effective therapy. It's okay to meet with different professionals until you find someone you feel comfortable with. Have you had any experiences with therapy or counseling that you'd like to share?"
+      ];
+      return therapyResponses[Math.floor(Math.random() * therapyResponses.length)];
+    }
+    
+    // Talking about specific mental health conditions
+    if (lowercaseMessage.match(/.*(depression|anxiety|bipolar|ocd|adhd|ptsd|trauma|eating disorder|addiction|phobia|panic attack|schizophrenia|autism).*/i)) {
+      const conditionResponses = [
+        "Mental health conditions are medical conditions that deserve care and support, just like physical health conditions. While I can provide general information, a healthcare provider can offer personalized guidance. Would you like to discuss resources or general information about this topic?",
+        "Many people live with and manage mental health conditions. Treatment approaches often combine therapy, lifestyle changes, social support, and sometimes medication. What aspects of this condition are you most interested in learning about?",
+        "Living with a mental health condition can be challenging, but with appropriate support and treatment, many people experience significant improvement in symptoms and quality of life. Would it help to talk about general coping strategies or resources?",
+        "It's important to approach mental health conditions with both compassion and evidence-based information. Would you like to discuss general information about this condition, or are you looking for resources to learn more?",
+        "Mental health conditions affect millions of people worldwide. While each person's experience is unique, connecting with others who share similar experiences can sometimes be helpful. Would you like to explore information about support groups or communities related to this topic?"
+      ];
+      return conditionResponses[Math.floor(Math.random() * conditionResponses.length)];
+    }
+    
     // Default responses for when no pattern matches
     const defaultResponses = [
       "Thank you for sharing that with me. Could you tell me more about how that's affecting you?",
@@ -585,6 +689,144 @@ function Mindmitra() {
           <TranslatedText text={`Please wait ${Math.ceil(cooldownTime/1000)} seconds...`} />
         </div>
       )}
+      
+      <div className="suggested-questions">
+        <h3>
+          <i className="fas fa-lightbulb"></i>
+          <TranslatedText text="Explore Mental Wellness Topics" />
+        </h3>
+        <div className="question-categories">
+          <div className="category">
+            <h4><i className="fas fa-brain"></i> <TranslatedText text="Mental Wellness" /></h4>
+            <div className="question-chips">
+              <button 
+                className="question-chip"
+                onClick={() => {
+                  setInput("What are some ways to manage anxiety?");
+                  const syntheticEvent = { preventDefault: () => {} };
+                  handleSendMessage(syntheticEvent);
+                }}
+              >
+                <span>Managing anxiety</span>
+              </button>
+              
+              <button 
+                className="question-chip"
+                onClick={() => {
+                  setInput("I'm feeling stressed, what should I do?");
+                  const syntheticEvent = { preventDefault: () => {} };
+                  handleSendMessage(syntheticEvent);
+                }}
+              >
+                <span>Stress relief</span>
+              </button>
+              
+              <button 
+                className="question-chip"
+                onClick={() => {
+                  setInput("How can I tell if I'm depressed?");
+                  const syntheticEvent = { preventDefault: () => {} };
+                  handleSendMessage(syntheticEvent);
+                }}
+              >
+                <span>Depression signs</span>
+              </button>
+            </div>
+          </div>
+          
+          <div className="category">
+            <h4><i className="fas fa-heart"></i> <TranslatedText text="Self-Care" /></h4>
+            <div className="question-chips">
+              <button 
+                className="question-chip"
+                onClick={() => {
+                  setInput("Can you suggest some breathing exercises?");
+                  const syntheticEvent = { preventDefault: () => {} };
+                  handleSendMessage(syntheticEvent);
+                }}
+              >
+                <span>Breathing exercises</span>
+              </button>
+              
+              <button 
+                className="question-chip"
+                onClick={() => {
+                  setInput("What are some simple mindfulness practices?");
+                  const syntheticEvent = { preventDefault: () => {} };
+                  handleSendMessage(syntheticEvent);
+                }}
+              >
+                <span>Mindfulness</span>
+              </button>
+              
+              <button 
+                className="question-chip"
+                onClick={() => {
+                  setInput("How can I improve my sleep?");
+                  const syntheticEvent = { preventDefault: () => {} };
+                  handleSendMessage(syntheticEvent);
+                }}
+              >
+                <span>Better sleep</span>
+              </button>
+            </div>
+          </div>
+          
+          <div className="category">
+            <h4><i className="fas fa-users"></i> <TranslatedText text="Relationships" /></h4>
+            <div className="question-chips">
+              <button 
+                className="question-chip"
+                onClick={() => {
+                  setInput("How can I set better boundaries with others?");
+                  const syntheticEvent = { preventDefault: () => {} };
+                  handleSendMessage(syntheticEvent);
+                }}
+              >
+                <span>Setting boundaries</span>
+              </button>
+              
+              <button 
+                className="question-chip"
+                onClick={() => {
+                  setInput("Ways to build meaningful connections");
+                  const syntheticEvent = { preventDefault: () => {} };
+                  handleSendMessage(syntheticEvent);
+                }}
+              >
+                <span>Building connections</span>
+              </button>
+            </div>
+          </div>
+          
+          <div className="category">
+            <h4><i className="fas fa-hand-holding-medical"></i> <TranslatedText text="Getting Help" /></h4>
+            <div className="question-chips">
+              <button 
+                className="question-chip"
+                onClick={() => {
+                  setInput("How do I know if I need therapy?");
+                  const syntheticEvent = { preventDefault: () => {} };
+                  handleSendMessage(syntheticEvent);
+                }}
+              >
+                <span>When to seek therapy</span>
+              </button>
+              
+              <button 
+                className="question-chip"
+                onClick={() => {
+                  setInput("What types of therapy are available?");
+                  const syntheticEvent = { preventDefault: () => {} };
+                  handleSendMessage(syntheticEvent);
+                }}
+              >
+                <span>Types of therapy</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

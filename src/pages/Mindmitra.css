@@ -1,5 +1,5 @@
 .mindmitra-container {
-  max-width: 900px;
+  max-width: 1000px;
   margin: 2rem auto;
   background-color: var(--white);
   border-radius: 20px;
@@ -7,13 +7,13 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  height: 75vh;
+  height: 85vh;
 }
 
 .chat-header {
   background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
   color: white;
-  padding: 1.5rem;
+  padding: 1.2rem 1.5rem;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -44,7 +44,8 @@
   background-color: var(--light-bg);
   scroll-behavior: smooth;
   overscroll-behavior: contain;
-  height: calc(100% - 180px); /* Adjust based on header and input heights */
+  height: calc(100% - 340px); /* Adjusted to allow more space for suggestions */
+  min-height: 300px;
 }
 
 .message {
@@ -150,33 +151,38 @@
 
 .chat-input {
   display: flex;
-  padding: 1.25rem;
+  padding: 1rem 1.25rem;
   border-top: 1px solid #E2E8F0;
-  background-color: var(--white);
+  background-color: white;
+  position: relative;
+  z-index: 5;
+  box-shadow: 0 -4px 10px rgba(0,0,0,0.03);
 }
 
 .chat-input input {
   flex: 1;
-  padding: 1rem 1.25rem;
+  padding: 0.8rem 1.25rem;
   border: 1px solid #E2E8F0;
   border-radius: 30px;
-  font-size: 1rem;
+  font-size: 0.95rem;
   outline: none;
   transition: var(--transition);
   margin-bottom: 0;
+  background-color: #f8faff;
 }
 
 .chat-input input:focus {
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(72, 118, 246, 0.2);
+  box-shadow: 0 0 0 3px rgba(72, 118, 246, 0.15);
+  background-color: white;
 }
 
 .chat-input button {
   background: linear-gradient(135deg, var(--primary-color) 0%, #3A65E0 100%);
   color: white;
   border: none;
-  width: 3.5rem;
-  height: 3.5rem;
+  width: 3.2rem;
+  height: 3.2rem;
   border-radius: 50%;
   margin-left: 0.75rem;
   cursor: pointer;
@@ -185,6 +191,7 @@
   justify-content: center;
   transition: var(--transition);
   padding: 0;
+  box-shadow: 0 3px 10px rgba(72, 118, 246, 0.2);
 }
 
 .chat-input button:hover {
@@ -296,4 +303,170 @@ button:disabled {
   background-color: #fff3cd;
   border-radius: 4px;
   margin: 0.5rem 1rem;
+}
+
+/* Suggested Questions */
+.suggested-questions {
+  padding: 1.5rem;
+  background: linear-gradient(to bottom, #f0f5ff, #f8faff);
+  border-top: 1px solid #e2e8f0;
+  max-height: 420px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.suggested-questions::-webkit-scrollbar {
+  width: 6px;
+}
+
+.suggested-questions::-webkit-scrollbar-track {
+  background: #f8faff;
+}
+
+.suggested-questions::-webkit-scrollbar-thumb {
+  background-color: #d1d9e6;
+  border-radius: 10px;
+}
+
+.suggested-questions h3 {
+  font-size: 1.05rem;
+  margin: 0 0 1rem 0;
+  color: var(--primary-color);
+  font-weight: 600;
+  text-align: center;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.suggested-questions h3 i {
+  color: #ffb347;
+  font-size: 1.1rem;
+}
+
+.suggested-questions h3::before,
+.suggested-questions h3::after {
+  content: "";
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--primary-color, #4776f6), transparent);
+  flex: 1;
+  margin: 0 15px;
+  opacity: 0.5;
+}
+
+/* Add a pulsing effect to the question chip hover state */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(72, 118, 246, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(72, 118, 246, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(72, 118, 246, 0);
+  }
+}
+
+.question-chip:hover {
+  transform: translateY(-2px);
+  background-color: var(--primary-color);
+  color: white;
+  animation: pulse 1.5s infinite;
+}
+
+.question-categories {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.2rem;
+  padding: 0.5rem;
+}
+
+.category {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.category:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+}
+
+.category h4 {
+  font-size: 0.95rem;
+  margin: 0;
+  color: var(--text-dark);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #f0f4f9;
+}
+
+.category h4 i {
+  color: var(--primary-color);
+  font-size: 1rem;
+  background: rgba(72, 118, 246, 0.1);
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.question-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 0;
+}
+
+.question-chip {
+  display: inline-flex;
+  align-items: center;
+  background: #f5f8ff;
+  border: none;
+  padding: 0.5rem 0.8rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: var(--primary-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .question-categories {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .category {
+    padding: 0.8rem;
+  }
+  
+  .question-chips {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  
+  .question-chip {
+    width: auto;
+    justify-content: flex-start;
+  }
+  
+  .suggested-questions {
+    padding: 1rem;
+    max-height: 350px;
+  }
 } 

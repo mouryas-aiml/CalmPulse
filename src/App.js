@@ -15,6 +15,7 @@ import Insights from './pages/Insights';
 import Profile from './pages/Profile';
 import GetStarted from './pages/GetStarted';
 import Mindmitra from './pages/Mindmitra';
+import Community from './pages/Community';
 
 // Auth Context
 import { AuthProvider, useAuth } from './contexts/AuthContext';
@@ -96,6 +97,11 @@ function AppContent() {
           <Route path="/profile" element={
             <ProtectedRoute>
               <Profile />
+            </ProtectedRoute>
+          } />
+          <Route path="/community" element={
+            <ProtectedRoute>
+              <Community />
             </ProtectedRoute>
           } />
           </Routes>

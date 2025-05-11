@@ -1,34 +1,40 @@
 .search-results-container {
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  max-width: 100%;
-  max-height: 70vh;
+  width: 90%;
+  max-width: 900px;
+  max-height: 80vh;
   overflow-y: auto;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   padding: 20px;
-  margin-top: 15px;
   position: relative;
-  z-index: 1000;
+}
+
+/* When used in an overlay (default), maintain these styles */
+.search-results-overlay .search-results-container {
+  width: 90%;
+  max-width: 900px;
+  max-height: 80vh;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  position: relative;
 }
 
 .search-results-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
-  padding-bottom: 10px;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
   border-bottom: 1px solid #eee;
 }
 
 .search-results-header h3 {
   margin: 0;
-  font-size: 1.2rem;
-  color: #333;
+  font-size: 1.3rem;
 }
 
 .search-query {
   color: #4285f4;
-  font-weight: normal;
   margin-left: 5px;
 }
 
@@ -36,8 +42,8 @@
   background: none;
   border: none;
   font-size: 1.5rem;
-  color: #777;
   cursor: pointer;
+  color: #666;
   padding: 0;
   width: 30px;
   height: 30px;
@@ -45,12 +51,11 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  transition: background 0.2s;
 }
 
 .close-btn:hover {
   background-color: #f1f1f1;
-  color: #555;
+  color: #333;
 }
 
 .search-loading {

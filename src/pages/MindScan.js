@@ -9,19 +9,19 @@ import { useAuth } from '../contexts/AuthContext';
 import AudioTranscriber from '../components/AudioTranscriber';
 
 function MindScan() {
-  const [inputText, setInputText] = useState('');
   const [isRecording, setIsRecording] = useState(false);
   const [isVideoRecording, setIsVideoRecording] = useState(false);
-  const [activeTab, setActiveTab] = useState('text');
+  const [activeTab, setActiveTab] = useState('voice');
   const [analysis, setAnalysis] = useState(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [videoFile, setVideoFile] = useState(null);
   const [videoAnalysisResults, setVideoAnalysisResults] = useState(null);
   const [videoError, setVideoError] = useState(null);
-  const [textApiKey, setTextApiKey] = useState('AIzaSyD8UnOaojXkwFrEPhHOumTWTRUfPLmZUfk');
-  const [textApiError, setTextApiError] = useState(null);
   const [apiKey, setApiKey] = useState('AIzaSyC18kaP9SmOj790Ut9mUU-YnPqqGmNk5pc');
   const [showApiKeyInput, setShowApiKeyInput] = useState(false);
+  
+  // Add new state variables for the removed Text tab functionality
+  const [textApiError, setTextApiError] = useState(null);
   
   // Search functionality states
   const [isSearching, setIsSearching] = useState(false);
@@ -56,98 +56,19 @@ function MindScan() {
   const [useWebSpeechAPI, setUseWebSpeechAPI] = useState(true); // Default to using Web Speech API
   const GOOGLE_SPEECH_API_ENDPOINT = 'https://speech.googleapis.com/v1p1beta1/speech:recognize';
 
-  const handleTextChange = (e) => {
-    setInputText(e.target.value);
-  };
-
-  // Function to perform internal web search
-  const handleWebSearch = async (text = inputText) => {
-    if (!text || text.trim() === '') return;
-    
-    // Set search query and show loading state
-    const query = text.trim();
-    setSearchQuery(query);
-    setIsSearching(true);
-    setShowSearchResults(true);
-    setSearchError(null);
-    
-    try {
-      // Perform the search using our service
-      console.log('Performing web search for:', query);
-      const results = await performWebSearch(query);
-      
-      if (results.success) {
-        console.log('Search successful, found results:', {
-          textResults: results.textResults?.length || 0,
-          videoResults: results.videoResults?.length || 0
-        });
-        setSearchResults(results);
-      } else {
-        // If web search fails, use our fallback resources
-        console.log('Web search failed, using fallback resources');
-        const fallbackResults = getFallbackMentalHealthResources(query);
-        
-        console.log('Fallback resources:', {
-          textResults: fallbackResults.textResults?.length || 0,
-          videoResults: fallbackResults.videoResults?.length || 0
-        });
-        
-        setSearchResults({
-          ...fallbackResults,
-          // Add a notice that these are fallback results
-          textResults: [
-            {
-              title: `Search Results for "${query}"`,
-              snippet: "Could not retrieve web search results. Showing recommended resources instead.",
-              link: `https://www.google.com/search?q=${encodeURIComponent(query)}`,
-              isFallbackNotice: true
-            },
-            ...fallbackResults.textResults
-          ]
-        });
-        
-        if (results.error) {
-          setSearchError('Could not retrieve web search results. Showing recommended resources instead.');
-        }
-      }
-    } catch (error) {
-      console.error('Search error:', error);
-      // Use more detailed error message
-      setSearchError(`An error occurred while searching: ${error.message || 'Unknown error'}. Showing recommended resources instead.`);
-      
-      // Use fallback resources as a last resort
-      const fallbackResults = getFallbackMentalHealthResources(query);
-      setSearchResults(fallbackResults);
-    } finally {
-      setIsSearching(false);
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (inputText.trim().length < 10) {
-      setTextApiError("Please enter at least 10 characters to analyze.");
-      return;
-    }
-    
     setIsAnalyzing(true);
     setAnalysis(null);
-    setTextApiError(null);
     
     try {
-      // Save API key to localStorage
-      localStorage.setItem('textApiKey', textApiKey);
-      
-      console.log("Starting text analysis with key:", textApiKey ? "Key present (length: " + textApiKey.length + ")" : "No key");
-      
       // Call the text analysis service
-      const results = await analyzeText(inputText, currentUser?.uid);
+      const results = await analyzeText('', currentUser?.uid);
       
       // Check if fallback mode was used
       if (results.usedFallback) {
         console.log("Used fallback local sentiment analysis");
-        setTextApiError("Note: Using simplified local analysis due to API connectivity issues. Results may be less accurate.");
       }
       
       // Map sentiment score to emotional state
@@ -203,16 +124,12 @@ function MindScan() {
       
     } catch (error) {
       console.error('Text analysis error:', error);
-      setTextApiError(error.message || 'Failed to analyze text. Please try again.');
       
       // Attempt to extract more specific Google API error message
       if (error.message && error.message.includes('{')) {
         try {
           const errorJson = error.message.substring(error.message.indexOf('{'));
           const parsedError = JSON.parse(errorJson);
-          if (parsedError.error && parsedError.error.message) {
-            setTextApiError(`API Error: ${parsedError.error.message}`);
-          }
         } catch (parseError) {
           console.log('Could not parse error message JSON');
         }
@@ -225,7 +142,7 @@ function MindScan() {
   const toggleVoiceRecording = async () => {
     if (isRecording) {
       // If already recording, stop it
-      setIsRecording(false);
+        setIsRecording(false);
       return;
     } else {
       try {
@@ -382,24 +299,194 @@ function MindScan() {
   
   const analyzeTranscribedText = (text) => {
     // Analyze the transcribed text
-    setInputText(text); // Set the text in the text input for consistency
     setIsAnalyzing(true);
     
-    // Simulate AI analysis with the transcribed text
-      setTimeout(() => {
+    // Simple sentiment detection for demo purposes
+    const lowerText = text.toLowerCase();
+    
+    // Keywords for detecting sentiment and specific mental health topics
+    const positiveWords = ['happy', 'good', 'great', 'excellent', 'joy', 'love', 'positive', 'wonderful', 'exciting', 'pleased', 'delighted', 'grateful'];
+    const negativeWords = ['sad', 'bad', 'terrible', 'awful', 'worry', 'stress', 'anxiety', 'depressed', 'unhappy', 'angry', 'fear', 'frustrated'];
+    
+    // Topic-specific keywords
+    const stressWords = ['stress', 'overwhelm', 'pressure', 'burnout', 'exhausted', 'tension'];
+    const anxietyWords = ['anxiety', 'panic', 'worry', 'nervous', 'anxious', 'fear', 'scared'];
+    const breathingWords = ['breath', 'breathing', 'meditation', 'relax', 'calm'];
+    const depressionWords = ['depress', 'hopeless', 'unmotivated', 'tired', 'alone', 'isolat'];
+    
+    // Count occurrences 
+    let positiveCount = 0;
+    let negativeCount = 0;
+    let stressCount = 0;
+    let anxietyCount = 0;
+    let breathingCount = 0;
+    let depressionCount = 0;
+    
+    // Count sentiment words
+    positiveWords.forEach(word => {
+      const regex = new RegExp('\\b' + word + '\\b', 'gi');
+      const matches = lowerText.match(regex);
+      if (matches) positiveCount += matches.length;
+    });
+    
+    negativeWords.forEach(word => {
+      const regex = new RegExp('\\b' + word + '\\b', 'gi');
+      const matches = lowerText.match(regex);
+      if (matches) negativeCount += matches.length;
+    });
+    
+    // Count topic-specific words
+    stressWords.forEach(word => {
+      const regex = new RegExp(word, 'gi');
+      const matches = lowerText.match(regex);
+      if (matches) stressCount += matches.length;
+    });
+    
+    anxietyWords.forEach(word => {
+      const regex = new RegExp(word, 'gi');
+      const matches = lowerText.match(regex);
+      if (matches) anxietyCount += matches.length;
+    });
+    
+    breathingWords.forEach(word => {
+      const regex = new RegExp(word, 'gi');
+      const matches = lowerText.match(regex);
+      if (matches) breathingCount += matches.length;
+    });
+    
+    depressionWords.forEach(word => {
+      const regex = new RegExp(word, 'gi');
+      const matches = lowerText.match(regex);
+      if (matches) depressionCount += matches.length;
+    });
+    
+    // Detect if this is a question (looking for help)
+    const isQuestion = lowerText.includes('?') || 
+                       lowerText.includes('how') || 
+                       lowerText.includes('what') || 
+                       lowerText.includes('ways to') || 
+                       lowerText.includes('help me') || 
+                       lowerText.includes('can you');
+    
+    // Determine sentiment based on counts
+    let sentiment, emotions, suggestions;
+    
+    // Check if this is a question about a specific mental health topic
+    if (isQuestion) {
+      // If it's a question, provide appropriate help based on the topic
+      if (stressCount > 0) {
+        sentiment = 'neutral';
+        emotions = ['reflective', 'seeking help', 'proactive'];
+        suggestions = [
+          'Practice deep breathing: inhale for 4 counts, hold for 2, exhale for 6 counts',
+          'Try progressive muscle relaxation, tensing and releasing each muscle group',
+          'Take short breaks throughout the day to reset your nervous system'
+        ];
+      } else if (anxietyCount > 0) {
+        sentiment = 'neutral';
+        emotions = ['reflective', 'seeking help', 'proactive'];
+        suggestions = [
+          'Try the 5-4-3-2-1 grounding technique: name 5 things you see, 4 things you feel, 3 things you hear, 2 things you smell, and 1 thing you taste',
+          'Practice deep breathing focused on extending your exhale',
+          'Challenge anxious thoughts by asking: "What\'s the evidence for and against this thought?"'
+        ];
+      } else if (breathingCount > 0) {
+        sentiment = 'neutral';
+        emotions = ['reflective', 'seeking help', 'proactive'];
+        suggestions = [
+          'Try box breathing: inhale for 4 counts, hold for 4, exhale for 4, hold for 4',
+          'Practice 4-7-8 breathing: inhale for 4 counts, hold for 7, exhale for 8',
+          'Use diaphragmatic breathing: place one hand on chest, one on stomach, breathe so only your stomach moves'
+        ];
+      } else if (depressionCount > 0) {
+        sentiment = 'neutral';
+        emotions = ['reflective', 'seeking help', 'proactive'];
+        suggestions = [
+          'Start with small, achievable daily goals to build momentum',
+          'Try to get at least 30 minutes of natural light each day',
+          'Consider reaching out to a mental health professional for support'
+        ];
+      } else if (positiveCount > negativeCount) {
+        sentiment = 'positive';
+        emotions = ['content', 'optimistic', 'grateful'];
+        suggestions = [
+          'Continue practices that maintain your positive state',
+          'Share your positive energy with others who might need it',
+          'Journal about what\'s working well in your life'
+        ];
+      } else if (negativeCount > positiveCount) {
+        sentiment = 'negative';
+        emotions = ['stressed', 'anxious', 'concerned'];
+        suggestions = [
+          'Practice deep breathing or meditation for 5 minutes',
+          'Try gentle physical activity like walking or stretching',
+          'Connect with a supportive friend or family member'
+        ];
+      } else {
+        sentiment = 'neutral';
+        emotions = ['reflective', 'contemplative', 'balanced'];
+        suggestions = [
+          'Consider practicing mindful breathing exercises',
+          'Try journaling about your thoughts to gain clarity',
+          'A short walk outdoors might help refresh your perspective'
+        ];
+      }
+    } else {
+      // If it's not a question, analyze sentiment as before
+      if (positiveCount > negativeCount) {
+        sentiment = 'positive';
+        emotions = ['content', 'optimistic', 'grateful'];
+        suggestions = [
+          'Continue practices that maintain your positive state',
+          'Share your positive energy with others who might need it',
+          'Journal about what\'s working well in your life'
+        ];
+      } else if (negativeCount > positiveCount) {
+        sentiment = 'negative';
+        emotions = ['stressed', 'anxious', 'concerned'];
+        suggestions = [
+          'Practice deep breathing or meditation for 5 minutes',
+          'Try gentle physical activity like walking or stretching',
+          'Connect with a supportive friend or family member'
+        ];
+      } else {
+        sentiment = 'neutral';
+        emotions = ['reflective', 'contemplative', 'balanced'];
+        suggestions = [
+          'Consider practicing mindful breathing exercises',
+          'Try journaling about your thoughts to gain clarity',
+          'A short walk outdoors might help refresh your perspective'
+        ];
+      }
+    }
+    
+    // Simulate brief analysis delay
+    setTimeout(() => {
       setIsAnalyzing(false);
-        setAnalysis({
-          sentiment: 'positive',
-        emotions: ['balanced', 'mindful', 'progressing'],
-          suggestions: [
-          'Continue your mindfulness practice as it seems to be having a positive effect',
-          'Consider time-management techniques to further improve work-life balance',
-          'Maintain your exercise routine and perhaps add variety to keep it interesting'
-        ]
+      setAnalysis({
+        sentiment,
+        emotions,
+        suggestions,
+        rawResults: {
+          text: text,
+          positiveWordCount: positiveCount,
+          negativeWordCount: negativeCount,
+          stressCount,
+          anxietyCount,
+          breathingCount,
+          depressionCount,
+          isQuestion,
+          analysisMethod: 'contextual keyword analysis'
+        }
       });
-    }, 2000);
+      
+      // If this is a question, automatically trigger a web search for more resources
+      if (isQuestion) {
+        handleWebSearch(text);
+      }
+    }, 1500);
   };
-  
+
   const handleApiKeySubmit = async (e) => {
     e.preventDefault();
     
@@ -918,7 +1005,7 @@ function MindScan() {
 
     const { emotions, transcription, dominantEmotion, suggestions, sentiment, metadata, transcriptionSource, usingMockEmotions } = videoAnalysisResults;
 
-    return (
+  return (
       <div className="analysis-results">
         <h3><TranslatedText text="Video Analysis Results" /></h3>
         
@@ -1084,6 +1171,62 @@ function MindScan() {
     }
   };
 
+  // Function to perform internal web search
+  const handleWebSearch = async (text) => {
+    if (!text || text.trim() === '') return;
+    
+    // Set search query and show loading state
+    const query = text.trim();
+    setSearchQuery(query);
+    setIsSearching(true);
+    setShowSearchResults(true); // We will display inline instead of overlay
+    setSearchError(null);
+    
+    try {
+      // Perform the search using our service
+      console.log('Performing web search for:', query);
+      const results = await performWebSearch(query);
+      
+      if (results.success) {
+        console.log('Search successful, found results:', {
+          textResults: results.textResults?.length || 0,
+          videoResults: results.videoResults?.length || 0
+        });
+        setSearchResults(results);
+      } else {
+        // If web search fails, use our fallback resources without showing an error
+        console.log('Web search failed, using fallback resources');
+        const fallbackResults = getFallbackMentalHealthResources(query);
+        
+        console.log('Fallback resources:', {
+          textResults: fallbackResults.textResults?.length || 0,
+          videoResults: fallbackResults.videoResults?.length || 0
+        });
+        
+        setSearchResults({
+          ...fallbackResults,
+          // Add a notice that these are helpful resources without mentioning API errors
+          textResults: [
+            {
+              title: `Health Resources for "${query}"`,
+              snippet: "Here are some resources that might help with your question.",
+              link: `https://www.google.com/search?q=${encodeURIComponent(query)}`,
+              isFallbackNotice: true
+            },
+            ...fallbackResults.textResults
+          ]
+        });
+      }
+    } catch (error) {
+      console.error('Search error:', error);
+      // Use fallback resources without mentioning the error
+      const fallbackResults = getFallbackMentalHealthResources(query);
+      setSearchResults(fallbackResults);
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
   return (
       <div className="mindscan-container">
       <div className="mindscan-header">
@@ -1094,17 +1237,10 @@ function MindScan() {
       <div className="mindscan-content">
         <div className="tabs">
           <button 
-            className={activeTab === 'text' ? 'active' : ''} 
-            onClick={() => setActiveTab('text')}
-          >
-            <i className="fas fa-keyboard"></i>
-            <TranslatedText text="Text" />
-          </button>
-          <button 
             className={activeTab === 'voice' ? 'active' : ''} 
             onClick={() => setActiveTab('voice')}
           >
-            <i className="fas fa-microphone"></i>
+            <i className="fas fa-microphone-alt"></i>
             <TranslatedText text="Voice" />
           </button>
           <button 
@@ -1115,108 +1251,6 @@ function MindScan() {
             <TranslatedText text="Video" />
           </button>
         </div>
-        
-        {/* Text Input Section */}
-        {activeTab === 'text' && (
-          <div className="text-input-section">
-          <form onSubmit={handleSubmit}>
-              <label htmlFor="mental-health-input">
-                <TranslatedText text="How are you feeling today? Share your thoughts, concerns, or mood:" />
-              </label>
-            <textarea 
-                id="mental-health-input"
-              value={inputText}
-              onChange={handleTextChange}
-                placeholder="I've been feeling..."
-                rows="6"
-              ></textarea>
-              <button 
-                type="submit" 
-                className="analyze-btn"
-                disabled={inputText.trim().length < 10 || isAnalyzing}
-              >
-                {isAnalyzing ? 
-                  <><i className="fas fa-spinner fa-spin"></i> <TranslatedText text="Analyzing..." /></> : 
-                  <TranslatedText text="Analyze My Mental Health" />
-                }
-              </button>
-            </form>
-            
-            {inputText.trim().length > 0 && (
-              <div className="additional-actions" style={{ marginTop: '10px' }}>
-                <button 
-                  className="health-resources-btn"
-                  onClick={handleWebSearch}
-                  style={{
-                    backgroundColor: '#4285f4',
-                    color: 'white',
-                    border: 'none',
-                    padding: '8px 15px',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '0.9rem'
-                  }}
-                >
-                  <i className="fas fa-heartbeat" style={{ marginRight: '5px' }}></i>
-                  <TranslatedText text="Find Health Resources" />
-                </button>
-              </div>
-            )}
-            
-            {textApiError && (
-              <div className="error-message">
-                <i className="fas fa-exclamation-circle"></i>
-                {textApiError}
-                <div className="api-key-actions">
-                  <button className="api-settings-btn" onClick={() => {
-                    const newKey = prompt("Enter your Google Cloud Natural Language API key:", textApiKey);
-                    if (newKey && newKey.trim() !== "") {
-                      setTextApiKey(newKey.trim());
-                      localStorage.setItem('textApiKey', newKey.trim());
-                    }
-                  }}>
-                    <i className="fas fa-key"></i> <TranslatedText text="Update API Key" />
-                  </button>
-                  <button className="test-api-btn" style={{ marginLeft: '10px' }} onClick={async () => {
-                    try {
-                      setIsAnalyzing(true);
-                      // Simple test request
-                      const response = await fetch(`https://language.googleapis.com/v1/documents:analyzeSentiment?key=${textApiKey}`, {
-                        method: 'POST',
-                        headers: {
-                          'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                          document: {
-                            type: 'PLAIN_TEXT',
-                            content: 'This is a test to verify the API key is working.'
-                          },
-                          encodingType: 'UTF8'
-                        })
-                      });
-                      
-                      if (response.ok) {
-                        alert('API key is valid! The connection to Google Cloud Natural Language API is working.');
-                      } else {
-                        const errorData = await response.text();
-                        alert(`API key validation failed: ${response.status} ${response.statusText}\n\n${errorData}`);
-                      }
-                    } catch (error) {
-                      alert(`Error testing API key: ${error.message}`);
-                    } finally {
-                      setIsAnalyzing(false);
-                    }
-                  }}>
-                    <i className="fas fa-vial"></i> <TranslatedText text="Test API Key" />
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
         
         {/* Voice Input Section */}
         {activeTab === 'voice' && (
@@ -1234,7 +1268,7 @@ function MindScan() {
                   setTranscription('');
                 }}
               >
-                <i className="fas fa-microphone"></i>
+                <i className="fas fa-microphone-alt"></i>
                 <TranslatedText text="Record Voice" />
               </button>
               <button 
@@ -1244,7 +1278,7 @@ function MindScan() {
                   setTranscription('');
                 }}
               >
-                <i className="fas fa-upload"></i>
+                <i className="fas fa-cloud-upload-alt"></i>
                 <TranslatedText text="Upload Audio" />
               </button>
             </div>
@@ -1253,22 +1287,22 @@ function MindScan() {
               // Show the audio recording interface
               <div className="voice-input-options">
                 <button 
-                  className={`record-btn ${isRecording ? 'recording' : ''}`}
+                className={`record-btn ${isRecording ? 'recording' : ''}`}
                   onClick={toggleVoiceRecording}
                   disabled={!!audioSrc}
                 >
-                  <i className={`fas ${isRecording ? 'fa-stop' : 'fa-microphone'}`}></i>
+                  <i className={`fas ${isRecording ? 'fa-stop-circle' : 'fa-microphone-alt'}`}></i>
                   {isRecording ? 
                     <TranslatedText text="Stop Recording" /> : 
                     <TranslatedText text="Start Recording" />
                   }
-                </button>
+              </button>
                 
                 <div className="browser-api-info" style={{ marginLeft: '10px', fontSize: '0.85rem', color: '#666', display: 'flex', alignItems: 'center' }}>
                   <i className="fas fa-info-circle" style={{ marginRight: '5px' }}></i>
                   <TranslatedText text="Using Browser Speech API (Chrome/Edge)" />
-                </div>
-              </div>
+            </div>
+        </div>
             ) : null}
             
             {/* Add the AudioTranscriber component for file uploads */}
@@ -1331,26 +1365,15 @@ function MindScan() {
                   <button 
                     className="health-resources-btn"
                     onClick={() => handleWebSearch(transcription)}
-                    style={{
-                      backgroundColor: '#4285f4',
-                      color: 'white',
-                      border: 'none',
-                      padding: '8px 12px',
-                      margin: '0 10px',
-                      borderRadius: '4px',
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center'
-                    }}
                   >
-                    <i className="fas fa-heartbeat" style={{ marginRight: '5px' }}></i>
+                    <i className="fas fa-heartbeat"></i>
                     <TranslatedText text="Find Health Resources" />
                   </button>
                   <button className="reset-btn" onClick={() => {
                     setAudioSrc('');
                     setTranscription('');
                   }}>
-                    <i className="fas fa-redo"></i> <TranslatedText text="New Recording" />
+                    <i className="fas fa-redo-alt"></i> <TranslatedText text="New Recording" />
                   </button>
                 </div>
               </div>
@@ -1364,7 +1387,7 @@ function MindScan() {
                 {/* Add fallback manual transcription option */}
                 <div className="fallback-transcription">
                   <p><TranslatedText text="You can manually enter what you said:" /></p>
-                  <textarea 
+            <textarea 
                     placeholder="Type what you said in the recording..."
                     className="fallback-textarea"
                     style={{ 
@@ -1378,7 +1401,7 @@ function MindScan() {
                   ></textarea>
                   <div className="fallback-submit-actions">
                     <button 
-                      className="fallback-submit-btn"
+                      className="fallback-submit-btn analyze-voice-btn"
                       onClick={() => {
                         if (transcription && transcription.trim().length > 10) {
                           analyzeTranscribedText(transcription);
@@ -1386,34 +1409,17 @@ function MindScan() {
                           alert('Please enter at least 10 characters.');
                         }
                       }}
-                      style={{
-                        backgroundColor: '#4f8fbf',
-                        color: 'white',
-                        border: 'none',
-                        padding: '8px 15px',
-                        borderRadius: '4px',
-                        cursor: 'pointer'
-                      }}
                     >
-                      <i className="fas fa-check"></i> <TranslatedText text="Use This Text" />
+                      <i className="fas fa-check-circle"></i> <TranslatedText text="Use This Text" />
                     </button>
                     <button 
-                      className="fallback-search-btn"
+                      className="fallback-search-btn health-resources-btn"
                       onClick={() => {
                         if (transcription && transcription.trim().length > 0) {
                           handleWebSearch(transcription);
                         } else {
                           alert('Please enter some text to search.');
                         }
-                      }}
-                      style={{
-                        backgroundColor: '#4285f4',
-                        color: 'white',
-                        border: 'none',
-                        padding: '8px 15px',
-                        marginLeft: '10px',
-                        borderRadius: '4px',
-                        cursor: 'pointer'
                       }}
                     >
                       <i className="fas fa-heartbeat"></i> <TranslatedText text="Find Health Resources" />
@@ -1455,7 +1461,7 @@ function MindScan() {
             <div className="video-controls">
               <div className="upload-controls">
                 <label className="upload-btn">
-                  <i className="fas fa-upload"></i>
+                  <i className="fas fa-cloud-upload-alt"></i>
                   <TranslatedText text="Upload Video" />
                   <input
                     type="file"
@@ -1469,14 +1475,14 @@ function MindScan() {
                   className={`record-btn ${isVideoRecording ? 'recording' : ''}`}
                   onClick={toggleVideoRecording}
                 >
-                  <i className={`fas ${isVideoRecording ? 'fa-stop' : 'fa-video'}`}></i>
+                  <i className={`fas ${isVideoRecording ? 'fa-stop-circle' : 'fa-video'}`}></i>
                   <TranslatedText text={isVideoRecording ? 'Stop Recording' : 'Start Recording'} />
-                </button>
+              </button>
               </div>
 
               {videoSrc && (
                 <div className="analysis-controls">
-                  <button 
+              <button 
                     className="analyze-btn"
                     onClick={handleVideoAnalysis}
                     disabled={isAnalyzing}
@@ -1504,10 +1510,10 @@ function MindScan() {
                       setVideoError(null);
                     }}
                   >
-                    <i className="fas fa-redo"></i>
+                    <i className="fas fa-redo-alt"></i>
                     <TranslatedText text="Reset" />
-                  </button>
-                </div>
+              </button>
+            </div>
               )}
         </div>
 
@@ -1529,14 +1535,17 @@ function MindScan() {
             
             {analysis.usedFallback && (
               <div className="fallback-notice" style={{ 
-                padding: '10px', 
-                marginBottom: '15px', 
-                background: '#fff3cd', 
-                border: '1px solid #ffeeba', 
-                borderRadius: '4px',
-                color: '#856404'
+                padding: '15px', 
+                marginBottom: '20px', 
+                background: 'linear-gradient(135deg, #fff8e1, #fffde7)', 
+                borderLeft: '4px solid #ffc107', 
+                borderRadius: '8px',
+                color: '#856404',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px'
               }}>
-                <i className="fas fa-exclamation-triangle" style={{ marginRight: '8px' }}></i>
+                <i className="fas fa-exclamation-triangle"></i>
                 <TranslatedText text="Using simplified local analysis due to API connectivity issues. Results may be less accurate." />
               </div>
             )}
@@ -1545,11 +1554,11 @@ function MindScan() {
                 <div className="sentiment-indicator">
                 <div className={`sentiment-icon ${analysis.sentiment}`}>
                   <i className={`fas ${
-                    analysis.sentiment === 'positive' ? 'fa-smile' : 
-                    analysis.sentiment === 'negative' ? 'fa-frown' : 
+                    analysis.sentiment === 'positive' ? 'fa-smile-beam' : 
+                    analysis.sentiment === 'negative' ? 'fa-sad-tear' : 
                     'fa-meh'
                   }`}></i>
-                </div>
+                  </div>
                 <h3>
                   <TranslatedText 
                     text={analysis.sentiment === 'positive' ? 'Positive Outlook' : 
@@ -1572,8 +1581,214 @@ function MindScan() {
                 </div>
               </div>
 
+            {/* Conditional display based on sentiment */}
+            {analysis.sentiment === 'positive' && (
+              <div className="sentiment-specific-content" style={{
+                background: 'linear-gradient(135deg, #e6f7ff, #f0fff4)',
+                borderRadius: 'var(--border-radius)',
+                padding: '20px',
+                marginBottom: '25px',
+                borderLeft: '4px solid #4caf50',
+                boxShadow: '0 4px 12px rgba(76, 175, 80, 0.15)'
+              }}>
+                <h4 style={{ color: '#2e7d32', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <i className="fas fa-sun"></i>
+                  <TranslatedText text="Positive Mental State Insights" />
+                </h4>
+                <p style={{ marginBottom: '15px', fontSize: '1.05rem' }}>
+                  Your words reflect a positive outlook. This state of mind can enhance cognitive flexibility, 
+                  creativity, and resilience. Research shows that positive emotions can broaden attention and 
+                  thought processes, leading to better problem-solving and relationship building.
+                </p>
+                <div style={{ 
+                  display: 'flex', 
+                  gap: '15px',
+                  flexWrap: 'wrap',
+                  marginTop: '15px'
+                }}>
+                  <div style={{ 
+                    flex: '1 1 calc(33% - 15px)', 
+                    minWidth: '250px',
+                    background: 'white',
+                    padding: '15px',
+                    borderRadius: '8px',
+                    boxShadow: '0 2px 6px rgba(0,0,0,0.05)'
+                  }}>
+                    <h5 style={{ color: '#2e7d32', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
+                      <i className="fas fa-brain"></i> Cognitive Benefits
+                    </h5>
+                    <ul style={{ paddingLeft: '20px', margin: '0' }}>
+                      <li>Enhanced problem-solving abilities</li>
+                      <li>Improved creative thinking</li>
+                      <li>Better attention and focus</li>
+                    </ul>
+                  </div>
+                  <div style={{ 
+                    flex: '1 1 calc(33% - 15px)', 
+                    minWidth: '250px',
+                    background: 'white',
+                    padding: '15px',
+                    borderRadius: '8px',
+                    boxShadow: '0 2px 6px rgba(0,0,0,0.05)'
+                  }}>
+                    <h5 style={{ color: '#2e7d32', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
+                      <i className="fas fa-heartbeat"></i> Physical Benefits
+                    </h5>
+                    <ul style={{ paddingLeft: '20px', margin: '0' }}>
+                      <li>Lower stress hormones</li>
+                      <li>Improved immune function</li>
+                      <li>Better sleep quality</li>
+                    </ul>
+                  </div>
+                  <div style={{ 
+                    flex: '1 1 calc(33% - 15px)', 
+                    minWidth: '250px',
+                    background: 'white',
+                    padding: '15px',
+                    borderRadius: '8px',
+                    boxShadow: '0 2px 6px rgba(0,0,0,0.05)'
+                  }}>
+                    <h5 style={{ color: '#2e7d32', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
+                      <i className="fas fa-users"></i> Social Benefits
+                    </h5>
+                    <ul style={{ paddingLeft: '20px', margin: '0' }}>
+                      <li>Stronger social connections</li>
+                      <li>More effective communication</li>
+                      <li>Increased empathy</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {analysis.sentiment === 'negative' && (
+              <div className="sentiment-specific-content" style={{
+                background: 'linear-gradient(135deg, #fff5f5, #fdf2f2)',
+                borderRadius: 'var(--border-radius)',
+                padding: '20px',
+                marginBottom: '25px',
+                borderLeft: '4px solid #f44336',
+                boxShadow: '0 4px 12px rgba(244, 67, 54, 0.15)'
+              }}>
+                <h4 style={{ color: '#c62828', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <i className="fas fa-cloud-rain"></i>
+                  <TranslatedText text="Emotional Challenge Assessment" />
+                </h4>
+                <p style={{ marginBottom: '15px', fontSize: '1.05rem' }}>
+                  Your expressions indicate you may be experiencing some challenging emotions. 
+                  It's important to remember that difficult feelings are a normal part of human experience. 
+                  Acknowledging these emotions is an important first step toward managing them effectively.
+                </p>
+                <div style={{ 
+                  background: 'white', 
+                  padding: '15px', 
+                  borderRadius: '8px',
+                  marginTop: '15px',
+                  boxShadow: '0 2px 6px rgba(0,0,0,0.05)'
+                }}>
+                  <h5 style={{ color: '#c62828', marginBottom: '10px' }}>Common Thought Patterns</h5>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginBottom: '15px' }}>
+                    <div style={{ 
+                      padding: '8px 12px', 
+                      background: 'rgba(244, 67, 54, 0.08)', 
+                      borderRadius: '20px',
+                      fontSize: '0.9rem'
+                    }}>All-or-nothing thinking</div>
+                    <div style={{ 
+                      padding: '8px 12px', 
+                      background: 'rgba(244, 67, 54, 0.08)', 
+                      borderRadius: '20px',
+                      fontSize: '0.9rem'
+                    }}>Catastrophizing</div>
+                    <div style={{ 
+                      padding: '8px 12px', 
+                      background: 'rgba(244, 67, 54, 0.08)', 
+                      borderRadius: '20px',
+                      fontSize: '0.9rem'
+                    }}>Filtering out positives</div>
+                    <div style={{ 
+                      padding: '8px 12px', 
+                      background: 'rgba(244, 67, 54, 0.08)', 
+                      borderRadius: '20px',
+                      fontSize: '0.9rem'
+                    }}>Emotional reasoning</div>
+                  </div>
+                  <h5 style={{ color: '#c62828', marginBottom: '10px' }}>Immediate Relief Strategies</h5>
+                  <ul style={{ paddingLeft: '20px', margin: '0' }}>
+                    <li>Practice deep breathing (4 seconds in, hold 2, 6 seconds out)</li>
+                    <li>Try the 5-4-3-2-1 grounding technique: name 5 things you see, 4 things you feel, 3 things you hear, 2 things you smell, and 1 thing you taste</li>
+                    <li>Engage in gentle physical movement for 5-10 minutes</li>
+                    <li>Reach out to a trusted person to talk about your feelings</li>
+                  </ul>
+                </div>
+              </div>
+            )}
+
+            {analysis.sentiment === 'neutral' && (
+              <div className="sentiment-specific-content" style={{
+                background: 'linear-gradient(135deg, #f9f9ff, #f5f5f5)',
+                borderRadius: 'var(--border-radius)',
+                padding: '20px',
+                marginBottom: '25px',
+                borderLeft: '4px solid #9e9e9e',
+                boxShadow: '0 4px 12px rgba(158, 158, 158, 0.15)'
+              }}>
+                <h4 style={{ color: '#424242', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <i className="fas fa-balance-scale"></i>
+                  <TranslatedText text="Balanced Mindset Analysis" />
+                </h4>
+                <p style={{ marginBottom: '15px', fontSize: '1.05rem' }}>
+                  Your language suggests a balanced emotional state – neither strongly positive nor negative. 
+                  This equilibrium can be a stable foundation for mindfulness and thoughtful decision-making. 
+                  It can also indicate a contemplative or reflective state of mind.
+                </p>
+                
+                <div style={{ 
+                  display: 'flex',
+                  gap: '15px',
+                  marginTop: '15px',
+                  flexWrap: 'wrap'
+                }}>
+                  <div style={{ 
+                    flex: '1 1 calc(50% - 15px)', 
+                    minWidth: '300px',
+                    background: 'white',
+                    padding: '15px',
+                    borderRadius: '8px',
+                    boxShadow: '0 2px 6px rgba(0,0,0,0.05)'
+                  }}>
+                    <h5 style={{ color: '#424242', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
+                      <i className="fas fa-lightbulb"></i> Mindfulness Opportunities
+                    </h5>
+                    <p style={{ fontSize: '0.95rem', lineHeight: '1.5' }}>
+                      Your current balanced state creates an excellent opportunity for mindfulness practice. 
+                      Consider taking 5-10 minutes to engage in a mindful activity like focused breathing or 
+                      a body scan meditation to further enhance your awareness and presence.
+                    </p>
+                  </div>
+                  <div style={{ 
+                    flex: '1 1 calc(50% - 15px)', 
+                    minWidth: '300px',
+                    background: 'white',
+                    padding: '15px',
+                    borderRadius: '8px',
+                    boxShadow: '0 2px 6px rgba(0,0,0,0.05)'
+                  }}>
+                    <h5 style={{ color: '#424242', display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
+                      <i className="fas fa-compass"></i> Direction Setting
+                    </h5>
+                    <p style={{ fontSize: '0.95rem', lineHeight: '1.5' }}>
+                      A balanced mental state is ideal for evaluating priorities and setting intentions.
+                      Consider what activities would be most meaningful to you right now, and how you might
+                      direct your energy in alignment with your values and goals.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
             <div className="suggestions-section">
-              <h4><TranslatedText text="Recommended Coping Strategies:" as="span" /></h4>
+              <h4><i className="fas fa-lightbulb" style={{ marginRight: '8px', color: 'var(--primary-color)' }}></i><TranslatedText text="Recommended Coping Strategies:" as="span" /></h4>
                 <ul className="suggestions-list">
                   {analysis.suggestions.map((suggestion, index) => (
                   <li key={index}>
@@ -1590,18 +1805,33 @@ function MindScan() {
                   <i className="fas fa-tools"></i>
                   <TranslatedText text="Try Coping Tools" />
                 </button>
-                <button className="next-step-btn">
+                <button className="next-step-btn" style={{ background: 'linear-gradient(135deg, #6a5acd, #4c3e9d)' }}>
                   <i className="fas fa-comments"></i>
                   <TranslatedText text="Chat with Mindmitra" />
                 </button>
-                <button className="next-step-btn">
+                <button className="next-step-btn" style={{ background: 'linear-gradient(135deg, #4285f4, #3367d6)' }}>
                   <i className="fas fa-user-md"></i>
                   <TranslatedText text="Find a Therapist" />
                 </button>
                 {/* Add debug button for developers */}
                 <button 
                   className="debug-btn" 
-                  style={{ marginTop: '10px', fontSize: '0.8rem', opacity: 0.7 }}
+                  style={{ 
+                    marginTop: '10px', 
+                    fontSize: '0.8rem', 
+                    opacity: 0.7,
+                    background: 'linear-gradient(135deg, #f5f5f5, #e0e0e0)',
+                    color: '#555',
+                    border: 'none',
+                    borderRadius: '50px',
+                    padding: '8px 16px',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease',
+                    boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '5px'
+                  }}
                   onClick={() => {
                     if (analysis.rawResults) {
                       console.log('Raw API results:', analysis.rawResults);
@@ -1610,26 +1840,27 @@ function MindScan() {
                   }}
                 >
                   <i className="fas fa-bug"></i>
-                  <span style={{ marginLeft: '5px' }}>Debug API Response</span>
+                  <span>Debug API Response</span>
                 </button>
               </div>
             </div>
+
+            {/* Add Health Resources section right after the next-steps section */}
+            {showSearchResults && searchResults && (
+              <div className="inline-health-resources">
+                <h3><i className="fas fa-heart" style={{ marginRight: '8px', color: '#558b2f' }}></i><TranslatedText text="Relevant Health Resources" /></h3>
+                <SearchResults 
+                  results={searchResults}
+                  isLoading={isSearching}
+                  error={searchError}
+                  query={searchQuery}
+                  onClose={() => setShowSearchResults(false)}
+                />
+              </div>
+            )}
           </div>
         )}
       </div>
-      
-      {/* Search Results Section */}
-      {showSearchResults && (
-        <div className="search-results-overlay">
-          <SearchResults 
-            results={searchResults}
-            isLoading={isSearching}
-            error={searchError}
-            query={searchQuery}
-            onClose={() => setShowSearchResults(false)}
-          />
-        </div>
-      )}
     </div>
   );
 }
