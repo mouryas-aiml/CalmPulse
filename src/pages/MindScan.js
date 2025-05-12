@@ -1007,11 +1007,11 @@ function MindScan() {
     const { emotions, transcription, dominantEmotion, suggestions, sentiment, metadata, transcriptionSource, usingMockEmotions } = videoAnalysisResults;
 
   return (
-      <div className="analysis-results">
-        <h3><TranslatedText text="Video Analysis Results" /></h3>
+      <div className="analysis-results glass-card" data-aos="fade-up" data-aos-duration="1000">
+        <h3 data-aos="fade-right" data-aos-delay="200"><TranslatedText text="Video Analysis Results" /></h3>
         
         {usingMockEmotions && (
-          <div className="mock-data-notice">
+          <div className="mock-data-notice" data-aos="fade-in" data-aos-delay="300">
             <i className="fas fa-info-circle"></i>
             <p>
               <TranslatedText text="Note: Emotion analysis is approximate based on speech content. For better results, try a different video." />
@@ -1019,10 +1019,10 @@ function MindScan() {
           </div>
         )}
         
-        <div className="emotions-chart">
+        <div className="emotions-chart" data-aos="fade-up" data-aos-delay="400">
           <h4><TranslatedText text="Detected Emotions" /></h4>
-          {Object.entries(emotions).map(([emotion, score]) => (
-            <div key={emotion} className="emotion-bar">
+          {Object.entries(emotions).map(([emotion, score], index) => (
+            <div key={emotion} className="emotion-bar" data-aos="fade-right" data-aos-delay={500 + (index * 100)}>
               <span className="emotion-label">{emotion}</span>
               <div className="emotion-progress">
                 <div 
@@ -1036,7 +1036,7 @@ function MindScan() {
         </div>
 
         {transcription && (
-          <div className="transcription-section">
+          <div className="transcription-section" data-aos="fade-up" data-aos-delay="800">
             <h4>
               <TranslatedText text="Speech Transcription" />
               {transcriptionSource && (
@@ -1050,7 +1050,7 @@ function MindScan() {
             <p className="transcription-text">{transcription}</p>
             
             {metadata && (
-              <div className="transcription-metadata">
+              <div className="transcription-metadata" data-aos="fade-in" data-aos-delay="900">
                 <span>Language: {metadata.language}</span>
                 <span>Duration: {Math.round(metadata.durationSeconds)}s</span>
                 {metadata.confidence > 0 && (
@@ -1062,7 +1062,7 @@ function MindScan() {
         )}
         
         {sentiment && (
-          <div className="sentiment-section">
+          <div className="sentiment-section" data-aos="fade-up" data-aos-delay="1000">
             <h4><TranslatedText text="Speech Sentiment Analysis" /></h4>
             <div className="sentiment-result">
               <div className={`sentiment-indicator ${sentiment.sentiment}`}>
@@ -1073,7 +1073,7 @@ function MindScan() {
                       sentiment.sentiment === 'negative' ? 'Negative' : 
                       'Neutral'} Tone</span>
               </div>
-              <div className="sentiment-stats">
+              <div className="sentiment-stats" data-aos="fade-left" data-aos-delay="1100">
                 <div className="sentiment-stat">
                   <span className="stat-label">Score:</span>
                   <span className="stat-value">{sentiment.score.toFixed(2)}</span>
@@ -1091,19 +1091,19 @@ function MindScan() {
           </div>
         )}
 
-        <div className="suggestions-section">
+        <div className="suggestions-section" data-aos="fade-up" data-aos-delay="1200">
           <h4><TranslatedText text="Recommendations" /></h4>
           <p><TranslatedText text="Based on your dominant emotion:" /> <strong>{dominantEmotion}</strong></p>
           <ul className="suggestions-list">
             {suggestions.map((suggestion, index) => (
-              <li key={index}>{suggestion}</li>
+              <li key={index} data-aos="fade-left" data-aos-delay={1300 + (index * 100)}>{suggestion}</li>
             ))}
           </ul>
         </div>
         
-        <div className="video-analysis-actions">
+        <div className="video-analysis-actions" data-aos="fade-up" data-aos-delay="1600">
           <button 
-            className="retry-btn"
+            className="retry-btn gradient-bg-light"
             onClick={() => {
               setVideoAnalysisResults(null);
               setVideoError(null);
@@ -1114,7 +1114,7 @@ function MindScan() {
           </button>
           
           <button 
-            className="health-resources-btn"
+            className="health-resources-btn gradient-bg-info"
             onClick={() => transcription && handleWebSearch(transcription)}
             disabled={!transcription}
           >
@@ -1230,7 +1230,7 @@ function MindScan() {
 
   return (
       <div className="mindscan-container">
-      <div className="mindscan-header">
+      <div className="mindscan-header" data-aos="fade-down" data-aos-duration="1200">
         <h1><TranslatedText text="AI Health Analysis" as="span" /></h1>
         <p><TranslatedText text="Share your thoughts, voice, or expressions for personalized mental health insights." /></p>
       </div>
@@ -1239,7 +1239,7 @@ function MindScan() {
       <StressCalculator />
       
       <div className="mindscan-content">
-        <div className="tabs">
+        <div className="tabs" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300">
           <button 
             className={activeTab === 'voice' ? 'active' : ''} 
             onClick={() => setActiveTab('voice')}
@@ -1258,15 +1258,15 @@ function MindScan() {
         
         {/* Voice Input Section */}
         {activeTab === 'voice' && (
-          <div className="voice-input-section">
-            <div className="voice-instructions">
+          <div className="voice-input-section glass-card" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400">
+            <div className="voice-instructions" data-aos="fade-up" data-aos-delay="500">
               <h3><TranslatedText text="Express Yourself Through Voice" as="span" /></h3>
               <p><TranslatedText text="Speak freely about how you're feeling or upload an audio file. Our AI will analyze your tone, emotion, and content to provide insights." /></p>
             </div>
             
-            <div className="input-methods-tabs">
+            <div className="input-methods-tabs" data-aos="fade-up" data-aos-delay="600">
               <button 
-                className={`input-method-tab ${!audioSrc && !transcription ? 'active' : ''}`} 
+                className={`input-method-tab ${!audioSrc && !transcription ? 'active gradient-bg-primary' : ''}`} 
                 onClick={() => {
                   setAudioSrc('');
                   setTranscription('');
@@ -1276,7 +1276,7 @@ function MindScan() {
                 <TranslatedText text="Record Voice" />
               </button>
               <button 
-                className="input-method-tab"
+                className={`input-method-tab ${audioSrc && !transcription ? 'active gradient-bg-primary' : ''}`}
                 onClick={() => {
                   setAudioSrc('');
                   setTranscription('');
@@ -1289,9 +1289,9 @@ function MindScan() {
             
             {!audioSrc && !transcription ? (
               // Show the audio recording interface
-              <div className="voice-input-options">
+              <div className="voice-input-options" data-aos="zoom-in" data-aos-delay="700">
                 <button 
-                className={`record-btn ${isRecording ? 'recording' : ''}`}
+                className={`record-btn ${isRecording ? 'recording pulse' : ''} gradient-bg-primary`}
                   onClick={toggleVoiceRecording}
                   disabled={!!audioSrc}
                 >
@@ -1325,6 +1325,8 @@ function MindScan() {
                 className={`audio-visualizer ${isRecording ? 'active' : ''}`}
                 width="600"
                 height="100"
+                data-aos="fade-in"
+                data-aos-delay="800"
               ></canvas>
             )}
             
@@ -1352,12 +1354,12 @@ function MindScan() {
             )}
             
             {transcription && (
-              <div className="transcription-result">
-                <h4><TranslatedText text="Your Transcribed Speech:" as="span" /></h4>
-                <p>{transcription}</p>
-                <div className="transcription-actions">
+              <div className="transcription-result glass-card" data-aos="fade-up" data-aos-duration="800">
+                <h4 data-aos="fade-right" data-aos-delay="200"><TranslatedText text="Your Transcribed Speech:" as="span" /></h4>
+                <p data-aos="fade-in" data-aos-delay="400">{transcription}</p>
+                <div className="transcription-actions" data-aos="fade-up" data-aos-delay="600">
                   <button 
-                    className="analyze-voice-btn"
+                    className="analyze-voice-btn gradient-bg-primary"
                     onClick={() => analyzeTranscribedText(transcription)}
                     disabled={isAnalyzing}
                   >
@@ -1367,13 +1369,13 @@ function MindScan() {
                     }
                   </button>
                   <button 
-                    className="health-resources-btn"
+                    className="health-resources-btn gradient-bg-info"
                     onClick={() => handleWebSearch(transcription)}
                   >
                     <i className="fas fa-heartbeat"></i>
                     <TranslatedText text="Find Health Resources" />
                   </button>
-                  <button className="reset-btn" onClick={() => {
+                  <button className="reset-btn gradient-bg-light" onClick={() => {
                     setAudioSrc('');
                     setTranscription('');
                   }}>
@@ -1445,8 +1447,8 @@ function MindScan() {
         
         {/* Video Input Section */}
         {activeTab === 'video' && (
-          <div className="video-section">
-            <div className="video-container">
+          <div className="video-section glass-card" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="400">
+            <div className="video-container" data-aos="zoom-in" data-aos-delay="500">
               {videoSrc ? (
                 <video 
                   ref={videoRef}
@@ -1455,16 +1457,16 @@ function MindScan() {
                   className="video-preview"
                 />
               ) : (
-                <div className="video-placeholder">
-                  <i className="fas fa-video"></i>
+                <div className="video-placeholder animated-bg">
+                  <i className="fas fa-video float"></i>
                   <p><TranslatedText text="Upload or record a video" /></p>
                 </div>
               )}
             </div>
 
-            <div className="video-controls">
+            <div className="video-controls" data-aos="fade-up" data-aos-delay="600">
               <div className="upload-controls">
-                <label className="upload-btn">
+                <label className="upload-btn gradient-bg-info">
                   <i className="fas fa-cloud-upload-alt"></i>
                   <TranslatedText text="Upload Video" />
                   <input
@@ -1476,7 +1478,7 @@ function MindScan() {
                 </label>
 
                 <button 
-                  className={`record-btn ${isVideoRecording ? 'recording' : ''}`}
+                  className={`record-btn ${isVideoRecording ? 'recording pulse' : ''} gradient-bg-primary`}
                   onClick={toggleVideoRecording}
                 >
                   <i className={`fas ${isVideoRecording ? 'fa-stop-circle' : 'fa-video'}`}></i>
@@ -1485,9 +1487,9 @@ function MindScan() {
               </div>
 
               {videoSrc && (
-                <div className="analysis-controls">
+                <div className="analysis-controls" data-aos="fade-up" data-aos-delay="700">
               <button 
-                    className="analyze-btn"
+                    className="analyze-btn gradient-bg-primary"
                     onClick={handleVideoAnalysis}
                     disabled={isAnalyzing}
                   >
@@ -1505,7 +1507,7 @@ function MindScan() {
                   </button>
 
                   <button 
-                    className="reset-btn"
+                    className="reset-btn gradient-bg-light"
                     onClick={() => {
                       setVideoSrc('');
                       setVideoFile(null);
@@ -1522,7 +1524,7 @@ function MindScan() {
         </div>
 
             {videoError && (
-              <div className="error-message">
+              <div className="error-message" data-aos="fade-in">
                 <i className="fas fa-exclamation-circle"></i>
                 {videoError}
               </div>
@@ -1534,11 +1536,11 @@ function MindScan() {
         
         {/* Analysis Results */}
         {analysis && (
-          <div className="analysis-results">
-            <h2><TranslatedText text="Your Mental Health Analysis" as="span" /></h2>
+          <div className="analysis-results glass-card" data-aos="fade-up" data-aos-duration="1000">
+            <h2 data-aos="fade-right" data-aos-delay="200"><TranslatedText text="Your Mental Health Analysis" as="span" /></h2>
             
             {analysis.usedFallback && (
-              <div className="fallback-notice" style={{ 
+              <div className="fallback-notice" data-aos="fade-in" data-aos-delay="300" style={{ 
                 padding: '15px', 
                 marginBottom: '20px', 
                 background: 'linear-gradient(135deg, #fff8e1, #fffde7)', 
@@ -1554,7 +1556,7 @@ function MindScan() {
               </div>
             )}
             
-            <div className="analysis-summary">
+            <div className="analysis-summary" data-aos="fade-up" data-aos-delay="400">
                 <div className="sentiment-indicator">
                 <div className={`sentiment-icon ${analysis.sentiment}`}>
                   <i className={`fas ${
@@ -1573,11 +1575,11 @@ function MindScan() {
                 </h3>
               </div>
 
-              <div className="emotions-detected">
+              <div className="emotions-detected" data-aos="fade-left" data-aos-delay="500">
                 <h4><TranslatedText text="Emotions Detected:" as="span" /></h4>
                 <div className="emotion-tags">
                   {analysis.emotions.map((emotion, index) => (
-                    <span key={index} className="emotion-tag">
+                    <span key={index} className="emotion-tag" data-aos="zoom-in" data-aos-delay={600 + (index * 100)}>
                       {emotion}
                     </span>
                   ))}
@@ -1587,7 +1589,7 @@ function MindScan() {
 
             {/* Conditional display based on sentiment */}
             {analysis.sentiment === 'positive' && (
-              <div className="sentiment-specific-content" style={{
+              <div className="sentiment-specific-content animated-bg" data-aos="fade-up" data-aos-delay="800" style={{
                 background: 'linear-gradient(135deg, #e6f7ff, #f0fff4)',
                 borderRadius: 'var(--border-radius)',
                 padding: '20px',
@@ -1666,7 +1668,7 @@ function MindScan() {
             )}
 
             {analysis.sentiment === 'negative' && (
-              <div className="sentiment-specific-content" style={{
+              <div className="sentiment-specific-content animated-bg" data-aos="fade-up" data-aos-delay="800" style={{
                 background: 'linear-gradient(135deg, #fff5f5, #fdf2f2)',
                 borderRadius: 'var(--border-radius)',
                 padding: '20px',
@@ -1791,29 +1793,29 @@ function MindScan() {
               </div>
             )}
 
-            <div className="suggestions-section">
+            <div className="suggestions-section" data-aos="fade-up" data-aos-delay="1000">
               <h4><i className="fas fa-lightbulb" style={{ marginRight: '8px', color: 'var(--primary-color)' }}></i><TranslatedText text="Recommended Coping Strategies:" as="span" /></h4>
                 <ul className="suggestions-list">
                   {analysis.suggestions.map((suggestion, index) => (
-                  <li key={index}>
+                  <li key={index} data-aos="fade-left" data-aos-delay={1100 + (index * 100)}>
                     <TranslatedText text={suggestion} />
                   </li>
                   ))}
                 </ul>
               </div>
 
-            <div className="next-steps">
+            <div className="next-steps" data-aos="fade-up" data-aos-delay="1400">
               <p><TranslatedText text="Would you like to:" /></p>
               <div className="next-step-buttons">
-                <button className="next-step-btn">
+                <button className="next-step-btn gradient-bg-success" data-aos="zoom-in" data-aos-delay="1500">
                   <i className="fas fa-tools"></i>
                   <TranslatedText text="Try Coping Tools" />
                 </button>
-                <button className="next-step-btn" style={{ background: 'linear-gradient(135deg, #6a5acd, #4c3e9d)' }}>
+                <button className="next-step-btn gradient-bg-primary" data-aos="zoom-in" data-aos-delay="1600" style={{ background: 'linear-gradient(135deg, #6a5acd, #4c3e9d)' }}>
                   <i className="fas fa-comments"></i>
                   <TranslatedText text="Chat with Mindmitra" />
                 </button>
-                <button className="next-step-btn" style={{ background: 'linear-gradient(135deg, #4285f4, #3367d6)' }}>
+                <button className="next-step-btn gradient-bg-info" data-aos="zoom-in" data-aos-delay="1700" style={{ background: 'linear-gradient(135deg, #4285f4, #3367d6)' }}>
                   <i className="fas fa-user-md"></i>
                   <TranslatedText text="Find a Therapist" />
                 </button>

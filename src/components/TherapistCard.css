@@ -7,6 +7,8 @@
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .therapist-card:hover {
@@ -15,7 +17,7 @@
 }
 
 .therapist-img {
-  height: 180px;
+  height: 220px;
   position: relative;
   overflow: hidden;
 }
@@ -24,10 +26,56 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.therapist-card:hover .therapist-img img {
+  transform: scale(1.05);
+}
+
+.therapist-img::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: linear-gradient(to top, rgba(0,0,0,0.4), transparent);
+  z-index: 1;
+}
+
+/* Professional badge */
+.professional-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(79, 179, 191, 0.9);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  z-index: 2;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Modal professional badge */
+.therapist-profile-img .professional-badge {
+  top: auto;
+  bottom: 10px;
+  right: 10px;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #4fb3bf;
+  font-size: 0.65rem;
 }
 
 .therapist-info {
   padding: 1.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .info-header {
@@ -131,16 +179,37 @@
 }
 
 .therapist-profile-img {
-  width: 120px;
-  height: 120px;
+  width: 150px;
+  height: 150px;
   border-radius: 16px;
   overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 3px solid #fff;
+  position: relative;
 }
 
 .therapist-profile-img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.therapist-profile-img::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: linear-gradient(to top, rgba(0,0,0,0.3), transparent);
+  z-index: 1;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+}
+
+.therapist-modal:hover .therapist-profile-img img {
+  transform: scale(1.05);
 }
 
 .therapist-profile-info {

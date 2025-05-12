@@ -3,6 +3,15 @@ import './Therapists.css';
 import TranslatedText from '../components/TranslatedText';
 import TherapistCard from '../components/TherapistCard';
 
+// Base64 encoded placeholder images for doctors
+// These would be replaced with actual images in production
+const drSharmaImg = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjAwIDIwMCI+PHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiM0ZmIzYmYiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1zaXplPSIyMCIgZmlsbD0iI2ZmZmZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIj5Eci4gUHJpeWEgU2hhcm1hPC90ZXh0Pjwvc3ZnPg==";
+const drMenonImg = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjAwIDIwMCI+PHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiM0ZmIzYmYiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1zaXplPSIyMCIgZmlsbD0iI2ZmZmZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIj5Eci4gQXJqdW4gTWVub248L3RleHQ+PC9zdmc+";
+const drDesaiImg = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjAwIDIwMCI+PHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiM0ZmIzYmYiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1zaXplPSIyMCIgZmlsbD0iI2ZmZmZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIj5Eci4gU25laGEgRGVzYWk8L3RleHQ+PC9zdmc+";
+const drKapoorImg = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjAwIDIwMCI+PHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiM0ZmIzYmYiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1zaXplPSIyMCIgZmlsbD0iI2ZmZmZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIj5Eci4gVmlrcmFtIEthcG9vcjwvdGV4dD48L3N2Zz4=";
+const drNairImg = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjAwIDIwMCI+PHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiM0ZmIzYmYiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1zaXplPSIyMCIgZmlsbD0iI2ZmZmZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIj5Eci4gTGFrc2htaSBOYWlyPC90ZXh0Pjwvc3ZnPg==";
+const drSinghImg = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjAwIDIwMCI+PHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiM0ZmIzYmYiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1zaXplPSIyMCIgZmlsbD0iI2ZmZmZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIj5Eci4gUmFqaXYgU2luZ2g8L3RleHQ+PC9zdmc+";
+
 // Enhanced therapist data with additional fields
 const therapistsData = [
   {
@@ -11,7 +20,7 @@ const therapistsData = [
     specialization: "Anxiety & Depression",
     experience: "12 years",
     rating: 4.9,
-    image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+    image: drSharmaImg,
     availability: ["Mon", "Tue", "Thu"],
     bio: "Dr. Sharma has extensive experience treating anxiety and depression using an integrative approach that combines CBT, mindfulness, and traditional Indian wellness practices. She specializes in helping professionals manage workplace stress and burnout.",
     insurances: ["Star Health", "HDFC ERGO", "Bajaj Allianz"],
@@ -27,7 +36,7 @@ const therapistsData = [
     specialization: "Trauma & PTSD",
     experience: "15 years",
     rating: 4.8,
-    image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+    image: drMenonImg,
     availability: ["Wed", "Fri", "Sat"],
     bio: "Dr. Menon is trained in EMDR therapy and specializes in trauma recovery. His approach combines Western psychological techniques with Eastern mindfulness practices to provide holistic treatment for PTSD and complex trauma.",
     insurances: ["Aditya Birla Health", "ICICI Lombard", "Religare Health"],
@@ -43,7 +52,7 @@ const therapistsData = [
     specialization: "Relationships & Family",
     experience: "10 years",
     rating: 4.9,
-    image: "https://images.unsplash.com/photo-1517842645767-c639042777db?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+    image: drDesaiImg,
     availability: ["Mon", "Wed", "Fri"],
     bio: "Dr. Desai focuses on helping individuals and couples navigate relationship challenges with cultural sensitivity. She incorporates family systems theory with an understanding of traditional Indian family dynamics to help clients find harmony in their relationships.",
     insurances: ["Star Health", "Max Bupa", "HDFC ERGO"],
@@ -59,7 +68,7 @@ const therapistsData = [
     specialization: "Stress Management & Mindfulness",
     experience: "8 years",
     rating: 4.7,
-    image: "https://images.unsplash.com/photo-1519452575417-564c1401ecc0?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+    image: drKapoorImg,
     availability: ["Tue", "Thu", "Sat"],
     bio: "Dr. Kapoor combines modern psychological approaches with traditional Indian wisdom for holistic mental wellness. He specializes in mindfulness-based interventions and stress reduction techniques adapted for the Indian context.",
     insurances: ["Religare Health", "ICICI Lombard", "Aditya Birla Health"],
@@ -75,7 +84,7 @@ const therapistsData = [
     specialization: "Child & Adolescent Mental Health",
     experience: "14 years",
     rating: 4.9,
-    image: "https://images.unsplash.com/photo-1490131784822-b4626a8ec96a?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+    image: drNairImg,
     availability: ["Mon", "Tue", "Fri"],
     bio: "Dr. Nair specializes in working with children and adolescents facing emotional and behavioral challenges. She uses play therapy, art therapy, and family involvement to help young minds flourish while being sensitive to Indian parenting contexts.",
     insurances: ["Star Health", "Max Bupa", "Bajaj Allianz"],
@@ -91,7 +100,7 @@ const therapistsData = [
     specialization: "Addiction & Recovery",
     experience: "18 years",
     rating: 4.8,
-    image: "https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+    image: drSinghImg,
     availability: ["Wed", "Thu", "Sat"],
     bio: "Dr. Singh has extensive experience treating various forms of addiction, from substance use to behavioral addictions. He utilizes a culturally informed approach that addresses the specific challenges faced by individuals in the Indian context.",
     insurances: ["ICICI Lombard", "Aditya Birla Health", "HDFC ERGO"],

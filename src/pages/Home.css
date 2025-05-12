@@ -16,6 +16,20 @@
   margin-bottom: 3rem;
   position: relative;
   overflow: hidden;
+  background-position: center;
+  background-blend-mode: overlay;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(79, 179, 191, 0.95) 0%, rgba(52, 152, 255, 0.9) 100%);
+  z-index: -1;
 }
 
 .hero-content {
@@ -191,6 +205,8 @@
   text-align: center;
   border-radius: 20px;
   margin: 3rem 0;
+  position: relative;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
 }
 
 .testimonials-section h2 {
@@ -229,6 +245,13 @@
   max-width: 500px;
   text-align: left;
   position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-top: 4px solid var(--primary-color);
+}
+
+.testimonial-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
 }
 
 .quote-icon {
@@ -252,37 +275,55 @@
 
 /* CTA Section */
 .cta-section {
-  text-align: center;
   padding: 4rem 3rem;
+  text-align: center;
   border-radius: 20px;
-  margin-bottom: 3rem;
+  margin-top: 3rem;
+  position: relative;
+  overflow: hidden;
+  background-position: center;
+  background-blend-mode: overlay;
+}
+
+.cta-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(79, 179, 191, 0.95) 0%, rgba(52, 152, 255, 0.9) 100%);
+  z-index: -1;
 }
 
 .cta-section h2 {
-  font-size: 2.5rem;
+  font-size: 2.2rem;
   color: var(--white);
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 1;
 }
 
 .cta-section p {
-  font-size: 1.2rem;
   color: rgba(255, 255, 255, 0.9);
-  margin-bottom: 2rem;
+  font-size: 1.2rem;
   max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto 2rem;
+  position: relative;
+  z-index: 1;
 }
 
 .cta-button {
   background-color: var(--white);
   color: var(--primary-color);
-  padding: 1.2rem 3rem;
-  font-size: 1.1rem;
+  border: none;
+  position: relative;
+  z-index: 1;
 }
 
 .cta-button:hover {
   transform: translateY(-3px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
 /* Responsive Design */

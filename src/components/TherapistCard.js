@@ -2,11 +2,15 @@ import React, { useState } from 'react';
 import './TherapistCard.css';
 import TranslatedText from './TranslatedText';
 
+// Default placeholder image as base64 string
+const placeholderImg = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiB2aWV3Qm94PSIwIDAgMjAwIDIwMCI+PHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiM0ZmIzYmYiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1zaXplPSIzNiIgZmlsbD0iI2ZmZmZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIj5Eb2N0b3IgSW1hZ2U8L3RleHQ+PC9zdmc+";
+
 function TherapistCard({ therapist }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('about');
   const [showScheduleForm, setShowScheduleForm] = useState(false);
   const [showMessageForm, setShowMessageForm] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const [scheduleData, setScheduleData] = useState({
     date: '',
     time: '',
@@ -16,6 +20,19 @@ function TherapistCard({ therapist }) {
   const [messageData, setMessageData] = useState({
     message: ''
   });
+
+  // Handle image loading error
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
+  // Get image source with fallback
+  const getImageSrc = () => {
+    if (imageError) {
+      return `https://ui-avatars.com/api/?name=${encodeURIComponent(therapist.name)}&background=4fb3bf&color=fff&size=256`;
+    }
+    return therapist.image || placeholderImg;
+  };
 
   const handleScheduleSubmit = (e) => {
     e.preventDefault();
@@ -123,7 +140,14 @@ function TherapistCard({ therapist }) {
     <>
       <div className="therapist-card" onClick={() => setIsModalOpen(true)}>
         <div className="therapist-img">
-          <img src={therapist.image} alt={therapist.name} />
+          <img 
+            src={getImageSrc()} 
+            alt={therapist.name}
+            onError={handleImageError}
+          />
+          <div className="professional-badge">
+            <i className="fas fa-check-circle"></i> Verified
+          </div>
         </div>
         <div className="therapist-info">
           <div className="info-header">
@@ -152,7 +176,14 @@ function TherapistCard({ therapist }) {
             <div className="modal-content">
               <div className="modal-header">
                 <div className="therapist-profile-img">
-                  <img src={therapist.image} alt={therapist.name} />
+                  <img 
+                    src={getImageSrc()} 
+                    alt={therapist.name}
+                    onError={handleImageError}
+                  />
+                  <div className="professional-badge">
+                    <i className="fas fa-check-circle"></i> Verified
+                  </div>
                 </div>
                 <div className="therapist-profile-info">
                   <h2>{therapist.name}</h2>

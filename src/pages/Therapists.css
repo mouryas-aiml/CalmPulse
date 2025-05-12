@@ -237,9 +237,9 @@
 /* Therapist list */
 .therapists-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 2rem;
-  margin-bottom: 3rem;
+  margin: 2rem 0 3rem;
 }
 
 .therapist-card {
@@ -310,6 +310,7 @@
 /* Responsive styles */
 @media screen and (max-width: 768px) {
   .therapists-list {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 1.5rem;
   }
   
@@ -321,8 +322,8 @@
 @media screen and (max-width: 480px) {
   .therapists-list {
     grid-template-columns: 1fr;
-    gap: 1rem;
-}
+    gap: 1.5rem;
+  }
 
   .therapist-info {
     padding: 1rem;
@@ -655,4 +656,28 @@
   .grid-view {
     grid-template-columns: repeat(3, 1fr);
   }
+}
+
+/* Empty state */
+.no-results {
+  text-align: center;
+  padding: 3rem 1rem;
+  background-color: var(--white);
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(72, 118, 246, 0.06);
+  margin-top: 2rem;
+}
+
+.no-results h3 {
+  color: var(--text-dark);
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.no-results p {
+  color: var(--text-light);
+  margin-bottom: 2rem;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
 } 

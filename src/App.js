@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
+import './animations.css';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 // Components
 import Navbar from './components/Navbar';
@@ -49,6 +52,28 @@ function AppContent() {
   // Fallback to localStorage (for refresh handling)
   const isAuthenticatedLocal = localStorage.getItem('isAuthenticated') === 'true';
   const userIsAuthenticated = isAuthenticated || isAuthenticatedLocal;
+
+  // Initialize AOS
+  useEffect(() => {
+    AOS.init({
+      duration: 800,
+      easing: 'ease-out',
+      once: false,
+      mirror: true,
+      offset: 120,
+    });
+    
+    // Refresh AOS on window resize
+    window.addEventListener('resize', () => {
+      AOS.refresh();
+    });
+    
+    return () => {
+      window.removeEventListener('resize', () => {
+        AOS.refresh();
+      });
+    };
+  }, []);
 
   return (
       <div className="App">

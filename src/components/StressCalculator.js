@@ -61,8 +61,8 @@ const StressCalculator = () => {
   }, []);
 
   return (
-    <div className="stress-calculator">
-      <div className="stress-meter">
+    <div className="stress-calculator" data-aos="fade-up" data-aos-duration="1000">
+      <div className="stress-meter" data-aos="fade-right" data-aos-delay="200">
         <h3><TranslatedText text="Real-Time Stress Monitor" /></h3>
         <div className="stress-gauge">
           <div 
@@ -79,8 +79,8 @@ const StressCalculator = () => {
         </div>
       </div>
       
-      <div className="stress-parameters">
-        <div className="parameter">
+      <div className="stress-parameters" data-aos="fade-left" data-aos-delay="400">
+        <div className="parameter" data-aos="zoom-in" data-aos-delay="500">
           <label><TranslatedText text="Heart Rate (BPM):" /></label>
           <div className="parameter-input">
             <input 
@@ -94,7 +94,7 @@ const StressCalculator = () => {
           </div>
         </div>
         
-        <div className="parameter">
+        <div className="parameter" data-aos="zoom-in" data-aos-delay="600">
           <label><TranslatedText text="Breathing Rate (per min):" /></label>
           <div className="parameter-input">
             <input 
@@ -109,7 +109,7 @@ const StressCalculator = () => {
           </div>
         </div>
         
-        <div className="parameter">
+        <div className="parameter" data-aos="zoom-in" data-aos-delay="700">
           <label><TranslatedText text="Sleep Last Night (hours):" /></label>
           <div className="parameter-input">
             <input 
@@ -124,7 +124,7 @@ const StressCalculator = () => {
           </div>
         </div>
         
-        <div className="parameter">
+        <div className="parameter" data-aos="zoom-in" data-aos-delay="800">
           <label><TranslatedText text="Perceived Anxiety (1-10):" /></label>
           <div className="parameter-input">
             <input 
