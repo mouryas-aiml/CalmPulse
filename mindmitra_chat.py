@@ -1,9 +1,22 @@
+import os
 from dotenv import load_dotenv
 
+# Load environment variables
 load_dotenv()
 
+# Get API key from environment
+GROQ_API_KEY = os.getenv('GROQ_API_KEY')
+
+if not GROQ_API_KEY:
+    print("Error: GROQ_API_KEY not found in environment variables")
+    print("Please create a .env file with your GROQ_API_KEY=your_api_key")
+    exit(1)
+
 from langchain_groq import ChatGroq
+
+# Initialize the chatbot
 llm = ChatGroq(
+    api_key=GROQ_API_KEY,
     model="llama-3.3-70b-versatile",
     temperature=0.0,
     max_retries=2
@@ -11,7 +24,7 @@ llm = ChatGroq(
 
 print("\n=== Mindmitra Chatbot ===")
 print("Type 'quit' to exit the chat")
-print("Type your message and press Enter to chat with Mindmitra\n")
+print("Type your message and press Enter to chat\n")
 
 while True:
     user_input = input("You: ").strip()

@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './Mindmitra.css';
+import '../styles/StressMonitor.css';
 import TranslatedText from '../components/TranslatedText';
 import { useAuth } from '../contexts/AuthContext';
 import { 
@@ -353,6 +354,11 @@ function Mindmitra() {
     
     // Call API for response
     await generateBotResponse(newMessages);
+    
+    // Clear chat after a delay
+    setTimeout(() => {
+      setMessages([initialMessage]);
+    }, 5000); // Clear 5 seconds after response
   };
 
   const generateBotResponse = async (messageHistory) => {
@@ -769,6 +775,28 @@ function Mindmitra() {
     handleSendMessage(syntheticEvent);
   };
 
+  // Add state for stress monitor
+  const [stressLevel, setStressLevel] = useState(3.7);
+  const [heartRate, setHeartRate] = useState(79);
+  const [breathingRate, setBreathingRate] = useState(14.68);
+  const [sleepHours, setSleepHours] = useState(6);
+  const [anxiety, setAnxiety] = useState(3);
+  const [lastSyncTime, setLastSyncTime] = useState(new Date().toLocaleTimeString());
+  const [stressMessage, setStressMessage] = useState('Moderate stress. Consider some relaxation techniques.');
+
+  // Add effect to simulate real-time updates
+  useEffect(() => {
+    const updateInterval = setInterval(() => {
+      // Simulate data updates from smart devices
+      setHeartRate(prev => Math.max(60, Math.min(100, prev + (Math.random() - 0.5) * 5)));
+      setBreathingRate(prev => Math.max(12, Math.min(20, prev + (Math.random() - 0.5) * 2)));
+      setStressLevel(prev => Math.max(1, Math.min(10, prev + (Math.random() - 0.5) * 0.5)));
+      setLastSyncTime(new Date().toLocaleTimeString());
+    }, 5000); // Update every 5 seconds
+
+    return () => clearInterval(updateInterval);
+  }, []);
+
   return (
     <div className="mindmitra-container">
       <div className="chat-header">
@@ -863,6 +891,83 @@ function Mindmitra() {
               </div>
             </div>
           ))}
+        </div>
+      </div>
+
+      <div className="stress-monitor-section">
+        <h2 className="stress-monitor-title">
+          <i className="fas fa-mobile-alt"></i> Real-Time Stress Monitor
+          <span className="device-badge">
+            <i className="fas fa-watch"></i> Smart Watch Connected
+          </span>
+        </h2>
+        
+        <div className="stress-level-container">
+          <div className="stress-gauge">
+            <div className="gauge-label">
+              <i className="fas fa-brain"></i> Stress Level: {stressLevel}/10
+            </div>
+            <div className="gauge-bar" style={{ width: `${(stressLevel/10) * 100}%` }}></div>
+          </div>
+          <div className="stress-message">{stressMessage}</div>
+        </div>
+
+        <div className="metrics-grid">
+          <div className="metric-item">
+            <div className="metric-header">
+              <i className="fas fa-heartbeat"></i>
+              <span>Heart Rate (BPM):</span>
+            </div>
+            <div className="metric-gauge">
+              <div className="gauge-bar" style={{ width: `${(heartRate/200) * 100}%` }}></div>
+              <span className="metric-value">{heartRate}</span>
+            </div>
+          </div>
+
+          <div className="metric-item">
+            <div className="metric-header">
+              <i className="fas fa-wind"></i>
+              <span>Breathing Rate (per min):</span>
+            </div>
+            <div className="metric-gauge">
+              <div className="gauge-bar" style={{ width: `${(breathingRate/30) * 100}%` }}></div>
+              <span className="metric-value">{Math.round(breathingRate)}</span>
+            </div>
+          </div>
+
+          <div className="metric-item">
+            <div className="metric-header">
+              <i className="fas fa-moon"></i>
+              <span>Sleep Last Night (hours):</span>
+            </div>
+            <div className="metric-gauge">
+              <div className="gauge-bar" style={{ width: `${(sleepHours/12) * 100}%` }}></div>
+              <span className="metric-value">{sleepHours}</span>
+            </div>
+          </div>
+
+          <div className="metric-item">
+            <div className="metric-header">
+              <i className="fas fa-head-side-virus"></i>
+              <span>Perceived Anxiety (1-10):</span>
+            </div>
+            <div className="metric-gauge">
+              <div className="gauge-bar" style={{ width: `${(anxiety/10) * 100}%` }}></div>
+              <span className="metric-value">{anxiety}</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="device-info">
+          <div className="connected-devices">
+            <i className="fas fa-link"></i> Connected Devices:
+            <span className="device"><i className="fas fa-watch"></i> Smart Watch</span>
+            <span className="device"><i className="fas fa-ring"></i> Smart Ring</span>
+            <span className="device"><i className="fas fa-mobile-alt"></i> Phone</span>
+          </div>
+          <div className="last-sync">
+            <i className="fas fa-sync"></i> Last Synced: {lastSyncTime}
+          </div>
         </div>
       </div>
     </div>
