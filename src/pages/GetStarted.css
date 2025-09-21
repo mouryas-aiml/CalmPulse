@@ -1,0 +1,281 @@
+.getstarted {
+  min-height: 100vh;
+  background-color: #f9f9f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.getstarted-container {
+  max-width: 1200px;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.getstarted-content {
+  display: flex;
+  min-height: 600px;
+}
+
+.getstarted-left {
+  flex: 1;
+  background: linear-gradient(135deg, #4fb3bf 0%, #3a8a93 100%);
+  color: white;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.getstarted-left h1 {
+  font-size: 2.2rem;
+  margin-bottom: 40px;
+  line-height: 1.2;
+}
+
+.features-list {
+  margin-bottom: 40px;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.feature-item i {
+  font-size: 24px;
+  margin-right: 15px;
+  width: 30px;
+}
+
+.feature-item span {
+  font-size: 1rem;
+}
+
+.awards {
+  margin-top: auto;
+}
+
+.award {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.award-badge {
+  background-color: #ffffff;
+  color: #4fb3bf;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.award p {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.getstarted-right {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.auth-tabs {
+  display: flex;
+  margin-bottom: 30px;
+  border-bottom: 1px solid #eee;
+}
+
+.auth-tab {
+  flex: 1;
+  padding: 15px 0;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: #888;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.auth-tab.active {
+  color: #4fb3bf;
+  border-bottom: 2px solid #4fb3bf;
+  font-weight: 600;
+}
+
+.auth-form {
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border 0.3s ease;
+}
+
+.form-group input:focus {
+  border-color: #4fb3bf;
+  outline: none;
+}
+
+.error-message {
+  color: #e74c3c;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+
+.auth-button {
+  width: 100%;
+  padding: 14px;
+  background-color: #4fb3bf;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.auth-button:hover {
+  background-color: #3a8a93;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+  color: #888;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background-color: #eee;
+}
+
+.divider span {
+  padding: 0 10px;
+  font-size: 0.9rem;
+}
+
+.social-auth {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.social-button {
+  width: 100%;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.social-button i {
+  margin-right: 10px;
+}
+
+.social-button.google {
+  color: #4285F4;
+}
+
+.social-button.facebook {
+  color: #3b5998;
+}
+
+.social-button:hover {
+  background-color: #f9f9f9;
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: 20px;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.auth-link {
+  color: #4fb3bf;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.auth-link:hover {
+  text-decoration: underline;
+}
+
+.help-text {
+  margin-top: auto;
+  text-align: center;
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.help-text a {
+  color: #4fb3bf;
+  text-decoration: none;
+}
+
+.help-text a:hover {
+  text-decoration: underline;
+}
+
+@media screen and (max-width: 900px) {
+  .getstarted-content {
+    flex-direction: column;
+  }
+  
+  .getstarted-left,
+  .getstarted-right {
+    width: 100%;
+  }
+  
+  .getstarted-left {
+    padding: 30px;
+  }
+  
+  .getstarted-left h1 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+  }
+} 

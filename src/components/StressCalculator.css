@@ -1,0 +1,144 @@
+.stress-calculator {
+  background-color: var(--card-bg, #ffffff);
+  border-radius: var(--border-radius, 12px);
+  padding: 20px;
+  box-shadow: var(--box-shadow, 0 4px 8px rgba(0, 0, 0, 0.1));
+  margin-bottom: 30px;
+  max-width: 100%;
+  margin: 0 auto 30px;
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.stress-meter {
+  margin-bottom: 20px;
+}
+
+.stress-meter h3 {
+  margin-top: 0;
+  color: var(--primary-color, #6a5acd);
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.stress-gauge {
+  height: 20px;
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 10px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.stress-indicator {
+  height: 100%;
+  transition: width 0.5s ease, background-color 0.5s ease;
+  border-radius: 10px;
+}
+
+.stress-level {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.stress-message {
+  margin: 0;
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--text-color, #333);
+  opacity: 0.8;
+}
+
+.stress-parameters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 15px;
+}
+
+.parameter {
+  margin-bottom: 10px;
+}
+
+.parameter label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: var(--text-color, #555);
+}
+
+.parameter-input {
+  display: flex;
+  align-items: center;
+}
+
+.parameter-input input[type="range"] {
+  flex: 1;
+  margin-right: 10px;
+  height: 6px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: linear-gradient(to right, #4CAF50, #FFC107, #F44336);
+  border-radius: 5px;
+  outline: none;
+}
+
+.parameter-input input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--primary-color, #2196F3);
+  cursor: pointer;
+  border: 2px solid white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.parameter-input input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--primary-color, #2196F3);
+  cursor: pointer;
+  border: 2px solid white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.parameter-input span {
+  min-width: 30px;
+  text-align: center;
+  font-weight: bold;
+  color: var(--text-color, #333);
+}
+
+/* Animation for real-time effect */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.stress-calculator:has(.stress-indicator[style*="width: 80%"]) .stress-gauge,
+.stress-calculator:has(.stress-indicator[style*="width: 90%"]) .stress-gauge {
+  animation: pulse 1.5s infinite;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .stress-parameters {
+    grid-template-columns: 1fr;
+  }
+  
+  .stress-calculator {
+    padding: 15px;
+  }
+} 

@@ -1,0 +1,235 @@
+.journal {
+  padding: 2rem;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+.journal-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.journal h1 {
+  color: #2c3e50;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.journal-description {
+  text-align: center;
+  color: #555;
+  font-size: 1.1rem;
+  margin-bottom: 3rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Insights-specific styles */
+.insights-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.search-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 0.8rem 1rem;
+  padding-right: 2.5rem;
+  border: 1px solid #ccc;
+  border-radius: 30px;
+  font-size: 1rem;
+  width: 100%;
+}
+
+.search-bar i {
+  position: absolute;
+  right: 1rem;
+  color: #4fb3bf;
+}
+
+.category-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.category-btn {
+  padding: 0.5rem 1rem;
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #555;
+}
+
+.category-btn:hover {
+  background-color: #e0e0e0;
+}
+
+.category-btn.active {
+  background-color: #4fb3bf;
+  color: white;
+}
+
+/* Insights list */
+.insights-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.insight-card {
+  background-color: white;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.insight-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.insight-title {
+  color: #2c3e50;
+  margin-bottom: 0.8rem;
+  font-size: 1.3rem;
+}
+
+.insight-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
+  color: #777;
+}
+
+.insight-category {
+  background-color: #f0f7fa;
+  padding: 0.3rem 0.6rem;
+  border-radius: 12px;
+  color: #4fb3bf;
+  font-weight: 500;
+}
+
+.insight-source {
+  color: #888;
+  font-style: italic;
+}
+
+.insight-preview {
+  flex: 1;
+  color: #555;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.insight-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+
+.tag {
+  background-color: #f5f5f5;
+  padding: 0.3rem 0.6rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  color: #555;
+}
+
+.no-insights {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 3rem;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: #777;
+}
+
+.no-insights i {
+  color: #4fb3bf;
+  margin-bottom: 1rem;
+}
+
+/* Insight Detail View */
+.insight-detail {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  color: #4fb3bf;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  padding: 0;
+  margin-bottom: 1.5rem;
+}
+
+.back-btn:hover {
+  color: #3a8a93;
+}
+
+.insight-detail-header {
+  margin-bottom: 2rem;
+}
+
+.insight-detail-header h2 {
+  color: #2c3e50;
+  font-size: 1.8rem;
+  margin-bottom: 0.8rem;
+}
+
+.insight-content {
+  color: #333;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+.insight-content p {
+  margin-bottom: 1rem;
+}
+
+@media screen and (max-width: 768px) {
+  .journal-container {
+    padding: 1rem;
+  }
+  
+  .insights-list {
+    grid-template-columns: 1fr;
+  }
+  
+  .category-filters {
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    justify-content: flex-start;
+  }
+} 
