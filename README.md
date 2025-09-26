@@ -1,10 +1,10 @@
 # 🌊 CalmPulse 🌊
 *The Digital Heartbeat for Youth Mental Wellness*
 
-[![Hackathon](https://img.shields.io/badge/Hackathon-Gen%20AI%20Exchange%202025-4285F4.svg)](https://hackathon2025.com)
+[![Hackathon](https://img.shields.io/badge/Hackathon-Gen%20AI%20Exchange%202025-4285F4.svg)](https://vision.hack2skill.com/event/genaiexchangehackathon)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Status](https://img.shields.io/badge/Status-Live%20Demo-success.svg)](https://calmpulse-demo.com)
-[![AI Powered](https://img.shields.io/badge/AI-Powered-9B59B6.svg)](https://github.com/tensorminds/calmpulse)
+[![Status](https://img.shields.io/badge/Status-Live%20Demo-success.svg)](https://calm-pulse-kappa.vercel.app/)
+[![AI Powered](https://img.shields.io/badge/AI-Powered-9B59B6.svg)](https://github.com/mouryas-aiml/CalmPulse)
 [![Mental Health](https://img.shields.io/badge/Mental-Health-E74C3C.svg)](https://who.int/health-topics/mental-health)
 
 ---
