@@ -202,8 +202,6 @@ npm run preview
 - **📊 Wellness Dashboard** - View personalized insights
 - **🔒 Privacy Controls** - See our security features
 
-*Demo credentials: Use guest@calmpulse.com / demo123*
-
 ---
 
 ## 👥 **Meet Team TensorMinds**
