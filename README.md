@@ -13,9 +13,9 @@
 
 **CalmPulse** is a revolutionary *confidential neuro-AI wellness platform* that breaks barriers in youth mental health support. Going beyond traditional chatbots, we leverage **multi-modal analysis** (Text 💬, Voice 🎙️, Video 📹) to detect emotional biomarkers and provide personalized, empathetic guidance.
 
-> *"In a world where 1 in 5 youth struggle with mental health, CalmPulse becomes their digital sanctuary – a safe space where AI meets empathy."*
+> *"In a world where 1 in 7 youth struggle with mental health, CalmPulse becomes their digital sanctuary – a safe space where AI meets empathy."*
 
-[![View Demo](https://img.shields.io/badge/🚀_View_Live_Demo-Click_Here-FF6B6B?style=for-the-badge&logo=rocket)](https://calmpulse-demo.netlify.app)
+[![View Demo](https://img.shields.io/badge/🚀_View_Live_Demo-Click_Here-FF6B6B?style=for-the-badge&logo=rocket)](https://calm-pulse-kappa.vercel.app/)
 
 ---
 
@@ -194,7 +194,7 @@ npm run preview
 
 ### 🎮 **Try CalmPulse Now!**
 
-[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Visit_Now-4CAF50?style=for-the-badge&logo=rocket)](https://calmpulse-demo.netlify.app)
+[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Visit_Now-4CAF50?style=for-the-badge&logo=rocket)](https://calm-pulse-kappa.vercel.app/)
 
 ### 📱 **Demo Features Available**
 - **💬 Interactive Chat** - Experience our AI conversation
@@ -210,16 +210,15 @@ npm run preview
 
 <div align="center">
 
-| **Alex Chen** | **Sarah Rodriguez** | **Marcus Johnson** |
+| **Mourya S** | **Bhanu Prakash** | **Suraksha K S** |
 |:-------------:|:-------------------:|:------------------:|
-| 🧠 AI/ML Lead | 🎨 Frontend Developer | ⚙️ Backend Engineer |
-| [LinkedIn](https://linkedin.com/in/alexchen) \| [GitHub](https://github.com/alexchen) | [LinkedIn](https://linkedin.com/in/sarahrodriguez) \| [GitHub](https://github.com/sarahrodriguez) | [LinkedIn](https://linkedin.com/in/marcusjohnson) \| [GitHub](https://github.com/marcusjohnson) |
+| 🧠 AI/ML Lead & 🔒 Security Expert | 🎨Full Stack Developer | 🔬 Mental Health Advisor  |
+| [LinkedIn](https://linkedin.com/in/mourya-s) \| [GitHub](https://github.com/mouryas-aiml) | [LinkedIn](https://linkedin.com/in/sarahrodriguez) \| [GitHub](https://github.com/sarahrodriguez) | [LinkedIn](https://linkedin.com/in/marcusjohnson) \| [GitHub](https://github.com/marcusjohnson) |
 
-| **Dr. Emily Watson** | **David Kim** | **Lisa Thompson** |
+| **Akash Kumar** | **Mallikarjuna C** | **Diya N** |
 |:--------------------:|:-------------:|:-----------------:|
-| 🔬 Mental Health Advisor | 🔒 Security Expert | 📊 Data Scientist |
-| [LinkedIn](https://linkedin.com/in/emilywatson) \| [Research](https://researchgate.net/profile/emily-watson) | [LinkedIn](https://linkedin.com/in/davidkim) \| [GitHub](https://github.com/davidkim) | [LinkedIn](https://linkedin.com/in/lisathompson) \| [Kaggle](https://kaggle.com/lisathompson) |
-
+| ⚙️ Backend Engineer | UI Designer | 📊 Data Scientist |
+| [LinkedIn](https://linkedin.com/in/emilywatson) \| [Research](https://researchgate.net/profile/emily-watson) | [LinkedIn](https://linkedin.com/in/davidkim) \| [GitHub](https://github.com/davidkim) | [LinkedIn](https://linkedin.com/in/lisathompson) \|
 </div>
 
 > *"United by passion, driven by purpose - transforming mental healthcare one algorithm at a time."*
@@ -292,14 +291,13 @@ npm run preview
 
 <div align="center">
 
-[![Website](https://img.shields.io/badge/🌐_Website-CalmPulse.com-4A90E2?style=for-the-badge)](https://calmpulse-demo.netlify.app)
+[![Website](https://img.shields.io/badge/🌐_Website-CalmPulse.com-4A90E2?style=for-the-badge)](https://calm-pulse-kappa.vercel.app/)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-TensorMinds-0077B5?style=for-the-badge&logo=linkedin)](https://linkedin.com/company/tensorminds)
 [![Instagram](https://img.shields.io/badge/Instagram-@CalmPulseAI-E4405F?style=for-the-badge&logo=instagram)](https://instagram.com/calmpulseai)
 [![GitHub](https://img.shields.io/badge/GitHub-TensorMinds-181717?style=for-the-badge&logo=github)](https://github.com/tensorminds)
 
-[![Email](https://img.shields.io/badge/Email-hello@calmpulse.com-D14836?style=for-the-badge&logo=gmail)](mailto:hello@calmpulse.com)
-[![Discord](https://img.shields.io/badge/Discord-Community-7289DA?style=for-the-badge&logo=discord)](https://discord.gg/calmpulse)
-[![YouTube](https://img.shields.io/badge/YouTube-Tech_Talks-FF0000?style=for-the-badge&logo=youtube)](https://youtube.com/c/tensorminds)
+[![Email](https://img.shields.io/badge/Email-hello@calmpulse.com-D14836?style=for-the-badge&logo=gmail)](mailto:mouryas@outlook.in)
+[![YouTube](https://img.shields.io/badge/YouTube-Tech_Talks-FF0000?style=for-the-badge&logo=youtube)](https://www.youtube.com/@MouryaS_StreamLine.X)
 
 </div>
 
@@ -312,9 +310,9 @@ npm run preview
 
 ### 🤝 **Get Involved**
 - **💝 Support Our Mission** - [Donate](https://calmpulse.com/donate)
-- **👨‍💻 Contribute** - [Developer Guidelines](https://github.com/tensorminds/calmpulse/CONTRIBUTING.md)
-- **🐛 Report Issues** - [Bug Reports](https://github.com/tensorminds/calmpulse/issues)
-- **💡 Suggest Features** - [Feature Requests](https://github.com/tensorminds/calmpulse/discussions)
+- **👨‍💻 Contribute** - [Developer Guidelines](https://github.com/mouryas-aiml/CalmPulse/CONTRIBUTING.md)
+- **🐛 Report Issues** - [Bug Reports](https://github.com/mouryas-aiml/CalmPulse/issues)
+- **💡 Suggest Features** - [Feature Requests](https://github.com/mouryas-aiml/CalmPulse/discussions)
 
 ---
 
@@ -343,8 +341,8 @@ Special thanks to:
 
 **🌍 Building a world where every young person has access to mental wellness support 🌍**
 
-[![Star this repo](https://img.shields.io/github/stars/tensorminds/calmpulse?style=social)](https://github.com/tensorminds/calmpulse)
-[![Follow us](https://img.shields.io/github/followers/tensorminds?style=social)](https://github.com/tensorminds)
+[![Star this repo](https://img.shields.io/github/stars/tensorminds/calmpulse?style=social)](https://github.com/mouryas-aiml/CalmPulse)
+[![Follow us](https://img.shields.io/github/followers/tensorminds?style=social)](https://github.com/mouryas-aiml)
 
 ---
 
